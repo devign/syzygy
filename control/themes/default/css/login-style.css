@@ -1,0 +1,73 @@
+@CHARSET "ISO-8859-1";
+
+html {
+	
+}
+
+body {
+	background: #0C1307 url("../images/background.png") repeat-x;
+	margin: 0;
+	padding 0;	
+	margin: 0 auto;
+	font-size: 10pt;
+	font-family: Arial, sans-serif;
+}
+
+div#pageContainer {
+	width: 1000px;
+	margin: 0 auto;	
+}
+
+div#loginContainer {
+	width: 600px;
+	margin: 0 auto;	
+                                        
+}
+
+div#loginBanner {
+	width: 500px;
+	text-align: center;	
+	margin: 0 auto;
+}
+               
+div#loginBox {
+	background-color: #F8F8F8;	
+	border: 5px solid #EBEFF0;
+	padding: 5px;	
+	width: 350px;
+	height: 400px;
+	margin: 100px auto;
+}
+
+
+div#loginBoxInner div#logo {
+	background-color: #FFF;
+	width: 320px;
+	height: 70px;
+
+}
+
+div#loginBoxInner div#instruct {
+	border: 1px solid #F8CE25;
+	backrground-color: #FFF2BD;
+	font-size: 8pt;	
+}
+
+div#loginBoxInner div#loginArea {
+	font-size: 9pt;
+	margin-top: 30px;
+	margin-left: 80px;
+	margin-bottom: 30px;
+}
+
+div#loginBoxInner div#loginButton {
+	text-align: center;
+}
+
+.txtInput {
+	font-size: 9pt;	
+}
+
+.inputLabel {
+	color: #000;
+}

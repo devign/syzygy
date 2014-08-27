@@ -1,9 +1,15 @@
 <?php
+require_once 'init.php';
 
-spl_autoload_register(function ($class) {
-    include 'classes/' . $class . '.php';
-});
+$actionFile =  'classes/' . $action . '.php';
 
-echo "LET'S ROCK THIS MUTHA!";
+
+
+$controller = new $action;
+
+//echo "THEME TWO: " . $theme;
+
+
+
   
 ?>

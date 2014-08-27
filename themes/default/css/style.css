@@ -1,0 +1,73 @@
+body {
+    margin: 0 auto;
+    font-family: Arial, sans-serif;
+}
+
+div#pageContainer {
+    margin: 0 auto;
+    padding: 0;
+}
+
+
+/********* HEADER AREA STYLES **********/
+div#pageHeaderContainer {
+    
+}
+
+div#headerTop {
+    
+}
+
+div#headerLeft {
+    
+}
+    
+div#headerRight {
+    
+}
+
+div#topNavMenu {
+    
+}
+
+/******** CONTENT AREA STYLES *********/
+div#pageContentContainer {
+    
+}
+
+div#contentHeader {
+    
+}
+ 
+div#sideBarLeft {
+    
+}
+
+div#sideNavMenu {
+    
+}
+
+div#contentContainer {
+    
+}
+
+div#content {
+    
+}
+
+/****** FOOTER ARE STYLES *******/
+div#pageFooterContainer {
+    
+}
+
+div#footerLeft {
+    
+}
+
+div#footerCenter {
+    
+}
+
+div#footerRight {
+    
+}

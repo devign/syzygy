@@ -1,0 +1,72 @@
+@CHARSET "ISO-8859-1";
+
+html {
+	
+}
+
+body {
+	padding: 10px;
+	font-size: 10pt;
+}
+
+table#main {
+	border: 1px solid #C0C0C0;
+	width: 100%;
+}
+
+table#main th {
+	border: 1px solid #C0C0C0;
+	padding: 5px;
+}
+
+table#main td {
+	border-bottom: 1px solid #C0C0C0;
+	padding: 5px;
+}
+
+table.inside td {
+	border-bottom: 3px solid #000;
+	padding: 5px;
+}
+
+div#head {
+	width: 100%;
+	clear: both;
+}
+
+div#logo {
+	float: left;
+	width: 400px;
+}
+
+
+
+div#pageTitle {
+	float: left;
+	padding: 10px;
+	text-align: center;
+}
+
+div#infoHead {
+	width: 100%;
+	clear: both;
+	padding: 20px 0;
+}
+
+div#pageContainer {
+	width: 800px;
+	
+}
+
+div.sectionLabel {
+	background: #EFEFEF;
+	padding: 5px;
+	font-weight: bold;
+}
+
+div.infoPanel {
+	width: 320px;
+	height: 150px;
+	float: left;
+	
+}
