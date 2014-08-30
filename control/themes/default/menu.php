@@ -1,7 +1,7 @@
 <?php
   
 ?>
-        <div id="menu-wrapper" class="col-md-3">
+         <div id="menu-wrapper" class="col-md-3">
              
             <nav id="desktop-menu">
 
@@ -32,7 +32,8 @@
                       <div class="panel-body">
                         <div class="panel-location-arrow"></div>
                         <ul>
-                          <li><a href="/control/orders"><span class="glyphicon glyphicon-chevron-right"></span> New Orders <span class="order-total">999</span></a></li>
+                          <li><a href="/control/orders"><span class="glyphicon glyphicon-chevron-right"></span> Create Order</a></li>
+                          <li><a href="/control/orders"><span class="glyphicon glyphicon-chevron-right"></span> View Orders <span class="order-total">999</span></a></li>
                         </ul>
                       </div>
                     </div>
@@ -49,9 +50,10 @@
                       <div class="panel-body">
                         <div class="panel-location-arrow"></div>
                         <ul>
-                          <li><a href="/control/products"><span class="glyphicon glyphicon-chevron-right"></span> Products</a></li>
                           <li><a href="#"><span class="glyphicon glyphicon-chevron-right"></span> Add Products</a></li>
+                          <li><a href="#"><span class="glyphicon glyphicon-chevron-right"></span> View Products</a></li>
                           <li><a href="#"><span class="glyphicon glyphicon-chevron-right"></span> Categories</a></li>
+                          <li><a href="#"><span class="glyphicon glyphicon-chevron-right"></span> Brands</a></li>
                         </ul>
                       </div>
                     </div>
@@ -78,6 +80,41 @@
                   <div class="panel panel-default">
                     <div class="panel-heading">
                       <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapsefour">
+                          <span class="glyphicon glyphicon-transfer"></span> Returns
+                        </a>
+                      </h4>
+                    </div>
+                  <div id="collapsefour" class="panel-collapse collapse">
+                      <div class="panel-body">
+                        <div class="panel-location-arrow"></div>
+                        <ul>
+                          <li><a href="#"><span class="glyphicon glyphicon-chevron-right"></span> RMA Requests</a></li>
+                          <li><a href="#"><span class="glyphicon glyphicon-chevron-right"></span> View Returns</a></li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div><!-- END Menu Item -->
+                  <div class="panel panel-default">
+                    <div class="panel-heading">
+                      <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapsefive">
+                          <span class="glyphicon glyphicon-list-alt"></span> Vendors
+                        </a>
+                      </h4>
+                    </div>
+                  <div id="collapsefive" class="panel-collapse collapse">
+                      <div class="panel-body">
+                        <div class="panel-location-arrow"></div>
+                        <ul>
+                          <li><a href="#"><span class="glyphicon glyphicon-chevron-right"></span> Purchase Orders</a></li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div><!-- END Menu Item -->
+                  <div class="panel panel-default">
+                    <div class="panel-heading">
+                      <h4 class="panel-title">
                         <a data-toggle="collapse" data-parent="#accordion" href="/control/reports">
                           <span class="glyphicon glyphicon-stats"></span> Reports
                         </a>
@@ -97,7 +134,7 @@
                   <div class="panel panel-default">
                     <div class="panel-heading">
                       <h4 class="panel-title">
-                        <a data-toggle="collapse" data-parent="#accordion" href="/control/pages">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapsesix">
                           <span class="glyphicon glyphicon-file"></span> Pages
                         </a>
                       </h4>
