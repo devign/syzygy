@@ -5,17 +5,193 @@
              
             <nav id="desktop-menu">
 
-              <ul>
-                <li><a href="/control/dashboard"><span class="glyphicon glyphicon-home"></span> Dashboard</a></li>
-                <li><a href="/control/orders"><span class="glyphicon glyphicon-star"></span> Orders <span class="order-total">999</span></a></li>
-                <li><a href="/control/products"><span class="glyphicon glyphicon-shopping-cart"></span> Products <span class="general-total">999</span></a></li>
-                <li><a href=""><span class="glyphicon glyphicon-user"></span> Customers</a></li>
-                <li><a href=""><span class="glyphicon glyphicon-stats"></span> Reports</a></li>
-                <li><a href=""><span class="glyphicon glyphicon-file"></span> Pages</a></li>
-                <li><a href=""><span class="glyphicon glyphicon-picture"></span> Media</a></li>
-                <li><a href=""><span class="glyphicon glyphicon-pushpin"></span> My Notes <span class="general-total">3</span></a></li>
-              </ul>
+              <div class="panel-group" id="accordion">
+                  <div class="panel panel-default">
+                    <div class="panel-heading">
+                      <h4 class="panel-title">
+                        <a  href="/control/dashboard">
+                          <span class="glyphicon glyphicon-dashboard"></span> Dashboard</a>
+                        </a>
+                      </h4>
+                    </div>
+                    <!-- <div id="collapseOne" class="panel-collapse collapse">
+                      <div class="panel-body">
+                        
+                      </div>
+                    </div>-->
+                  </div><!-- END Menu Item -->
+                  <div class="panel panel-default">
+                    <div class="panel-heading">
+                      <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+                          <span class="glyphicon glyphicon-star"></span> Orders
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="collapseTwo" class="panel-collapse collapse">
+                      <div class="panel-body">
+                        <div class="panel-location-arrow"></div>
+                        <ul>
+                          <li><a href="/control/orders"><span class="glyphicon glyphicon-chevron-right"></span> New Orders <span class="order-total">999</span></a></li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div><!-- END Menu Item -->
+                  <div class="panel panel-default">
+                    <div class="panel-heading">
+                      <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapsethree">
+                          <span class="glyphicon glyphicon-shopping-cart"></span> Products <span class="general-total">999</span>
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="collapsethree" class="panel-collapse collapse">
+                      <div class="panel-body">
+                        <div class="panel-location-arrow"></div>
+                        <ul>
+                          <li><a href="/control/products"><span class="glyphicon glyphicon-chevron-right"></span> Products</a></li>
+                          <li><a href="#"><span class="glyphicon glyphicon-chevron-right"></span> Add Products</a></li>
+                          <li><a href="#"><span class="glyphicon glyphicon-chevron-right"></span> Categories</a></li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div><!-- END Menu Item -->
+                  <div class="panel panel-default">
+                    <div class="panel-heading">
+                      <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="/control/customers">
+                          <span class="glyphicon glyphicon-user"></span> Customers
+                        </a>
+                      </h4>
+                    </div>
+                  <!-- <div id="collapsefour" class="panel-collapse collapse">
+                      <div class="panel-body">
+                        <div class="panel-location-arrow"></div>
+                        <ul>
+                          <li><a href="#"><span class="glyphicon glyphicon-chevron-right"></span> Products</a></li>
+                          <li><a href="#"><span class="glyphicon glyphicon-chevron-right"></span> Add Products</a></li>
+                          <li><a href="#"><span class="glyphicon glyphicon-chevron-right"></span> Categories</a></li>
+                        </ul>
+                      </div>
+                    </div> -->
+                  </div><!-- END Menu Item -->
+                  <div class="panel panel-default">
+                    <div class="panel-heading">
+                      <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="/control/reports">
+                          <span class="glyphicon glyphicon-stats"></span> Reports
+                        </a>
+                      </h4>
+                    </div>
+                  <!-- <div id="collapsefive" class="panel-collapse collapse">
+                      <div class="panel-body">
+                        <div class="panel-location-arrow"></div>
+                        <ul>
+                          <li><a href="#"><span class="glyphicon glyphicon-chevron-right"></span> Products</a></li>
+                          <li><a href="#"><span class="glyphicon glyphicon-chevron-right"></span> Add Products</a></li>
+                          <li><a href="#"><span class="glyphicon glyphicon-chevron-right"></span> Categories</a></li>
+                        </ul>
+                      </div>
+                    </div> -->
+                  </div><!-- END Menu Item -->
+                  <div class="panel panel-default">
+                    <div class="panel-heading">
+                      <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="/control/pages">
+                          <span class="glyphicon glyphicon-file"></span> Pages
+                        </a>
+                      </h4>
+                    </div>
+                  <div id="collapsesix" class="panel-collapse collapse">
+                      <div class="panel-body">
+                        <div class="panel-location-arrow"></div>
+                        <ul>
+                          <li><a href="#"><span class="glyphicon glyphicon-chevron-right"></span> All Pages</a></li>
+                          <li><a href="#"><span class="glyphicon glyphicon-chevron-right"></span> Drafts</a></li>
+                          <li><a href="#"><span class="glyphicon glyphicon-chevron-right"></span> Add New</a></li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div><!-- END Menu Item -->
+                  <div class="panel panel-default">
+                    <div class="panel-heading">
+                      <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseseven">
+                          <span class="glyphicon glyphicon-picture"></span> Media
+                        </a>
+                      </h4>
+                    </div>
+                  <div id="collapseseven" class="panel-collapse collapse">
+                      <div class="panel-body">
+                        <div class="panel-location-arrow"></div>
+                        <ul>
+                          <li><a href="#"><span class="glyphicon glyphicon-chevron-right"></span> Image Library</a></li>
+                          <li><a href="#"><span class="glyphicon glyphicon-chevron-right"></span> Video Library</a></li>
+                          <li><a href="#"><span class="glyphicon glyphicon-chevron-right"></span> Add New</a></li>
+                        </ul>
+                      </div>
+                    </div> 
+                  </div><!-- END Menu Item -->
+                  <div class="panel panel-default">
+                    <div class="panel-heading">
+                      <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseeight">
+                          <span class="glyphicon glyphicon-globe"></span> Marketing
+                        </a>
+                      </h4>
+                    </div>
+                  <div id="collapseeight" class="panel-collapse collapse">
+                      <div class="panel-body">
+                        <div class="panel-location-arrow"></div>
+                        <ul>
+                          <li><a href="#"><span class="glyphicon glyphicon-chevron-right"></span> PPC Campaigns</a></li>
+                          <li><a href="#"><span class="glyphicon glyphicon-chevron-right"></span> Email List</a></li>
+                        </ul>
+                      </div>
+                    </div> 
+                  </div><!-- END Menu Item -->
+                  <div class="panel panel-default">
+                    <div class="panel-heading">
+                      <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapsenine">
+                          <span class="glyphicon glyphicon-pushpin"></span> My Notes
+                        </a>
+                      </h4>
+                    </div>
+                  <div id="collapsenine" class="panel-collapse collapse">
+                      <div class="panel-body">
+                        <div class="panel-location-arrow"></div>
+                        <ul>
+                          <li><a href="#"><span class="glyphicon glyphicon-chevron-right"></span> Note Archive</a></li>
+                          <li><a href="#"><span class="glyphicon glyphicon-chevron-right"></span> Reminders</a></li>
+                          <li><a href="#"><span class="glyphicon glyphicon-chevron-right"></span> Add Note</a></li>
+                          <li><a href="#"><span class="glyphicon glyphicon-chevron-right"></span> Add Reminder</a></li>
+                        </ul>
+                      </div>
+                    </div> 
+                  </div><!-- END Menu Item -->
+                  <div class="panel panel-default">
+                    <div class="panel-heading">
+                      <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseten">
+                          <span class="glyphicon glyphicon-cog"></span> Settings
+                        </a>
+                      </h4>
+                    </div>
+                  <div id="collapseten" class="panel-collapse collapse">
+                      <div class="panel-body">
+                        <div class="panel-location-arrow"></div>
+                        <ul>
+                          <li><a href="#"><span class="glyphicon glyphicon-chevron-right"></span> Shipping</a></li>
+                          <li><a href="#"><span class="glyphicon glyphicon-chevron-right"></span> Payments</a></li>
+                          <li><a href="#"><span class="glyphicon glyphicon-chevron-right"></span> Users</a></li>
+                          <li><a href="#"><span class="glyphicon glyphicon-chevron-right"></span> Countries</a></li>
+                        </ul>
+                      </div>
+                    </div> 
+                  </div><!-- END Menu Item -->
+                </div>
 
             </nav>
 
-        </div><!-- /.col-sm-12 /.col-lg-9 -->
+          </div><!-- /.col-sm-12 /.col-lg-9 -->
