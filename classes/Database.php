@@ -6,9 +6,9 @@ class Database {
     
     public function __construct() {
         
-	    $this->db_connection = new mysqli('localhost', 'bbddev', '1stank-mofo', 'ecomm_sampl');
+	    $this->db_connection = new mysqli('localhost', 'bbddev', '1stank-mofo', 'syzygy');
 
-	    if (!$this->db_connection->real_connect('localhost', 'bbddev', '1stank-mofo', 'ecomm_sample')) {
+	    if (!$this->db_connection->real_connect('localhost', 'bbddev', '1stank-mofo', 'syzygy')) {
     	    die('Connect Error (' . mysqli_connect_errno() . ') '
                 . mysqli_connect_error());
 	    }
