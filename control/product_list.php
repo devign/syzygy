@@ -69,8 +69,7 @@ if (isset($product_id)) {
     	<input type="hidden" name="cid" value="">
     	<div style="width:590px;overflow:auto;height:560px">
       	<table class="detailsList">
-      		<tr><th>SKU</th><th>NAME</th><th>DESCRIPTION</th><th>PRICE</th><th>WEIGHT</th><th>STATUS</th>
-      		<th>SUPPLIER</th></tr>
+      		<tr><th>SKU</th><th>NAME</th><th>DESCRIPTION</th><th>PRICE</th></tr>
 
       	<?php while ($result = $main_stmt->fetch_object()) : ?>
       		<tr onClick="document.productsForm.pid.value='<?= $result->sku ?>';document.customersForm.submit()">
