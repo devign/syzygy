@@ -5,26 +5,11 @@ require_once 'init.php';
 
 <?php 
 
-	$result = $db_connection->query("SELECT * FROM products WHERE product_id = " . $_GET['pid']);
+	$result = $db->query("SELECT * FROM products WHERE product_id = " . $_GET['pid']);
 	$prod_info = $result->fetch_object();
 	$result->close();
 	
 ?>
-<!DOCTYPE html>
-<html>
-<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<title>HotWorkOrders</title>
-  	<link rel="Stylesheet" href="<?php echo $config['stylesheet_directory']?>main.css" />
-  	<script type="text/javascript" src="<?php echo $config['javascript_directory']?>functions.js"></script>
-<style>
-	body {
-		background: #F4F0BB;
-	}
-</style>
-</head>
-
-<body>
 
 <?php if (isset($action) && $action == 'update_product') : ?>
 

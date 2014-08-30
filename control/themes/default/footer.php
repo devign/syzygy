@@ -1,8 +1,12 @@
 <?php
   
 ?>
+         <?php include $menu; ?>
 
-    
+        </div>
+
+      </div><!-- /.container -->
+          
      <footer>
         <div class="container">
            <p>powered by</p>

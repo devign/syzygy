@@ -1,7 +1,7 @@
 <?php
 
  
- define(DSEP, '/');
+define('DSEP', '/');
  
 $config = array(
     'db'                           => 'ecomm_sample',

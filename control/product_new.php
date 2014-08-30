@@ -3,21 +3,6 @@ require_once 'init.php';
 
 ?>
 
-<!DOCTYPE html>
-<html>
-<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<title>HotWorkOrders</title>
-  	<link rel="Stylesheet" href="<?php echo $config['stylesheet_directory']?>main.css" />
-  	<script type="text/javascript" src="<?php echo $config['javascript_directory']?>functions.js"></script>
-<style>
-	body {
-		background: #F4F0BB;
-	}
-</style>
-</head>
-
-<body>
 
 <?php if (isset($action) && $action == 'create_product') : ?>
 
@@ -61,9 +46,6 @@ require_once 'init.php';
 </div>
 
 <?php endif ?>
-
-</body>
-</html>
 
 <?php 
 	dbDisconnect($db_connection);

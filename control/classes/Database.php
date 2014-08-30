@@ -6,7 +6,7 @@ class Database extends mysqli {
     
     public function __construct() {
         
-	    parent::__construct('localhost', 'bbddev', '1stank-mofo', 'ecomm_sample');
+	    parent::__construct('localhost', 'bbddev', '1stank-mofo', 'syzygy');
 
 	    if (mysqli_connect_error()) {
     	    throw new Exception('Connect Error (' . mysqli_connect_errno() . ') ' . mysqli_connect_error());
