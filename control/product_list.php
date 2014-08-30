@@ -38,9 +38,16 @@ if (isset($product_id)) {
 
 
 ?>
-<div>
-    <h1 class="admin">Product List</h1>
-    <div id="mainContainerLeft">
+          <div class="col-xs-12 col-md-9">
+             
+            <section id="page-header">
+
+              <h1><span class="glyphicon glyphicon-home"></span>Products List</h1>
+
+            </section>
+
+            <section id="content">
+    <div id="mainContainerLeft">        
     	<form name="searchForm" action="customers.php" method="post">
     	<input type="hidden" name="action" value="search">
     	<div id="searchCriteria">
@@ -77,4 +84,6 @@ if (isset($product_id)) {
     </div>
 
 
-</div>
+            </section>
+
+          </div><!-- /.col-sm-12 /.col-lg-9 -->

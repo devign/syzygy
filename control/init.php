@@ -7,7 +7,9 @@ $menu = 'themes' . DSEP . $config['theme'] . DSEP . 'menu.php';
 
 
 if (isset($_GET['a'])) {
+ //   $action = preg_replace('/\W/', '', $action);
     $action = trim($_GET['a'], '/');
+    
 }
 
 spl_autoload_register(function ($class) {

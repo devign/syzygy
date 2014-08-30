@@ -2,6 +2,7 @@
 
  
 define('DSEP', '/');
+
  
 $config = array(
     'db'                           => 'ecomm_sample',
@@ -15,6 +16,8 @@ $config = array(
     'time_zone'                    => 'America/Chicago',
     'order_number_seed'            => '10010',
     'theme'                         => 'default',
+    'admin_directory'               => '/home/data/devign-llc/dev/syzygy/control/',
+    'store_directory'               =>  '/home/data/devign-llc/dev/syzygy/',
 );
   
 ?>

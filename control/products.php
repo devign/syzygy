@@ -1,20 +1,23 @@
 <?php
-$calling_file = basename(__FILE__);
-require_once 'init.php';
-require_once 'header.php';
+
 
 ?>
 
-<div id="mainContainer">
+          <div class="col-xs-12 col-md-9">
+             
+            <section id="page-header">
 
-	<h1 class="admin">PRODUCT MANAGEMENT</h1>
-	
+              <h1><span class="glyphicon glyphicon-home"></span>Products</h1>
+
+            </section>
+
+            <section id="content">
 	<div id="mainContainerLeft">
 		<div style="padding-top:30px;padding-left:30px">
 		<a class="button" href="javascript:void overlayWindow('product_new.php?caller=products.php', '480', '500')">Add Product</a>
 		</div>
 		<div style="padding-top:30px;padding-left:30px">
-		<a class="button" href="product_list.php?caller=products.php">List Products</a>
+		<a class="button" href="/control/product_list">List Products</a>
 		</div>
 		
 	</div>
@@ -23,9 +26,6 @@ require_once 'header.php';
 	
 	</div>
 
+            </section>
 
-</div>
-</div>
-
-</body>
-</html>
+          </div><!-- /.col-sm-12 /.col-lg-9 -->
