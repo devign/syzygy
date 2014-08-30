@@ -4,7 +4,7 @@ require_once 'init.php';
 
 include $header;
 
-if (!file_exists($config['admin_directory'] . $action . '.php')) {
+if (!file_exists(dirname(__FILE__) . DSEP . $action . '.php')) {
     $action = 'error.php';    
 } else {
     $action .= '.php';
