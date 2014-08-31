@@ -63,10 +63,10 @@ jQuery.document.ready(function() {
                       <div class="panel-body">
                         <div class="panel-location-arrow"></div>
                         <ul>
-                          <li><a href="/control/products/add"><span class="glyphicon glyphicon-chevron-right"></span> Add Products</a></li>
+                          <li><a href="/control/products/create"><span class="glyphicon glyphicon-chevron-right"></span> Add Products</a></li>
                           <li><a href="/control/products/view"><span class="glyphicon glyphicon-chevron-right"></span> View Products</a></li>
-                          <li><a href="/control/products/categories"><span class="glyphicon glyphicon-chevron-right"></span> Categories</a></li>
-                          <li><a href="/control/products/brands"><span class="glyphicon glyphicon-chevron-right"></span> Brands</a></li>
+                          <li><a href="/control/categories/view"><span class="glyphicon glyphicon-chevron-right"></span> Categories</a></li>
+                          <li><a href="/control/brands/view"><span class="glyphicon glyphicon-chevron-right"></span> Brands</a></li>
                         </ul>
                       </div>
                     </div>
@@ -74,36 +74,34 @@ jQuery.document.ready(function() {
                   <div class="panel panel-default">
                     <div class="panel-heading">
                       <h4 class="panel-title">
-                        <a data-toggle="collapse" data-parent="#accordion" href="/control/customers">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse-customers">
                           <span class="glyphicon glyphicon-user"></span> Customers
                         </a>
                       </h4>
                     </div>
-                  <!-- <div id="collapsefour" class="panel-collapse collapse">
+                   <div id="collapse-customers" class="panel-collapse collapse">
                       <div class="panel-body">
                         <div class="panel-location-arrow"></div>
                         <ul>
-                          <li><a href="#"><span class="glyphicon glyphicon-chevron-right"></span> Products</a></li>
-                          <li><a href="#"><span class="glyphicon glyphicon-chevron-right"></span> Add Products</a></li>
-                          <li><a href="#"><span class="glyphicon glyphicon-chevron-right"></span> Categories</a></li>
+                          <li><a href="/control/customers/create"><span class="glyphicon glyphicon-chevron-right"></span> Add Customer</a></li>
+                          <li><a href="/control/customers/view"><span class="glyphicon glyphicon-chevron-right"></span> View Customer</a></li>
                         </ul>
                       </div>
-                    </div> -->
                   </div><!-- END Menu Item -->
                   <div class="panel panel-default">
                     <div class="panel-heading">
                       <h4 class="panel-title">
-                        <a data-toggle="collapse" data-parent="#accordion" href="#collapsefour">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse-returns">
                           <span class="glyphicon glyphicon-transfer"></span> Returns
                         </a>
                       </h4>
                     </div>
-                  <div id="collapsefour" class="panel-collapse collapse">
+                  <div id="collapse-returns" class="panel-collapse collapse">
                       <div class="panel-body">
                         <div class="panel-location-arrow"></div>
                         <ul>
-                          <li><a href="#"><span class="glyphicon glyphicon-chevron-right"></span> RMA Requests</a></li>
-                          <li><a href="#"><span class="glyphicon glyphicon-chevron-right"></span> View Returns</a></li>
+                          <li><a href="/control/returns/create"><span class="glyphicon glyphicon-chevron-right"></span> New Returns</a></li>
+                          <li><a href="/control/returns/view"><span class="glyphicon glyphicon-chevron-right"></span> View Returns</a></li>
                         </ul>
                       </div>
                     </div>
@@ -111,24 +109,24 @@ jQuery.document.ready(function() {
                   <div class="panel panel-default">
                     <div class="panel-heading">
                       <h4 class="panel-title">
-                        <a data-toggle="collapse" data-parent="#accordion" href="#collapsefive">
+                        <a data-toggle="collapse" data-parent="#accordion" href="/control/vendors/view">
                           <span class="glyphicon glyphicon-list-alt"></span> Vendors
                         </a>
                       </h4>
                     </div>
-                  <div id="collapsefive" class="panel-collapse collapse">
+                  <!--<div id="collapse-vendors" class="panel-collapse collapse">
                       <div class="panel-body">
                         <div class="panel-location-arrow"></div>
                         <ul>
                           <li><a href="#"><span class="glyphicon glyphicon-chevron-right"></span> Purchase Orders</a></li>
                         </ul>
                       </div>
-                    </div>
+                    </div>-->
                   </div><!-- END Menu Item -->
                   <div class="panel panel-default">
                     <div class="panel-heading">
                       <h4 class="panel-title">
-                        <a data-toggle="collapse" data-parent="#accordion" href="/control/reports">
+                        <a data-toggle="collapse" data-parent="#accordion" href="/control/reports/view">
                           <span class="glyphicon glyphicon-stats"></span> Reports
                         </a>
                       </h4>
@@ -147,12 +145,12 @@ jQuery.document.ready(function() {
                   <div class="panel panel-default">
                     <div class="panel-heading">
                       <h4 class="panel-title">
-                        <a data-toggle="collapse" data-parent="#accordion" href="#collapsesix">
+                        <a data-toggle="collapse" data-parent="#accordion" href="/control/pages/view">
                           <span class="glyphicon glyphicon-file"></span> Pages
                         </a>
                       </h4>
                     </div>
-                  <div id="collapsesix" class="panel-collapse collapse">
+                  <!--<div id="collapsesix" class="panel-collapse collapse">
                       <div class="panel-body">
                         <div class="panel-location-arrow"></div>
                         <ul>
@@ -161,17 +159,17 @@ jQuery.document.ready(function() {
                           <li><a href="#"><span class="glyphicon glyphicon-chevron-right"></span> Add New</a></li>
                         </ul>
                       </div>
-                    </div>
+                    </div>-->
                   </div><!-- END Menu Item -->
                   <div class="panel panel-default">
                     <div class="panel-heading">
                       <h4 class="panel-title">
-                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseseven">
+                        <a data-toggle="collapse" data-parent="#accordion" href="/control/media/view">
                           <span class="glyphicon glyphicon-picture"></span> Media
                         </a>
                       </h4>
                     </div>
-                  <div id="collapseseven" class="panel-collapse collapse">
+                  <!-- <div id="collapseseven" class="panel-collapse collapse">
                       <div class="panel-body">
                         <div class="panel-location-arrow"></div>
                         <ul>
@@ -180,35 +178,17 @@ jQuery.document.ready(function() {
                           <li><a href="#"><span class="glyphicon glyphicon-chevron-right"></span> Add New</a></li>
                         </ul>
                       </div>
-                    </div> 
+                    </div> -->
                   </div><!-- END Menu Item -->
                   <div class="panel panel-default">
                     <div class="panel-heading">
                       <h4 class="panel-title">
-                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseeight">
-                          <span class="glyphicon glyphicon-globe"></span> Marketing
-                        </a>
-                      </h4>
-                    </div>
-                  <div id="collapseeight" class="panel-collapse collapse">
-                      <div class="panel-body">
-                        <div class="panel-location-arrow"></div>
-                        <ul>
-                          <li><a href="#"><span class="glyphicon glyphicon-chevron-right"></span> PPC Campaigns</a></li>
-                          <li><a href="#"><span class="glyphicon glyphicon-chevron-right"></span> Email List</a></li>
-                        </ul>
-                      </div>
-                    </div> 
-                  </div><!-- END Menu Item -->
-                  <div class="panel panel-default">
-                    <div class="panel-heading">
-                      <h4 class="panel-title">
-                        <a data-toggle="collapse" data-parent="#accordion" href="#collapsenine">
+                        <a data-toggle="collapse" data-parent="#accordion" href="/control/mynotes/view">
                           <span class="glyphicon glyphicon-pushpin"></span> My Notes
                         </a>
                       </h4>
                     </div>
-                  <div id="collapsenine" class="panel-collapse collapse">
+                  <!--<div id="collapsenine" class="panel-collapse collapse">
                       <div class="panel-body">
                         <div class="panel-location-arrow"></div>
                         <ul>
@@ -218,17 +198,17 @@ jQuery.document.ready(function() {
                           <li><a href="#"><span class="glyphicon glyphicon-chevron-right"></span> Add Reminder</a></li>
                         </ul>
                       </div>
-                    </div> 
+                    </div>-->
                   </div><!-- END Menu Item -->
                   <div class="panel panel-default">
                     <div class="panel-heading">
                       <h4 class="panel-title">
-                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseten">
+                        <a data-toggle="collapse" data-parent="#accordion" href="/control/settings/view">
                           <span class="glyphicon glyphicon-cog"></span> Settings
                         </a>
                       </h4>
                     </div>
-                  <div id="collapseten" class="panel-collapse collapse">
+                  <!--<div id="collapseten" class="panel-collapse collapse">
                       <div class="panel-body">
                         <div class="panel-location-arrow"></div>
                         <ul>
@@ -238,7 +218,7 @@ jQuery.document.ready(function() {
                           <li><a href="#"><span class="glyphicon glyphicon-chevron-right"></span> Countries</a></li>
                         </ul>
                       </div>
-                    </div> 
+                    </div>-->
                   </div><!-- END Menu Item -->
                 </div>
 
