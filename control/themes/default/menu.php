@@ -1,6 +1,19 @@
 <?php
-  
+$openMenu = '';
+if ($action == 'orders') {
+    $openMenu = 'collapse-orders';
+} elseif ($action == 'products') {
+    $openMenu = 'collapse-products';
+} 
+
 ?>
+
+<script>
+jQuery.document.ready(function() {
+    jQuery('#<?=$openMenu?>').collapse('show');        
+});  
+</script>
+
          <div id="menu-wrapper" class="col-md-3">
              
             <nav id="desktop-menu">
@@ -23,17 +36,17 @@
                   <div class="panel panel-default">
                     <div class="panel-heading">
                       <h4 class="panel-title">
-                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse-orders">
                           <span class="glyphicon glyphicon-star"></span> Orders
                         </a>
                       </h4>
                     </div>
-                    <div id="collapseTwo" class="panel-collapse collapse">
+                    <div id="collapse-orders" class="panel-collapse collapse">
                       <div class="panel-body">
                         <div class="panel-location-arrow"></div>
                         <ul>
-                          <li><a href="/control/orders"><span class="glyphicon glyphicon-chevron-right"></span> Create Order</a></li>
-                          <li><a href="/control/orders"><span class="glyphicon glyphicon-chevron-right"></span> View Orders <span class="order-total">999</span></a></li>
+                          <li><a href="/control/orders/create"><span class="glyphicon glyphicon-chevron-right"></span> Create Order</a></li>
+                          <li><a href="/control/orders/view"><span class="glyphicon glyphicon-chevron-right"></span> View Orders <span class="order-total">999</span></a></li>
                         </ul>
                       </div>
                     </div>
@@ -41,19 +54,19 @@
                   <div class="panel panel-default">
                     <div class="panel-heading">
                       <h4 class="panel-title">
-                        <a data-toggle="collapse" data-parent="#accordion" href="#collapsethree">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse-products">
                           <span class="glyphicon glyphicon-shopping-cart"></span> Products <span class="general-total">999</span>
                         </a>
                       </h4>
                     </div>
-                    <div id="collapsethree" class="panel-collapse collapse">
+                    <div id="collapse-products" class="panel-collapse collapse">
                       <div class="panel-body">
                         <div class="panel-location-arrow"></div>
                         <ul>
-                          <li><a href="#"><span class="glyphicon glyphicon-chevron-right"></span> Add Products</a></li>
-                          <li><a href="#"><span class="glyphicon glyphicon-chevron-right"></span> View Products</a></li>
-                          <li><a href="#"><span class="glyphicon glyphicon-chevron-right"></span> Categories</a></li>
-                          <li><a href="#"><span class="glyphicon glyphicon-chevron-right"></span> Brands</a></li>
+                          <li><a href="/control/products/add"><span class="glyphicon glyphicon-chevron-right"></span> Add Products</a></li>
+                          <li><a href="/control/products/view"><span class="glyphicon glyphicon-chevron-right"></span> View Products</a></li>
+                          <li><a href="/control/products/categories"><span class="glyphicon glyphicon-chevron-right"></span> Categories</a></li>
+                          <li><a href="/control/products/brands"><span class="glyphicon glyphicon-chevron-right"></span> Brands</a></li>
                         </ul>
                       </div>
                     </div>
@@ -232,3 +245,5 @@
             </nav>
 
           </div><!-- /.col-sm-12 /.col-lg-9 -->
+          
+          

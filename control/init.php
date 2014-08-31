@@ -4,11 +4,15 @@ error_reporting(E_ALL);
 $header = 'themes' . DSEP . $config['theme'] . DSEP . 'header.php';
 $footer = 'themes' . DSEP . $config['theme'] . DSEP . 'footer.php';
 $menu = 'themes' . DSEP . $config['theme'] . DSEP . 'menu.php';
+$route = array();
 
-
+/***
+* GET URL FOR ROUTE
+*/
 if (isset($_GET['a'])) {
  //   $action = preg_replace('/\W/', '', $action);
-    $action = trim($_GET['a'], '/');
+    $url = rtrim($_GET['a'], '/');
+    $route = explode('/', $url);
     
 }
 
