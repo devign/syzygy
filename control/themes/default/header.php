@@ -10,10 +10,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Syzygy - We sell shit for real low cheap.</title>
 
-    <link href='//fonts.googleapis.com/css?family=PT+Sans|PT+Sans+Narrow' rel='stylesheet' type='text/css'>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+ 
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
 
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    
+    <link href='//fonts.googleapis.com/css?family=PT+Sans|PT+Sans+Narrow' rel='stylesheet' type='text/css'>
+    
     <!-- Bootstrap -->
-    <link href="themes/<?= $config['theme'] . DSEP . $config['stylesheet_directory'] ?>styles.css" rel="stylesheet">
+    <link href="/control/themes/<?= $config['theme'] . DSEP . $config['stylesheet_directory'] ?>styles.css" rel="stylesheet">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -23,7 +29,7 @@
     <![endif]-->
   </head>
   <body class="dashboard">
-
+  
 
       <header class="container mt30">
 

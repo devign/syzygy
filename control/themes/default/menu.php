@@ -9,8 +9,8 @@ if ($action == 'orders') {
 ?>
 
 <script>
-jQuery.document.ready(function() {
-    jQuery('#<?=$openMenu?>').collapse('show');        
+jQuery(document).ready(function() {
+    jQuery('#<?=$openMenu?>').addClass('in');        
 });  
 </script>
 
@@ -63,7 +63,7 @@ jQuery.document.ready(function() {
                       <div class="panel-body">
                         <div class="panel-location-arrow"></div>
                         <ul>
-                          <li><a href="/control/products/create"><span class="glyphicon glyphicon-chevron-right"></span> Add Products</a></li>
+                          <li><a href="/control/products/create"><span class="glyphicon glyphicon-chevron-right"></span> Add Product </a></li>
                           <li><a href="/control/products/view"><span class="glyphicon glyphicon-chevron-right"></span> View Products</a></li>
                           <li><a href="/control/categories/view"><span class="glyphicon glyphicon-chevron-right"></span> Categories</a></li>
                           <li><a href="/control/brands/view"><span class="glyphicon glyphicon-chevron-right"></span> Brands</a></li>
@@ -84,7 +84,7 @@ jQuery.document.ready(function() {
                         <div class="panel-location-arrow"></div>
                         <ul>
                           <li><a href="/control/customers/create"><span class="glyphicon glyphicon-chevron-right"></span> Add Customer</a></li>
-                          <li><a href="/control/customers/view"><span class="glyphicon glyphicon-chevron-right"></span> View Customer</a></li>
+                          <li><a href="/control/customers/view"><span class="glyphicon glyphicon-chevron-right"></span> View Customers</a></li>
                         </ul>
                       </div>
                   </div><!-- END Menu Item -->
@@ -100,7 +100,7 @@ jQuery.document.ready(function() {
                       <div class="panel-body">
                         <div class="panel-location-arrow"></div>
                         <ul>
-                          <li><a href="/control/returns/create"><span class="glyphicon glyphicon-chevron-right"></span> New Returns</a></li>
+                          <li><a href="/control/returns/create"><span class="glyphicon glyphicon-chevron-right"></span> New Return</a></li>
                           <li><a href="/control/returns/view"><span class="glyphicon glyphicon-chevron-right"></span> View Returns</a></li>
                         </ul>
                       </div>
