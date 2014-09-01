@@ -1,5 +1,17 @@
 <?php
-  
+/**
+* GET STORES  
+*/
+
+/**
+* GET SALES DATA
+*/
+
+/** GET LOGGED IN USER DATA
+* 
+*/
+
+
 ?>
 
 <!DOCTYPE html>
@@ -37,9 +49,9 @@
         
           <div class="col-xs-2 col-md-1 col-lg-1 logo">
 
-            <a title="Powered by Syzygy." href="/" class="hidden-xs hidden-sm hidden-md"><img title="Powered by Syzygy." src="images/storefront-logo-default.png" alt="Powered by Sysygy" /></a>
+            <a title="Powered by Syzygy." href="/" class="hidden-xs hidden-sm hidden-md"><img title="Powered by Syzygy." src="/control/images/storefront-logo-default.png" alt="Powered by Sysygy" /></a>
 
-            <a title="Powered by Syzygy." href="/" class="hidden-lg"><img title="Powered by Syzygy." src="images/storefront-mobile-logo-default.png" alt="Powered by Sysygy" /></a>
+            <a title="Powered by Syzygy." href="/" class="hidden-lg"><img title="Powered by Syzygy." src="/control/images/storefront-mobile-logo-default.png" alt="Powered by Sysygy" /></a>
 
           </div><!-- /.col-xs-4 /.col-md-2 /.col-lg-1 logo -->
 

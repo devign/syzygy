@@ -1,23 +1,8 @@
 <?php
-require_once 'init.php';
+require_once('functions.php');
 
 ?>
 
-<!DOCTYPE html>
-<html>
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <title>HotWorkOrders</title>
-  <link rel="Stylesheet" href="<?= $config['stylesheet_directory']?>main.css" />
-  <script type="text/javascript" src="<?= $config['javascript_directory']?>functions.js"></script>
-<style>
-	body {
-		background: #F4F0BB;
-	}
-</style>
-</head>
-
-<body>
 
 <?php if (isset($action) && $action == 'create_user') : ?>
 
@@ -30,6 +15,15 @@ require_once 'init.php';
 
 ?>
 
+          <div class="col-xs-12 col-md-9">
+             
+            <section id="page-header">
+
+              <h1><span class="glyphicon glyphicon-home"></span> Product Categories :: Create New</h1>
+
+            </section>
+
+            <section id="content">
 
 <div style="padding-top:100px">
 	<h3>ASSOCIATE SUCCESSFULLY ADDED</h3>
@@ -59,9 +53,7 @@ require_once 'init.php';
 
 <?php endif ?>
 
-</body>
-</html>
 
-<?php
-	dbDisconnect($db_connection);
-?>
+            </section>
+
+          </div><!-- /.col-sm-12 /.col-lg-9 -->

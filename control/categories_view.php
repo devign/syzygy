@@ -42,6 +42,9 @@ if (isset($action) && $action == 'search') {
     	</div>
     	</form>
 
+        <div>
+            <a href="/control/categories/create">Add New Category</a>
+        </div>
     </div>
 
     <div id="mainContainerRight">
