@@ -2,7 +2,7 @@
 $openMenu = '';
 if ($action == 'orders') {
     $openMenu = 'collapse-orders';
-} elseif ($action == 'products') {
+} elseif ($action == 'products' || $action == 'categories') {
     $openMenu = 'collapse-products';
 } 
 

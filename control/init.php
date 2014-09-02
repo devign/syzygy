@@ -5,6 +5,7 @@ $header = 'themes' . DSEP . $config['theme'] . DSEP . 'header.php';
 $footer = 'themes' . DSEP . $config['theme'] . DSEP . 'footer.php';
 $menu = 'themes' . DSEP . $config['theme'] . DSEP . 'menu.php';
 $route = array();
+$params = array();
 
 /***
 * GET URL FOR ROUTE
@@ -14,6 +15,8 @@ if (isset($_GET['a'])) {
     $url = rtrim($_GET['a'], '/');
     $route = explode('/', $url);
     
+} else {
+    $route[0] = 'dashboard';
 }
 
 spl_autoload_register(function ($class) {
