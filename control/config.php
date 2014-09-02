@@ -18,5 +18,7 @@ $config = array(
     'theme'                         => 'default',
 
 );
+
+$lowercase_fields = array();
   
 ?>

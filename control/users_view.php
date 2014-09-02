@@ -1,6 +1,6 @@
 <?php
 
-$users_query = "SELECT * FROM associates";
+$users_query = "SELECT * FROM users";
 
 $users_stmt = $db->query($users_query);
 

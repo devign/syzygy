@@ -13,10 +13,10 @@ require_once('functions.php');
 
             <section id="content">
             
-<?php if (isset($action) && $action == 'create_user') : ?>
+<?php if (isset($_POST['frmAction']) && $_POST['frmAction'] == 'insert') : ?>
 
 <?php
-	$associate_id = insertRecord('users', 'user_id');
+	$user_id = insertRecord('users', 'user_id');
 
 	$_POST['user_id'] = $user_id;
 
@@ -29,10 +29,7 @@ require_once('functions.php');
 <div style="padding-top:100px">
 	<h3>USER SUCCESSFULLY ADDED</h3>
 </div>
-<div>
-	<button class="button" onCLick="window.opener.location='<?= $_POST['caller']?>';window.close()">CLOSE</button>
 
-</div>
 
 <?php else : ?>
 
@@ -40,7 +37,7 @@ require_once('functions.php');
 	<div style="padding:20px">
 		<h3>ENTER USER INFORMATION</h3>
 		<form name="userNew" method="post">
-		<input type="hidden" name="action" value="create_user">
+		<input type="hidden" name="frmAction" value="insert">
 
 
 	<?php

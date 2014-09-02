@@ -14,7 +14,7 @@ require_once 'functions.php';
             <section id="content">
 
 
-            
+
 <?php if (isset($_POST['frmAction']) && $_POST['frmAction'] == 'insert') : ?>
 
 <?php 

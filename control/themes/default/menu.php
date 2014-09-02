@@ -65,6 +65,7 @@ jQuery(document).ready(function() {
                         <ul>
                           <li><a href="/control/products/create"><span class="glyphicon glyphicon-chevron-right"></span> Add Product </a></li>
                           <li><a href="/control/products/view"><span class="glyphicon glyphicon-chevron-right"></span> View Products</a></li>
+                          <li><a href="/control/products/import"><span class="glyphicon glyphicon-chevron-right"></span> Import Products</a></li>
                           <li><a href="/control/categories/view"><span class="glyphicon glyphicon-chevron-right"></span> Categories</a></li>
                           <li><a href="/control/brands/view"><span class="glyphicon glyphicon-chevron-right"></span> Brands</a></li>
                         </ul>

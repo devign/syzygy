@@ -202,7 +202,7 @@ function createInputForm($table_name, $hide_fields = array()) {
 			$output = "<tr>";
 			$required = 0;
 
-			if ($col5 != 'PRI' && $col5 != 'MUL' && $col7 != 'auto_increment') {
+			if ($col5 != 'MUL' && $col7 != 'auto_increment') {
 				if ($col4 == 'NO') {
 					$required = 1;
 				}
@@ -321,7 +321,7 @@ function createInputForm($table_name, $hide_fields = array()) {
 	}
 
 	print "<tr><td style=\"text-align:center\" colspan=\"2\"><input type=\"submit\" class=\"button\" value=\"SAVE\">
-			<button type=\"button\" name=\"btnCancel\" class=\"button\" onClick=\"window.close();\">CANCEL</button></td></tr>";
+			<button type=\"button\" name=\"btnCancel\" class=\"button\" onClick=\"window.close();\">CANCEL</button></td></tr></table>";
 	$stmt->close();
 
 }
@@ -349,9 +349,9 @@ function format($type, $data) {
  * RETURNS: column names
  */
 function getColumns($table_name) {
-	global $db_connection;
-
-	$stmt = $db_connection->prepare("SHOW FULL COLUMNS FROM $table_name WHERE type != 'blob'");
+    global $db;
+    
+	$stmt = $db->prepare("SHOW FULL COLUMNS FROM $table_name WHERE type != 'blob'");
 
 	$stmt->execute();
 	$stmt->bind_result($col1, $col2, $col3, $col4, $col5, $col6, $col7, $col8, $col9);
@@ -374,7 +374,6 @@ function getColumns($table_name) {
  * SINGLE ARG IS A STRING VALUE CONTAINING THE VALUES FROM THE SET COLUMN TYPE
  */
 function getColumnSetValues() {
-	global $db_connection;
 
 	$num_args = func_num_args();
 
@@ -466,9 +465,9 @@ function getOrderNumber() {
  * SET ORDER NUMBER FOR NEW ORDER
 */
 function getNextOrderNumber() {
-	global $db_connection;
+	global $db;
 
-	$result = $db_connection->query("SELECT IFNULL(MAX(order_number),  0) AS onum FROM orders");
+	$result = $db->query("SELECT IFNULL(MAX(order_number),  0) AS onum FROM orders");
 	$order = $result->fetch_object();
 	$onum = $order->onum + 1;
 	$result->close();
@@ -484,9 +483,9 @@ function getNextOrderNumber() {
  * RETURNS: order subtotal, total shipping charge, sales tax, discount total, order grand total
 */
 function getOrderTotals($onum) {
-	global $db_connection;
+	global $db;
 
-	$result = $db_connection->query("SELECT order_ship_total, order_subtotal, order_sales_tax, order_discount
+	$result = $db->query("SELECT order_ship_total, order_subtotal, order_sales_tax, order_discount
 						FROM orders
 						WHERE order_number = " . $onum);
 
@@ -517,8 +516,8 @@ function getValue($key) {
 * RETURNS: nothing
 */
 function insertRecord($table_name, $key = NULL) {
-	global $lowercase_fields;
-	global $db_connection;
+	global $db;
+    global $lowercase_fields;
 
 	$cols = getColumns($table_name);
 
@@ -542,9 +541,9 @@ function insertRecord($table_name, $key = NULL) {
 			}
 
 			if ($col[0] == 'password') {
-			  $insert_query .= "SHA1(" . $_POST[$col[0]] . "),";
+			  $insert_query .= "SHA1('" . $_POST[$col[0]] . "'),";
 			} else {
-			  $insert_query .= "'" . $_POST[$col[0]] ."',";
+			  $insert_query .= "'" . $_POST[$col[0]] . "',";
 			}
 		}
 	}
@@ -554,13 +553,13 @@ function insertRecord($table_name, $key = NULL) {
 
 //	print "INSERTING INTO " . $table_name . " : " . $insert_query . "<br />";
 
-	$result = $db_connection->query("$insert_query");
+	$result = $db->query("$insert_query");
 
-	if ($db_connection->error) {
-	  echo $db_connection->error;
+	if ($db->error) {
+	  echo $db->error;
 	}
 
-	return $db_connection->insert_id ? $db_connection->insert_id : true;
+	return $db->insert_id ? $db->insert_id : true;
 
 }
 
@@ -570,7 +569,7 @@ function insertRecord($table_name, $key = NULL) {
  * RETURNS: nothing
 */
 function saveRecord($table_name, $key) {
-	global $db_connection;
+	global $db;
 
 	$cols = getColumns($table_name);
 
@@ -584,9 +583,9 @@ function saveRecord($table_name, $key) {
 
 	$update_query .= " WHERE $key[0] = $key[1]";
 
-	$db_connection->prepare($update_query)->execute();
+	$db->prepare($update_query)->execute();
 
-	$db_connection->commit();
+	$db->commit();
 
 }
 
@@ -595,12 +594,12 @@ function saveRecord($table_name, $key) {
  * RECALCULATE SUBTOTAL AND RETURN
  */
 function updateOrderItems($oid) {
-  global $db_connection, $db_connection2;
+  global $db;
 
-  $stmt = $db_connection->query("DELETE FROM order_line_items WHERE order_id = $oid");
+  $stmt = $db->query("DELETE FROM order_line_items WHERE order_id = $oid");
 
 // SAVE ORDER ITEMS
-  $stmt = $db_connection->prepare("INSERT INTO order_line_items(order_id, line_no, quantity, product_id, price,
+  $stmt = $db->prepare("INSERT INTO order_line_items(order_id, line_no, quantity, product_id, price,
 											ext_price, personalization, production_details)
 											VALUES(?, ?, ?, ?, ?, ?, ?, ?)");
   $stmt->bind_param("iiisddss", $oid, $lineno, $qty, $product_id, $price, $ext_price, $personalization, $production_details);
@@ -610,19 +609,19 @@ function updateOrderItems($oid) {
     if (preg_match('/^qty_/', $k) && $v > 0) {
 
 	list($gar, $lineno)     = explode('_', $k);
-	$product_id 		= $db_connection2->escape_string($_POST["product_id_$lineno"]);
+	$product_id 		= $db2->escape_string($_POST["product_id_$lineno"]);
 	$qty 				= $v;
-	$price 			= $db_connection2->escape_string(sprintf("%2f", $_POST["price_$lineno"]));
-	$ext_price 			= $db_connection2->escape_string(sprintf("%2f", $_POST["ext_price_$lineno"]));
+	$price 			    = $db2->escape_string(sprintf("%2f", $_POST["price_$lineno"]));
+	$ext_price 			= $db2>escape_string(sprintf("%2f", $_POST["ext_price_$lineno"]));
 
 	$subtotal += $ext_price;
 
 	if ($_POST["personalization_$lineno"] != 'PERSONALIZATION') {
-	  $personalization 	= $db_connection2->escape_string($_POST["personalization_$lineno"]);
+	  $personalization 	= $db2->escape_string($_POST["personalization_$lineno"]);
 	}
 
 	if ($_POST["production_details_$lineno"] != 'PRODUCTION OPTIONS') {
-	  $production_details   = $db_connection2->escape_string($_POST["production_details_$lineno"]);
+	  $production_details   = $db2->escape_string($_POST["production_details_$lineno"]);
 	}
 
 	$stmt->execute();
@@ -638,11 +637,11 @@ function updateOrderItems($oid) {
 
 
 function isAdmin() {
-	global $db_connection;
+	global $db;
 
 	$associate_id = $_COOKIE['HWO_ASSOCID'];
 
-	$result = $db_connection->query("SELECT admin FROM associates WHERE associate_id = " . $associate_id);
+	$result = $db->query("SELECT admin FROM associates WHERE associate_id = " . $associate_id);
 	$data = $result->fetch_object();
 
 	return $data->admin;
