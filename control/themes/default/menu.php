@@ -22,7 +22,7 @@ jQuery(document).ready(function() {
                   <div class="panel panel-default">
                     <div class="panel-heading">
                       <h4 class="panel-title">
-                        <a  href="/control/dashboard">
+                        <a href="/control/dashboard">
                           <span class="glyphicon glyphicon-dashboard"></span> Dashboard</a>
                         </a>
                       </h4>
@@ -110,7 +110,7 @@ jQuery(document).ready(function() {
                   <div class="panel panel-default">
                     <div class="panel-heading">
                       <h4 class="panel-title">
-                        <a data-toggle="collapse" data-parent="#accordion" href="/control/vendors/view">
+                        <a href="/control/vendors/view">
                           <span class="glyphicon glyphicon-list-alt"></span> Vendors
                         </a>
                       </h4>
@@ -127,7 +127,7 @@ jQuery(document).ready(function() {
                   <div class="panel panel-default">
                     <div class="panel-heading">
                       <h4 class="panel-title">
-                        <a data-toggle="collapse" data-parent="#accordion" href="/control/reports/view">
+                        <a href="/control/reports/view">
                           <span class="glyphicon glyphicon-stats"></span> Reports
                         </a>
                       </h4>
@@ -146,7 +146,7 @@ jQuery(document).ready(function() {
                   <div class="panel panel-default">
                     <div class="panel-heading">
                       <h4 class="panel-title">
-                        <a data-toggle="collapse" data-parent="#accordion" href="/control/pages/view">
+                        <a href="/control/pages/view">
                           <span class="glyphicon glyphicon-file"></span> Pages
                         </a>
                       </h4>
@@ -165,7 +165,7 @@ jQuery(document).ready(function() {
                   <div class="panel panel-default">
                     <div class="panel-heading">
                       <h4 class="panel-title">
-                        <a data-toggle="collapse" data-parent="#accordion" href="/control/media/view">
+                        <a href="/control/media/view">
                           <span class="glyphicon glyphicon-picture"></span> Media
                         </a>
                       </h4>
@@ -184,7 +184,7 @@ jQuery(document).ready(function() {
                   <div class="panel panel-default">
                     <div class="panel-heading">
                       <h4 class="panel-title">
-                        <a data-toggle="collapse" data-parent="#accordion" href="/control/mynotes/view">
+                        <a href="/control/mynotes/view">
                           <span class="glyphicon glyphicon-pushpin"></span> My Notes
                         </a>
                       </h4>
@@ -204,7 +204,7 @@ jQuery(document).ready(function() {
                   <div class="panel panel-default">
                     <div class="panel-heading">
                       <h4 class="panel-title">
-                        <a data-toggle="collapse" data-parent="#accordion" href="/control/settings/view">
+                        <a href="/control/settings/view">
                           <span class="glyphicon glyphicon-cog"></span> Settings
                         </a>
                       </h4>
