@@ -1,70 +1,36 @@
 <?php
+require_once('init.php');
+$username = $_POST['username'];
+$password = $_POST['password'];
 
+if (empty($username) || empty($password)) {
+    $errors[] = 'Please enter a username and password';
+    include('login_form.php');
 
+} elseif (user_exists($username) === false) {
+    $errors[] = 'The user does not exist';
+    include('login_form.php');
+    
+} else {
 
-if (isset($_POST['userid'])) {
-	$userid = $_POST['userid'];
-	$password = $_POST['password'];
-
-
-	$stmt = $db->query("SELECT a.associate_id, a.username
-									FROM associates AS a
-									LEFT JOIN stores_associates AS sa USING(associate_id)
-									WHERE sa.store_id = " . $_POST['store_id'] . "
-									AND username = '$userid'
+	$stmt = $db->query("SELECT u.user_id, u.username
+									FROM users AS u
+									LEFT JOIN stores_users AS su USING(user_id)
+									WHERE su.store_id = " . $_POST['store_id'] . "
+									AND username = '$username'
 									AND password = SHA1('$password')");
-	$result = $stmt->fetch_object();
-
-	if ($result->associate_id) {
-		setcookie('SYZYGY_STOREID', $_POST['store_id']);
-		setcookie('SYZYGY_ASSOCID', $result->associate_id);
-		setcookie('SYZYGY_USER', $result->username);
-		session_start();
-		header("location: dashboard.php");
+	
+    if ($result = $stmt->fetch_object()) {
+       	setcookie('SYZYGY_STOREID', $_POST['store_id']);
+		setcookie('SYZYGY_USERID', $result->user_id);
+		setcookie('SYZYGY_USER', $result->username);     
+		$_SESSION['user_id'] = $result->user_id;
+		header("location: /control/dashboard");
 	} else {
-		$error_msg = 'Login failed...please try again...';
+		$errors[] = 'Login failed...please try again...';
 	}
 
 }
 
-
-
-
 ?>
 
-<body>
-<div id="pageContainer">
-	<div id="loginContainer">
-		<div id="loginBox">
-			<div id="logo"><img src="<?= $config['image_directory'] . $config['site_logo']?>" /></div>
-			<?php if (isset($error_msg)) :?>
-				<div class="errorMessage">
-	 				<?= $error_msg?>
-	 			</div>
-	 		<?php else :?>
-				<div class="instruct"><?= $config['login_instructions']?></div>
-	 		<?php endif?>
-	 		<div id="loginArea">
-				<form name="formLogin" method="post" action="login.php">
-				<div class="inputLabel">USERNAME:</div>
-				<input autocomplete="off" type="text" name="userid" value="" size="25">
-				<br/>
-				<br/>
-				<div class="inputLabel">PASSWORD:</div>
-				<input autocomplete="off" type="password" name="password" value="" size="25">
-				<br/><br/>
-				<a href="#" onClick="formLogin.submit();"><img src="<?= $config['image_directory']?>login-button.jpg"/></a>
-				</form>
-			</div>
-		</div>
-	</div>
-
-</div>
-
-
-<?php
-	$result->free();
-	$stmt->close();
-
-	dbDisconnect($db_connection);
-?>

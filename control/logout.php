@@ -1,10 +1,11 @@
 <?php
-require_once 'init.php'; 
 
-setcookie('HWO_STOREID', '', time() - 3600);
-setcookie('HWO_ASSOCID', '', time() - 3600);
+session_destroy();
 
-header("Location: login.php");
+setcookie('SYZYGY_STOREID', '', time() - 3600);
+setcookie('SYZYGY_USERID', '', time() - 3600);
+
+header("Location: login_form.php");
 
 ?>
 

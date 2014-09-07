@@ -563,6 +563,12 @@ function insertRecord($table_name, $key = NULL) {
 
 }
 
+function sanitize($data) {
+    global $db;
+    
+    return $db->real_escape_string($data);
+}
+
 /*
  * SAVE RECORD TO DATABASE
  * RECEIVES: table to save to, primary key of table
@@ -661,5 +667,22 @@ function errorPage($err_msg, $link, $link_text) {
 
 }
 
+function user_exists($username) {
+    global $db;
+    
+    $username = sanitize($username);
+        
+    $result = $db->query("SELECT COUNT(`user_id`) AS users FROM `users` WHERE `username` = '$username'");
+    
+    $count = $result->fetch_object();
+    
+    return ($count->users >= 1) ? true : false;
+    
+    
+}
+
+function user_logged_in() {
+    return (isset($_SESSION['user_id'])) ? true : false;
+}
 
 ?>

@@ -89,7 +89,8 @@
                       <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Activity Log</a></li>
                       <li role="presentation" class="divider"></li>
                       <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Documentation</a></li>
-                      <li role="presentation" class="divider"></li>
+                      <li role="presentation" class="divider"></li>                   
+                      <li role="presentation"><a role="menuitem" tabindex="-1" href="/control/logout.php"> Log Out</a></li>                      
                       <li role="presentation"><a role="menuitem" tabindex="-1" href="#"><span class="glyphicon glyphicon-user"></span> Change User</a></li>
                     </ul>
                   </div><!-- /.dropdown -->
@@ -106,6 +107,7 @@
                       <li role="presentation" class="divider"></li>
                       <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Documentation</a></li>
                       <li role="presentation" class="divider"></li>
+                      <li role="presentation"><a role="menuitem" tabindex="-1" href="/control/logout"> Log Out</a></li>
                       <li role="presentation"><a role="menuitem" tabindex="-1" href="#"><span class="glyphicon glyphicon-user"></span> Change User</a></li>
                     </ul>
                   </div><!-- /.dropdown -->
