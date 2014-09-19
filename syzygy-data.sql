@@ -16,35 +16,136 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `associates`
+-- Table structure for table `cart`
 --
 
-DROP TABLE IF EXISTS `associates`;
+DROP TABLE IF EXISTS `cart`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `associates` (
-  `associate_id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'FK_STORES',
-  `first_name` varchar(45) NOT NULL,
-  `last_name` varchar(45) NOT NULL,
-  `phone` varchar(45) DEFAULT NULL,
-  `phone_extension` varchar(45) DEFAULT NULL,
-  `fax` varchar(45) DEFAULT NULL,
-  `email` varchar(45) DEFAULT NULL,
-  `username` varchar(45) NOT NULL,
-  `password` varchar(45) NOT NULL COMMENT 'SHA1',
-  `admin` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT 'BOOLEAN',
-  `active` tinyint(3) unsigned NOT NULL DEFAULT '1' COMMENT 'YES/NO',
-  PRIMARY KEY (`associate_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+CREATE TABLE `cart` (
+  `cart_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `cart_date` timestamp NULL DEFAULT NULL,
+  `session_id` varchar(80) DEFAULT NULL,
+  `cart_saved` int(11) DEFAULT NULL,
+  PRIMARY KEY (`cart_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `associates`
+-- Dumping data for table `cart`
 --
 
-LOCK TABLES `associates` WRITE;
-/*!40000 ALTER TABLE `associates` DISABLE KEYS */;
-/*!40000 ALTER TABLE `associates` ENABLE KEYS */;
+LOCK TABLES `cart` WRITE;
+/*!40000 ALTER TABLE `cart` DISABLE KEYS */;
+/*!40000 ALTER TABLE `cart` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `cart_line_items`
+--
+
+DROP TABLE IF EXISTS `cart_line_items`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `cart_line_items` (
+  `cart_id` int(10) unsigned NOT NULL,
+  `line_no` tinyint(3) unsigned NOT NULL,
+  `sku` varchar(25) DEFAULT NULL,
+  `quantity` smallint(5) unsigned DEFAULT NULL,
+  `personalization` text,
+  `customizations` text,
+  `cart_cart_id` int(10) unsigned NOT NULL,
+  `products_sku` varchar(25) NOT NULL,
+  PRIMARY KEY (`cart_id`,`line_no`,`cart_cart_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `cart_line_items`
+--
+
+LOCK TABLES `cart_line_items` WRITE;
+/*!40000 ALTER TABLE `cart_line_items` DISABLE KEYS */;
+/*!40000 ALTER TABLE `cart_line_items` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `cms_menu`
+--
+
+DROP TABLE IF EXISTS `cms_menu`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `cms_menu` (
+  `menu_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `menu_name` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`menu_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `cms_menu`
+--
+
+LOCK TABLES `cms_menu` WRITE;
+/*!40000 ALTER TABLE `cms_menu` DISABLE KEYS */;
+/*!40000 ALTER TABLE `cms_menu` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `cms_menu_items`
+--
+
+DROP TABLE IF EXISTS `cms_menu_items`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `cms_menu_items` (
+  `menu_id` int(10) unsigned NOT NULL,
+  `menu_item_num` int(10) unsigned NOT NULL,
+  `menu_item_name` varchar(45) DEFAULT NULL,
+  `sort_order` tinyint(4) DEFAULT NULL,
+  `url` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`menu_id`,`menu_item_num`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `cms_menu_items`
+--
+
+LOCK TABLES `cms_menu_items` WRITE;
+/*!40000 ALTER TABLE `cms_menu_items` DISABLE KEYS */;
+/*!40000 ALTER TABLE `cms_menu_items` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `cms_pages`
+--
+
+DROP TABLE IF EXISTS `cms_pages`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `cms_pages` (
+  `page_id` int(10) unsigned NOT NULL,
+  `page_name` varchar(45) DEFAULT NULL,
+  `page_title` varchar(70) DEFAULT NULL,
+  `page_description` varchar(125) DEFAULT NULL,
+  `page_keywords` varchar(125) DEFAULT NULL,
+  `page_content` text,
+  `root_page` tinyint(4) NOT NULL DEFAULT '1',
+  `parent_page_id` tinyint(4) NOT NULL DEFAULT '0',
+  `menu_id` tinyint(4) DEFAULT NULL,
+  PRIMARY KEY (`page_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `cms_pages`
+--
+
+LOCK TABLES `cms_pages` WRITE;
+/*!40000 ALTER TABLE `cms_pages` DISABLE KEYS */;
+/*!40000 ALTER TABLE `cms_pages` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -342,6 +443,29 @@ LOCK TABLES `orders` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `payment_methods`
+--
+
+DROP TABLE IF EXISTS `payment_methods`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `payment_methods` (
+  `payment_id` tinyint(3) unsigned NOT NULL AUTO_INCREMENT,
+  `payment_name` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`payment_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `payment_methods`
+--
+
+LOCK TABLES `payment_methods` WRITE;
+/*!40000 ALTER TABLE `payment_methods` DISABLE KEYS */;
+/*!40000 ALTER TABLE `payment_methods` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `po_line_items`
 --
 
@@ -395,6 +519,32 @@ LOCK TABLES `postal_codes` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `product_brands`
+--
+
+DROP TABLE IF EXISTS `product_brands`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `product_brands` (
+  `brand_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `brand_name` varchar(45) DEFAULT NULL,
+  `manufacturer` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`brand_id`),
+  UNIQUE KEY `brand_id_UNIQUE` (`brand_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `product_brands`
+--
+
+LOCK TABLES `product_brands` WRITE;
+/*!40000 ALTER TABLE `product_brands` DISABLE KEYS */;
+INSERT INTO `product_brands` VALUES (1,'UPTOWN FLORAL',NULL),(2,'FANNY FARMER',NULL);
+/*!40000 ALTER TABLE `product_brands` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `product_categories`
 --
 
@@ -402,15 +552,15 @@ DROP TABLE IF EXISTS `product_categories`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `product_categories` (
-  `category_id` smallint(5) unsigned NOT NULL,
+  `category_id` smallint(5) unsigned NOT NULL AUTO_INCREMENT,
   `root_category` tinyint(3) unsigned NOT NULL DEFAULT '0',
   `parent_category_id` smallint(5) unsigned NOT NULL DEFAULT '0',
   `category_name` varchar(50) DEFAULT NULL,
   `category_descp` text,
   `category_image` varchar(50) DEFAULT NULL,
-  `category_sort_id` smallint(6) NOT NULL DEFAULT '0',
+  `category_sort_order` smallint(6) NOT NULL DEFAULT '0',
   PRIMARY KEY (`category_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -419,6 +569,7 @@ CREATE TABLE `product_categories` (
 
 LOCK TABLES `product_categories` WRITE;
 /*!40000 ALTER TABLE `product_categories` DISABLE KEYS */;
+INSERT INTO `product_categories` VALUES (1,1,0,'Flowers',NULL,NULL,0),(2,1,0,'Plants',NULL,NULL,0),(3,1,0,'Occasions',NULL,NULL,0),(4,1,0,'Holiday & Seasonal',NULL,NULL,0),(5,1,0,'Gifts',NULL,NULL,0),(6,0,3,'Sympathy',NULL,NULL,0),(7,0,3,'Birthday',NULL,NULL,0),(8,1,0,'Designer\'s Choice',NULL,NULL,0);
 /*!40000 ALTER TABLE `product_categories` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -481,13 +632,13 @@ DROP TABLE IF EXISTS `product_media`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `product_media` (
   `sku` varchar(25) NOT NULL,
-  `product_media_type` tinyint(3) unsigned NOT NULL,
   `product_media_num` tinyint(3) unsigned NOT NULL,
+  `product_media_type` tinyint(3) unsigned NOT NULL,
   `product_media_name` varchar(45) DEFAULT NULL,
   `product_media_location` varchar(75) DEFAULT NULL,
   `product_media_alt` varchar(45) DEFAULT NULL,
   `product_media_descp` text,
-  PRIMARY KEY (`sku`,`product_media_type`,`product_media_num`)
+  PRIMARY KEY (`sku`,`product_media_num`,`product_media_type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -660,7 +811,7 @@ DROP TABLE IF EXISTS `product_to_vendor`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `product_to_vendor` (
   `sku` varchar(25) NOT NULL,
-  `vend_id` int(10) unsigned NOT NULL,
+  `vend_id` smallint(5) unsigned NOT NULL,
   PRIMARY KEY (`sku`,`vend_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -685,6 +836,7 @@ CREATE TABLE `product_variations` (
   `variation_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `variation_name` varchar(40) NOT NULL,
   `variation_values` text,
+  `variation_group` tinyint(4) DEFAULT NULL,
   PRIMARY KEY (`variation_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -707,14 +859,15 @@ DROP TABLE IF EXISTS `products`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `products` (
   `sku` varchar(25) NOT NULL,
+  `brand_id` int(10) unsigned DEFAULT NULL,
   `name` varchar(255) DEFAULT NULL,
-  `description` varchar(255) DEFAULT NULL,
+  `description` text,
   `price` decimal(5,2) unsigned DEFAULT NULL,
   `weight` decimal(4,2) unsigned DEFAULT NULL,
-  `status` tinyint(4) DEFAULT NULL,
-  `vendor_id` int(10) unsigned NOT NULL,
-  PRIMARY KEY (`sku`),
-  UNIQUE KEY `sku_UNIQUE` (`sku`)
+  `status` tinyint(2) DEFAULT '1',
+  `product_type` set('SIMPLE','VARIABLE','VIRTUAL','CUSTOMIZABLE') NOT NULL DEFAULT 'SIMPLE',
+  `short_description` text,
+  PRIMARY KEY (`sku`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -724,7 +877,7 @@ CREATE TABLE `products` (
 
 LOCK TABLES `products` WRITE;
 /*!40000 ALTER TABLE `products` DISABLE KEYS */;
-INSERT INTO `products` VALUES ('UP-0001','Rose Trio','Three beautiful hybrid roses, arranged in a clear bud vase, with lush greenery and filler flowers of the day.  Rose color and varieties vary depending on market availability.','17.95','3.00',1,100),('UP-0002','1/2 Dozen Roses','Six hybrid roses, arranged in a vase, with lush greenery and filler flowers of the day.  Rose color and varieties vary depending on market availability.  ','37.50','2.50',1,100);
+INSERT INTO `products` VALUES ('UP-0001',NULL,'Rose Trio','Three beautiful hybrid roses, arranged in a clear bud vase, with lush greenery and filler flowers of the day.  Rose color and varieties vary depending on market availability.','17.95','3.00',1,'SIMPLE',NULL),('UP-0002',NULL,'1/2 Dozen Roses','Six hybrid roses, arranged in a vase, with lush greenery and filler flowers of the day.  Rose color and varieties vary depending on market availability.  ','37.50','2.50',1,'SIMPLE',NULL),('UP-0003',NULL,'Basket full of Posies','A mixed assortment of long-lasting flowers in a handled basket.  Perfect for everyday occasions.  Flower assortment and basket style vary according to availability.  ','40.00','2.00',NULL,'SIMPLE',NULL),('UP-0004',NULL,'Wildflower Vase','A natural, free style vase bouquet, reminiscent of the wild prairie.  Flower assortment and vase style vary according to availability.  ','55.00','3.00',NULL,'SIMPLE',NULL);
 /*!40000 ALTER TABLE `products` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -737,13 +890,12 @@ DROP TABLE IF EXISTS `purchase_orders`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `purchase_orders` (
   `purchase_order_id` int(10) unsigned NOT NULL,
-  `vendor_id` int(10) unsigned DEFAULT NULL,
+  `vendor_id` smallint(5) unsigned NOT NULL,
   `trans_id` int(10) unsigned DEFAULT NULL,
   `order_id` int(10) unsigned DEFAULT NULL,
   `po_date` date DEFAULT NULL,
   `po_status` set('NEW','SUBMITTED','BACKORDERED','SHIPPED','PARTIAL-SHIPPED','CANCELED') DEFAULT NULL,
-  PRIMARY KEY (`purchase_order_id`),
-  UNIQUE KEY `purchase_order_id_UNIQUE` (`purchase_order_id`)
+  PRIMARY KEY (`purchase_order_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -786,10 +938,11 @@ DROP TABLE IF EXISTS `shipment_tracking`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `shipment_tracking` (
-  `shipment_tracking_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `order_id` int(10) unsigned NOT NULL,
+  `tracking_id` tinyint(3) unsigned NOT NULL,
   `carrier_id` int(10) unsigned DEFAULT NULL,
   `tracking_number` varchar(50) DEFAULT NULL,
-  PRIMARY KEY (`shipment_tracking_id`)
+  PRIMARY KEY (`order_id`,`tracking_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -800,6 +953,53 @@ CREATE TABLE `shipment_tracking` (
 LOCK TABLES `shipment_tracking` WRITE;
 /*!40000 ALTER TABLE `shipment_tracking` DISABLE KEYS */;
 /*!40000 ALTER TABLE `shipment_tracking` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `shipping_carriers`
+--
+
+DROP TABLE IF EXISTS `shipping_carriers`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `shipping_carriers` (
+  `carrier_id` tinyint(3) unsigned NOT NULL AUTO_INCREMENT,
+  `carrier_name` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`carrier_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `shipping_carriers`
+--
+
+LOCK TABLES `shipping_carriers` WRITE;
+/*!40000 ALTER TABLE `shipping_carriers` DISABLE KEYS */;
+/*!40000 ALTER TABLE `shipping_carriers` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `shipping_methods`
+--
+
+DROP TABLE IF EXISTS `shipping_methods`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `shipping_methods` (
+  `method_id` tinyint(3) unsigned NOT NULL AUTO_INCREMENT,
+  `carrier_id` tinyint(3) unsigned NOT NULL,
+  `method_name` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`method_id`,`carrier_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `shipping_methods`
+--
+
+LOCK TABLES `shipping_methods` WRITE;
+/*!40000 ALTER TABLE `shipping_methods` DISABLE KEYS */;
+/*!40000 ALTER TABLE `shipping_methods` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -848,8 +1048,9 @@ CREATE TABLE `stores` (
   `store_email` varchar(45) DEFAULT NULL,
   `sales_tax_rate` decimal(4,4) DEFAULT NULL,
   `logo` varchar(45) NOT NULL,
+  `domain` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`store_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -858,30 +1059,66 @@ CREATE TABLE `stores` (
 
 LOCK TABLES `stores` WRITE;
 /*!40000 ALTER TABLE `stores` DISABLE KEYS */;
+INSERT INTO `stores` VALUES (1,'Sweet Fantasee','',NULL,'','','',NULL,NULL,NULL,'info@sweetfantasee.com',NULL,'','sweetfantasee.com'),(2,'Aroma Cents','',NULL,'','','',NULL,NULL,NULL,NULL,NULL,'','aromacents.com'),(3,'My Store','',NULL,'','','',NULL,NULL,NULL,NULL,NULL,'','mystorefront.com'),(4,'Saddles n Spurs','',NULL,'','','',NULL,NULL,NULL,NULL,NULL,'','saddlesnspurs.com');
 /*!40000 ALTER TABLE `stores` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `stores_associates`
+-- Table structure for table `stores_users`
 --
 
-DROP TABLE IF EXISTS `stores_associates`;
+DROP TABLE IF EXISTS `stores_users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `stores_associates` (
+CREATE TABLE `stores_users` (
   `store_id` int(11) unsigned NOT NULL,
-  `associate_id` int(11) unsigned NOT NULL,
-  PRIMARY KEY (`store_id`,`associate_id`)
+  `user_id` int(11) unsigned NOT NULL,
+  PRIMARY KEY (`store_id`,`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `stores_associates`
+-- Dumping data for table `stores_users`
 --
 
-LOCK TABLES `stores_associates` WRITE;
-/*!40000 ALTER TABLE `stores_associates` DISABLE KEYS */;
-/*!40000 ALTER TABLE `stores_associates` ENABLE KEYS */;
+LOCK TABLES `stores_users` WRITE;
+/*!40000 ALTER TABLE `stores_users` DISABLE KEYS */;
+INSERT INTO `stores_users` VALUES (0,1),(0,2);
+/*!40000 ALTER TABLE `stores_users` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `users`
+--
+
+DROP TABLE IF EXISTS `users`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `users` (
+  `user_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `first_name` varchar(45) NOT NULL,
+  `last_name` varchar(45) NOT NULL,
+  `phone` varchar(45) DEFAULT NULL,
+  `phone_extension` varchar(45) DEFAULT NULL,
+  `fax` varchar(45) DEFAULT NULL,
+  `email` varchar(45) DEFAULT NULL,
+  `username` varchar(45) NOT NULL,
+  `password` text NOT NULL COMMENT 'SHA1',
+  `admin` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT 'YES/NO',
+  `active` tinyint(3) unsigned NOT NULL DEFAULT '1' COMMENT 'YES/NO',
+  `avatar` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `users`
+--
+
+LOCK TABLES `users` WRITE;
+/*!40000 ALTER TABLE `users` DISABLE KEYS */;
+INSERT INTO `users` VALUES (1,'Jon','Raugutt','7013882491','100',NULL,'jon@raugutt.com','oldgregg','005439513f9e80d4a03abe91de0c3965d4882466',1,1,'user-portrait-jon-raugutt.png'),(2,'Tyson','Irby',NULL,NULL,NULL,NULL,'tyson','c7504353d6cbda55a8c284193405530580438aee',1,1,'user-portrait-tyson-irby.png');
+/*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -893,7 +1130,7 @@ DROP TABLE IF EXISTS `vendor_contacts`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `vendor_contacts` (
   `vendor_contact_id` int(11) NOT NULL,
-  `vendor_id` smallint(6) NOT NULL,
+  `vendor_id` smallint(5) unsigned NOT NULL,
   `name` varchar(45) NOT NULL,
   `email` varchar(45) DEFAULT NULL,
   `phone` varchar(45) NOT NULL,
@@ -901,8 +1138,7 @@ CREATE TABLE `vendor_contacts` (
   `cellphone` varchar(45) DEFAULT NULL,
   `fax` varchar(45) DEFAULT NULL,
   `contact_type` set('PURCHASING','SALES','ACCOUNTING','GENERAL') NOT NULL DEFAULT 'GENERAL',
-  `vendors_vendor_id` int(10) unsigned NOT NULL,
-  PRIMARY KEY (`vendor_contact_id`,`vendors_vendor_id`)
+  PRIMARY KEY (`vendor_contact_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -940,7 +1176,7 @@ CREATE TABLE `vendors` (
   `web_user` varchar(45) DEFAULT NULL,
   `web_password` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`vendor_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -949,6 +1185,7 @@ CREATE TABLE `vendors` (
 
 LOCK TABLES `vendors` WRITE;
 /*!40000 ALTER TABLE `vendors` DISABLE KEYS */;
+INSERT INTO `vendors` VALUES (1,'231346595','FANNY FARMER','1223 FIRST ST',NULL,NULL,'JONESWTOWN','KY','23162','','87754623316',NULL,NULL,'www.fannyfarmer.com','uptown',NULL),(2,'13245648','EARLS WHOLESALE VASES','2465 EASY STREET',NULL,NULL,'JIMTOWN','IN','41562','','8884251656',NULL,'earlsvases@gmail.com','www.wholesalevases.com','upflorist','12345');
 /*!40000 ALTER TABLE `vendors` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -961,4 +1198,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-08-30 13:08:42
+-- Dump completed on 2014-09-19 12:14:11
