@@ -23,9 +23,13 @@ $rootCatStmt = $db->query("SELECT category_id, category_name FROM product_catego
 
 <?php 
 
-	$product_id = insertRecord('products');
+    if ($_POST['root_category'] === 1) {
+        $_POST['parent_category_id'] = 0;
+    }
 	
-	$_POST['product_id'] = $product_id;
+    $category_id = insertRecord('product_categories');
+	
+	$_POST['category_id'] = $category_id;
 	
 	
 ?>
@@ -38,21 +42,20 @@ $rootCatStmt = $db->query("SELECT category_id, category_name FROM product_catego
 <?php else : ?>
 
 <div>
-	<div style="padding:20px">
-		<h3>ENTER CATEGORY INFORMATION</h3>
+	<div style="padding:10px">
 		<form name="categoryNew" method="post" enctype="multipart/form-data">
 		<input type="hidden" name="save" value="y">
         
-        <table>
-        <tr><td>Root Category:</td>
+        <table class="inputFormTable">
+        <tr><td id="root_category">Root Category:</td>
         <td>
-        <select name="root_category">
+        <select  name="root_category" onChange="if (this.value==1) $('#parent_category_id').hide();if (this.value==0) $('#parent_category_id').show();">
         <option value="0">No</option>
         <option value="1">Yes</option>
         </select>
         </td>
         </tr>
-        <tr><td>Parent Category:</td>
+        <tr id="parent_category_id"><td>Parent Category:</td>
         <td>
         <select name="parent_category_id">
 <?php while ($result = $rootCatStmt->fetch_object()): ?>
@@ -78,7 +81,7 @@ $rootCatStmt = $db->query("SELECT category_id, category_name FROM product_catego
         </td>
         </tr>
         </table>
-		
+		<input type="submit" value="Create Category">
 		</form>
 	</div>
 

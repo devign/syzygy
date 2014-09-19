@@ -7,12 +7,27 @@ require_once 'functions.php';
              
             <section id="page-header">
 
-              <h1><span class="glyphicon glyphicon-home"></span> Products :: Add New</h1>
+              <div id="searchCriteria" style="float:right;">
+              <form name="searchForm" action="customers.php" method="post">
+              <input type="hidden" name="action" value="search">
+              <span class="inputLabel">SEARCH: <input type="text" name="search_value" value="" size="20">
 
-            </section>
+              <button class="button" onClick="searchForm.submit();">GO!</button>
+
+              </form>
+              </div>
+              <h1><span class="glyphicon glyphicon-shopping-cart"></span> Products :: Add New</h1>
+              </section>
 
             <section id="content">
-
+                <div id="actionNavContainer">
+                    <ul id="actionNav">
+                    <li><a href="/control/products/create/simple">Simple</a></li>
+                    <li><a href="/control/products/create/variable">Variable</a></li>
+                    <li><a href="/control/products/create/customizable">Customizable</a></li>
+                    <li><a href="/control/products/create/virtual">Virtual</a></li>
+                    </ul>
+                </div>
 
             
 <?php if (isset($_POST['frmAction']) && $_POST['frmAction'] == 'insert') : ?>
@@ -39,19 +54,7 @@ require_once 'functions.php';
 
 <div>
 	<div style="padding:20px">
-		<h3>ENTER PRODUCT INFORMATION</h3>
-		<form name="productNew" method="post">
-		<input type="hidden" name="frmAction" value="insert">
 
-		
-	<?php 
-	
-		$hide_fields = array('status');
-		createInputForm('products', $hide_fields);
-	
-	?>
-		
-		</form>
 	</div>
 
 </div>

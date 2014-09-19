@@ -2,16 +2,26 @@
 /**
 * GET STORES  
 */
+$allStores = array();
+
+$result = $db->query("SELECT domain FROM stores ORDER BY domain");
+
+while ($tmpStore = $result->fetch_object()) {
+    array_push($allStores, $tmpStore->domain);
+}
 
 /**
 * GET SALES DATA
 */
 
+
 /** GET LOGGED IN USER DATA
 * 
 */
-
-
+if (array_key_exists('SYZYGY_USERID', $_COOKIE)) {
+$result = $db->query("SELECT first_name, last_name, avatar FROM users WHERE user_id = $_COOKIE[SYZYGY_USERID]");
+$user = $result->fetch_object();
+}
 ?>
 
 <!DOCTYPE html>
@@ -32,7 +42,7 @@
     
     <!-- Bootstrap -->
     <link href="/control/themes/<?= $config['theme'] . DSEP . $config['stylesheet_directory'] ?>styles.css" rel="stylesheet">
-
+    <link href="/control/themes/<?= $config['theme'] . DSEP . $config['stylesheet_directory'] ?>custom.css" rel="stylesheet">
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -58,14 +68,15 @@
           <div class="col-md-3 domain-control hidden-xs hidden-sm">
 
             <div class="dropdown">
-              <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">
-                mystorefront.com
+                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">
+                <?= $allStores[0] ?>
                 <span class="caret"></span>
               </button>
+
               <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-                <li role="presentation"><a role="menuitem" tabindex="-1" href="#">sweetfantasee.com</a></li>
-                <li role="presentation"><a role="menuitem" tabindex="-1" href="#">aromacents.com</a></li>
-                <li role="presentation"><a role="menuitem" tabindex="-1" href="#">edirecthardware.com</a></li>
+            <?php foreach ($allStores as $storeName) : ?>              
+                <li role="presentation"><a role="menuitem" tabindex="-1" href="#"><?= $storeName?></a></li>
+            <?php endforeach; ?>
                 <li role="presentation" class="divider"></li>
                 <li role="presentation"><a role="menuitem" tabindex="-1" href="#"><span class="glyphicon glyphicon-plus-sign"></span> Add Site</a></li>
               </ul>
@@ -76,11 +87,11 @@
           <div class="col-xs-10 col-md-3 user-control pull-right">
 
             <ul>
-              <li><img title="Jon Raugutt" src="images/users/user-portrait-jon-raugutt.png" alt="Jon Raugutt" /></li>
+              <li><img title="<?= $user->first_name; $user->last_name?>" src="images/users/<?=$user->avatar?>" alt="<?=$user->first_name; $user->last_name?>" /></li>
               <li>
                   <div class="dropdown hidden-xs hidden-sm hidden-md">
                     <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown">
-                      Jon
+                      <?= $user->first_name ?>
                       <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu2">
@@ -97,7 +108,7 @@
 
                   <div class="dropdown hidden-lg">
                     <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu3" data-toggle="dropdown">
-                      <i class="fa fa-bars"></i> Jon
+                      <i class="fa fa-bars"></i> <?= $user->first_name ?>
                       <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu3">

@@ -10,27 +10,34 @@ $users_stmt = $db->query($users_query);
              
             <section id="page-header">
 
-              <h1><span class="glyphicon glyphicon-home"></span> Product Categories :: Create New</h1>
+              <div id="searchCriteria" style="float:right;">
+              <form name="searchForm" action="customers.php" method="post">
+              <input type="hidden" name="action" value="search">
+              <span class="inputLabel">SEARCH: <input type="text" name="search_value" value="" size="20">
 
-            </section>
+              <button class="button" onClick="searchForm.submit();">GO!</button>
+
+              </form>
+              </div>
+              <h1><span class="glyphicon glyphicon-shopping-cart"></span> Settings :: Users</h1>
+              </section>
 
             <section id="content">
-	<h1 class="admin">USER MANAGEMENT</h1>
+                <div id="actionNavContainer">
+                    <ul id="actionNav">
+                    <li><a href="/control/users/create">Add User</a></li>
 
-	<div id="mainContainerLeft">
-		<div style="padding-top:30px;padding-left:30px">
-		<a class="button" href="/control/users/create">Add User</a>
-		</div>
-	</div>
+                    </ul>
+                </div>
 
-	<div id="mainContainerRight">
-	<div class="rightScroll">
+
+	<div style="padding-top:20px">
 	<table border="0" id="usersTable" cellpadding="0" cellspacing="0">
 	<tr><th></th><th>First Name</th><th>Last Name</th><th>Username</th></tr>
 	<?php while ($result = $users_stmt->fetch_object()) : ?>
 		<tr>
 		<td valign="center"><a onMouseOver="$(this).parents('tr').css('background-color', '#F2B7B2')"
-		          onMouseOut="$(this).parents('tr').css('background-color', '#F7FAEF')" class="miniButton" href="/control/users/edit/<?= $result->user_id?>">Edit</a></td>
+		          onMouseOut="$(this).parents('tr').css('background-color', '#FFF')" class="miniButton" href="/control/users/edit/<?= $result->user_id?>">Edit</a></td>
 		<td><?= $result->first_name ?></td>
 		<td><?= $result->last_name ?></td>
 		<td><?= $result->username ?></td>
@@ -38,7 +45,7 @@ $users_stmt = $db->query($users_query);
 	<?php endwhile ?>
 	</table>
 	</div>
-	</div>
+
 
 
 

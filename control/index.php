@@ -12,7 +12,9 @@ $action = $route[0];
 /**
 * SET ROUTE ARRAY
 */
-if (isset($route[1])) {
+if (isset($route[2])) {
+    $route[0] .= '_' . $route[1] . '_' . $route[2] . '.php';
+} elseif (isset($route[1])) {
     $route[0] .= '_' . $route[1] . '.php';
 } else {
     $route[0] .= '.php';

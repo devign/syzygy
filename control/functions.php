@@ -1,6 +1,10 @@
 <?php
 
 
+function buildCategoryTree() {
+    global $db;
+    
+}
 /*
  * CALCULATE ORDER SALES TAX
  * RECEIVES: sub total
@@ -497,6 +501,17 @@ function getOrderTotals($onum) {
 
 }
 
+function getSetValues($params) {
+    global $db;
+    $values = array();
+
+    $result = $db->query("SELECT $params[0], $params[1] FROM $params[2]");
+    while ($temp = $result->fetch_object()) {
+        $values[$temp->$params[0]] = $temp->$params[1];    
+    }  
+    
+    return $values;  
+}
 
 function getValue($key) {
 
@@ -540,6 +555,10 @@ function insertRecord($table_name, $key = NULL) {
 				$_POST[$col[0]] = strtolower($_POST[$col[0]]);
 			}
 
+            if (preg_match('/text/', $col[1]) || preg_match('/char/', $col[1])) {
+                $_POST[$col[0]] = $db->real_escape_string($_POST[$col[0]]);
+            }
+            
 			if ($col[0] == 'password') {
 			  $insert_query .= "SHA1('" . $_POST[$col[0]] . "'),";
 			} else {

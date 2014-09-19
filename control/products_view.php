@@ -38,36 +38,33 @@ if (isset($product_id)) {
 
 
 ?>
-          <div class="col-xs-12 col-md-9">
+           <div class="col-xs-12 col-md-9">
              
             <section id="page-header">
 
-              <h1><span class="glyphicon glyphicon-home"></span>Products List</h1>
+              <div id="searchCriteria" style="float:right;">
+              <form name="searchForm" action="customers.php" method="post">
+              <input type="hidden" name="action" value="search">
+              <span class="inputLabel">SEARCH: <input type="text" name="search_value" value="" size="20">
 
-            </section>
+              <button class="button" onClick="searchForm.submit();">GO!</button>
+
+              </form>
+              </div>
+              <h1><span class="glyphicon glyphicon-shopping-cart"></span> Products :: View</h1>
+              </section>
 
             <section id="content">
-    <div id="mainContainerLeft">        
-    	<form name="searchForm" action="customers.php" method="post">
-    	<input type="hidden" name="action" value="search">
-    	<div id="searchCriteria">
+                <div id="actionNavContainer">
+                    <ul id="actionNav">
+                    <li><a href="/control/products/create">Add New Product</a></li>
+                    </ul>
+                </div>
 
-	<table>
-		<tr><td class="inputLabel">SEARCH: </td><td><input type="text" name="search_value" value="" size="30"></td>
-	</table>
-    	</div>
-    	<div id="searchButtonContainer">
-    		<button class="button" onClick="searchForm.submit();">GO!</button>
-    	</div>
-    	</form>
 
-    </div>
-
-    <div id="mainContainerRight">
-
-    	<form name="productsForm" method="post" action="products.php">
-    	<input type="hidden" name="cid" value="">
-    	<div style="width:590px;overflow:auto;height:560px">
+    	<div>
+                <form name="productsForm" method="post" action="products.php">
+        <input type="hidden" name="cid" value="">
       	<table class="detailsList">
       		<tr><th>SKU</th><th>NAME</th><th>DESCRIPTION</th><th>PRICE</th></tr>
 
@@ -78,9 +75,10 @@ if (isset($product_id)) {
       	<?php endwhile ?>
 
       	</table>
+                </form>
     	</div>
-    	</form>
-    </div>
+
+
 
 
             </section>
