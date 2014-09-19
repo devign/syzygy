@@ -13,7 +13,7 @@ require_once('functions.php');
 
             <section id="content">
             
-<?php if (isset($_POST['frmAction']) && $_POST['frmAction'] == 'insert') : ?>
+<?php if (isset($_POST['formAction']) && $_POST['formAction'] == 'save') : ?>
 
 <?php
 	$user_id = insertRecord('users', 'user_id');
@@ -35,9 +35,9 @@ require_once('functions.php');
 
 <div>
 	<div style="padding:20px">
-		<h3>ENTER USER INFORMATION</h3>
+
 		<form name="userNew" method="post">
-		<input type="hidden" name="frmAction" value="insert">
+		<input type="hidden" name="frmAction" value="save">
 
 
 	<?php

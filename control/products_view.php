@@ -62,7 +62,7 @@ if (isset($product_id)) {
                 </div>
 
 
-    	<div>
+    	<div style="padding-top:20px">
                 <form name="productsForm" method="post" action="products.php">
         <input type="hidden" name="cid" value="">
       	<table class="detailsList">
