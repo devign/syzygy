@@ -8365,43 +8365,29 @@ button.close {
 }
 
 /* 02: Custom CSS */
-/* line 5893, ../sass/_layout.scss */
-.mt30 {
-  margin-top: 30px;
-}
 
-/* line 5894, ../sass/_layout.scss */
-.mb30 {
-  margin-bottom: 30px;
-}
-
-/* line 5895, ../sass/_layout.scss */
-.mt60 {
-  margin-top: 60px;
-}
-
-/* line 5896, ../sass/_layout.scss */
-.mb60 {
-  margin-bottom: 60px;
-}
+.mt30 { margin-top: 30px; }
+.mb30 { margin-bottom: 30px; }
+.mt60 { margin-top: 60px; }
+.mb60 {  margin-bottom: 60px; }
+.mt90 { margin-top: 90px; }
+.mb90 { margin-bottom: 90px; }
+.mt120 { margin-top: 120px; }
+.mb120 { margin-bottom: 120px; }
 
 /* Borders */
-/* line 5900, ../sass/_layout.scss */
 .border-left {
   border-left: 1px solid;
 }
 
-/* line 5902, ../sass/_layout.scss */
 .float-right {
   float: right !important;
 }
 
-/* line 5904, ../sass/_layout.scss */
 .align-center {
   text-align: center;
 }
 
-/* line 5906, ../sass/_layout.scss */
 .content-wrapper {
   background-color: #f6f6f6;
   border-bottom-right-radius: 5px;
@@ -8410,26 +8396,73 @@ button.close {
 }
 
 /* ===================================================== */
+/* Login */
+#loginArea form {
+  margin-bottom: 0;
+}
+
+#logo {
+  background-color: #f25648;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  border-bottom: 1px solid #f03928;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  text-align: center;
+}
+
+#loginBox {
+  background-color: #fafafa;
+  border-bottom-right-radius: 5px;
+  border-bottom-left-radius: 5px;
+  padding: 30px;
+}
+
+.login-form-input {
+  background-color: #fff;
+  border: 1px solid #e5e5e5;
+  border-radius: 5px;
+  margin-bottom: 15px;
+  padding: 5px 10px;
+  width: 100%;
+}
+
+.login-form-input:focus {
+  border: 1px solid #48f293;
+}
+
+.login-button {
+  background-color: #f25648;
+  color: #fff;
+  padding: 7px 14px;
+  border-radius: 5px;
+  border: 1px solid #f03928;
+  display: block;
+  margin: 0 auto;
+  margin-top: 5px;
+}
+
+
+/* ===================================================== */
 /* Menu */
-/* line 5918, ../sass/_layout.scss */
 #desktop-menu .panel-group {
   border-left: 1px solid #e5e5e5;
   margin-left: -16px;
   margin-bottom: 0;
 }
-/* line 5923, ../sass/_layout.scss */
+
 #desktop-menu .panel-group .panel + .panel {
   margin-top: 0;
 }
-/* line 5928, ../sass/_layout.scss */
+
 #desktop-menu .panel-default {
   border: none !important;
 }
-/* line 5932, ../sass/_layout.scss */
+
 #desktop-menu .panel-body {
   position: relative;
 }
-/* line 5935, ../sass/_layout.scss */
+
 #desktop-menu .panel-body .panel-location-arrow {
   width: 0;
   height: 0;
@@ -8440,7 +8473,7 @@ button.close {
   position: absolute;
   top: -7px;
 }
-/* line 5946, ../sass/_layout.scss */
+
 #desktop-menu .panel-body ul {
   background-color: #f25648;
   list-style: none;
@@ -8448,20 +8481,20 @@ button.close {
   padding: 5px 15px;
   border-radius: 5px;
 }
-/* line 5953, ../sass/_layout.scss */
+
 #desktop-menu .panel-body ul li {
   margin: 5px 0;
 }
-/* line 5955, ../sass/_layout.scss */
+
 #desktop-menu .panel-body ul li span {
   font-size: 12px;
   margin-right: 5px;
 }
-/* line 5960, ../sass/_layout.scss */
+
 #desktop-menu .panel-body ul li a {
   color: #fde8e7;
 }
-/* line 5963, ../sass/_layout.scss */
+
 #desktop-menu .panel-body ul li a span.order-total {
   background-color: white;
   border: 1px solid #f03928;
@@ -8474,21 +8507,21 @@ button.close {
   text-align: center;
   line-height: 1.42857143;
 }
-/* line 5976, ../sass/_layout.scss */
+
 #desktop-menu .panel-body ul li a span.order-total:hover {
   color: #111111;
 }
-/* line 5982, ../sass/_layout.scss */
+
 #desktop-menu .panel-body ul li a:hover {
   color: white;
   text-decoration: none;
 }
-/* line 5992, ../sass/_layout.scss */
+
 #desktop-menu .panel-group .panel-heading + .panel-collapse > .panel-body {
   border-top: none;
   padding: 0;
 }
-/* line 5997, ../sass/_layout.scss */
+
 #desktop-menu .panel-default > .panel-heading {
   color: #7f7f7f;
   border: 0;
@@ -8496,20 +8529,20 @@ button.close {
   padding-left: 21px;
   padding-top: 7px;
 }
-/* line 6004, ../sass/_layout.scss */
+
 #desktop-menu .panel-default > .panel-heading .panel-title > a {
   color: inherit;
 }
-/* line 6008, ../sass/_layout.scss */
+
 #desktop-menu .panel-default > .panel-heading .panel-title > a:hover {
   color: #f25648;
   text-decoration: none;
 }
-/* line 6013, ../sass/_layout.scss */
+
 #desktop-menu .panel-default > .panel-heading h4 {
   font-size: 14px;
 }
-/* line 6016, ../sass/_layout.scss */
+
 #desktop-menu .panel-default > .panel-heading h4 span.general-total {
   background-color: #f6f6f6;
   border: 1px solid #e5e5e5;
@@ -8523,24 +8556,23 @@ button.close {
   text-align: center;
   line-height: 1.42857143;
 }
-/* line 6030, ../sass/_layout.scss */
+
 #desktop-menu .panel-default > .panel-heading h4 span.general-total:hover {
   color: #7f7f7f;
 }
-/* line 6035, ../sass/_layout.scss */
+
 #desktop-menu .panel-default > .panel-heading h4 span {
   margin-right: 10px;
 }
-/* line 6043, ../sass/_layout.scss */
+
 #desktop-menu .panel-default > .panel-heading:hover {
   background: url(../images/menu-item-background-hover.png) no-repeat;
 }
-/* line 6047, ../sass/_layout.scss */
+
 #desktop-menu .panel-default > .panel-heading + .panel-collapse > .panel-body {
   border: none;
 }
 
-/* line 6052, ../sass/_layout.scss */
 #menu-wrapper {
   background-color: white;
   border-bottom: 1px solid #e5e5e5;
@@ -8548,7 +8580,7 @@ button.close {
   border-bottom-left-radius: 5px;
   margin-bottom: 20px;
 }
-/* line 6059, ../sass/_layout.scss */
+
 #menu-wrapper nav {
   padding-top: 13px;
   padding-bottom: 13px;
@@ -8556,7 +8588,7 @@ button.close {
 
 /* ===================================================== */
 /* Content */
-/* line 6075, ../sass/_layout.scss */
+
 section#page-header h1
 span {
   color: #f25648;
@@ -8564,7 +8596,7 @@ span {
   margin-right: 8px;
 }
 
-/* line 6083, ../sass/_layout.scss */
+
 section#content {
   background-color: white;
   border: 1px solid #e5e5e5;
@@ -8573,18 +8605,18 @@ section#content {
 }
 
 /* Footer */
-/* line 6092, ../sass/_layout.scss */
+
 footer {
   padding-top: 20px;
 }
-/* line 6095, ../sass/_layout.scss */
+
 footer p {
   display: block;
   float: left;
   font-size: 14px;
   margin: 10px 10px 0 0;
 }
-/* line 6102, ../sass/_layout.scss */
+
 footer .powered-by-devign {
   background: url(../images/powered-by-devign.png) no-repeat;
   display: block;
@@ -8597,7 +8629,7 @@ footer .powered-by-devign {
   -o-transition: all 1s ease-out 0s;
   transition: all 1s ease-out 0s;
 }
-/* line 6114, ../sass/_layout.scss */
+
 footer .powered-by-devign:hover {
   background: url(../images/powered-by-devign-mouse-over.png) no-repeat;
 }
