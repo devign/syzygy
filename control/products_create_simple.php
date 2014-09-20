@@ -57,6 +57,8 @@ require_once 'functions.php';
     
     $vendors  = getSetValues($params = array('vendor_id', 'name', 'vendors'));
     
+    
+    
 ?>
 <div>
 	<div style="padding-top:40px">
@@ -88,10 +90,12 @@ require_once 'functions.php';
         <option value="<?= $id ?>"><?= $name ?></option>
         <?php endforeach; ?>
         </select>  </td></tr>
-                
-        </table>
         
-		</form>
+        <tr><td><label>Category:</label></td>
+        <td><?php createCategoryList(); ?></td></tr>        
+
+        </table>
+        </form>
 	</div>
 
 </div>

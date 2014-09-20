@@ -3,8 +3,69 @@
 
 function buildCategoryTree() {
     global $db;
+    $categories = array();
+    
+    $result = $db->query("SELECT category_id, category_name FROM product_categories WHERE root_category = 1");
+    
+    while ($roots = $result->fetch_object()) {
+        $children = getCategoryChildren($roots->category_id);
+        if ($children) {
+            $categories[$roots->category_id][] = $children; 
+            array_unshift($categories[$roots->category_id], $roots->category_name);
+        } else {
+            $categories[$roots->category_id][] = $roots->category_name;
+        }
+    }
+
+    return $categories;
     
 }
+
+function createCategoryList() {
+    global $db;
+    $categories = array();
+    
+    $result = $db->query("SELECT category_id, category_name FROM product_categories WHERE root_category = 1");
+    
+    echo "<ul id=\"root_category_list\">";
+    while ($roots = $result->fetch_object()) {
+        echo "<li><input type=\"checkbox\" name=\"product_category\" value=\"" . $roots->category_id . "\"> " . $roots->category_name ."</li>";
+        $children = getCategoryChildren($roots->category_id);
+        if ($children) {
+            echo "<ul id=\"child_category_list\">";
+            foreach ($children as $child) {
+                echo "<li><input type=\"checkbox\" name=\"product_category\" value=\"" . $child['category_id'] . "\"> " . $child['category_name'] ."</li>";
+                $grandChildren = getCategoryChildren($child['category_id']);
+                if ($grandChildren) {
+                    echo "<ul id=\"grandchild_category_list\">";
+                    foreach ($grandChildren as $grandChild) {
+                        echo "<li><input type=\"checkbox\" name=\"product_category\" value=\"" . $grandChild['category_id'] . "\"> " . $grandChild['category_name'] ."</li>";
+                    }
+                    echo "</ul>";
+                }
+            }
+                  
+            echo "</ul>";
+        }
+    }    
+    
+    echo  "</ul>";
+}
+
+function getCategoryChildren($catid) {
+    global $db;
+    $stmt = $db->prepare("SELECT category_id, category_name FROM product_categories WHERE parent_category_id = $catid");
+    
+    if ($stmt->execute()) {
+        $result = $stmt->get_result();
+        return $result->fetch_all(MYSQLI_ASSOC);
+    } else {
+        return false;
+    }
+
+}
+
+
 /*
  * CALCULATE ORDER SALES TAX
  * RECEIVES: sub total
