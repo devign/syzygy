@@ -27,7 +27,7 @@ require_once('init.php');
              <?php endif?>
              <div id="loginArea">
                 <form name="formLogin" method="post" action="login.php">
-                <input type="hidden" name="store_id" value="0">
+                <input type="hidden" name="store_id" value="3">
                 <div class="inputLabel">Username:</div>
                 <input class="login-form-input" autocomplete="off" type="text" name="username" value="">
                 <div class="inputLabel">Password:</div>

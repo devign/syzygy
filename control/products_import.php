@@ -48,6 +48,7 @@ if ((($_FILES["import_file"]["type"] == "text/comma-separated-values"))
   echo "Invalid file";
 }
 
+/*
 $fileHandle = fopen($newFile, 'r');
 
 $line = fgetcsv($fileHandle);
@@ -58,6 +59,7 @@ foreach ($line as $value) {
 
 fclose($fileHandle);
 
+*/
 
 	
 	
@@ -77,9 +79,9 @@ fclose($fileHandle);
 <div>
 	<div style="padding:20px">
 		<form name="productNew" method="post" enctype="multipart/form-data">
-		<input type="hidden" name="frmAction" value="upload">
-        <input type="file" name="import_file">
-		<input type="submit" value="Import Products">
+		<input type="hidden" name="frmAction" value="upload" />
+        <input type="file" name="import_file" multiple />
+		<input type="submit" value="Import Products" />
 		</form>
 	</div>
 

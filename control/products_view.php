@@ -70,7 +70,7 @@ if (isset($product_id)) {
 
       	<?php while ($result = $main_stmt->fetch_object()) : ?>
       		<tr onClick="document.productsForm.pid.value='<?= $result->sku ?>';document.customersForm.submit()">
-      		<td><a href="javascript: overlayWindow('product_edit.php?pid=<?= $result->sku ?>', 400, 500)"><?= $result->sku ?></a></td>
+      		<td><a href="/control/products/edit/simple?sku=<?= $result->sku ?>"><?= $result->sku ?></a></td>
       		<td><?= $result->name ?></td><td><?= $result->description ?></td><td><?= $result->price ?></td>
       	<?php endwhile ?>
 

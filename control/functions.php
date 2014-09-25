@@ -1,69 +1,147 @@
 <?php
 
+function getProductStores($sku) {
+    global $db;
+    $tmp = array();
+    
+    $stmt = $db->query("SELECT store_id FROM product_to_store WHERE sku = '$sku'");
 
-function buildCategoryTree() {
+    while ($result = $stmt->fetch_object()) {
+        array_push($tmp, $result->store_id);
+    }
+    
+    $stmt->close();
+    
+    return $tmp;    
+}
+
+function getProductFeatures($sku) {
+    global $db;
+    $tmpCats = array();
+    
+    $stmt = $db->query("SELECT category_id FROM product_to_category WHERE sku = '$sku'");
+
+    while ($result = $stmt->fetch_object()) {
+        array_push($tmpCats, $result->category_id);
+    }
+    
+    $stmt->close();
+    
+    return $tmpCats;    
+}
+
+function getProductCategories($sku) {
+    global $db;
+    $tmpCats = array();
+    
+    $stmt = $db->query("SELECT category_id FROM product_to_category WHERE sku = '$sku'");
+
+    while ($result = $stmt->fetch_object()) {
+        array_push($tmpCats, $result->category_id);
+    }
+    
+    $stmt->close();
+    
+    return $tmpCats;
+    
+}
+
+function getProductVendors($sku) {
+    global $db;
+    $tmpVendors = array();
+    
+    $stmt = $db->query("SELECT vendor_id FROM product_to_vendor WHERE sku = '$sku'");
+    
+    while ($result = $stmt->fetch_object()) {
+        array_push($tmpVendors, $result->vendor_id);    
+    }
+    
+    $stmt->close();
+    
+    return $tmpVendors;
+
+}
+
+function createCategoryTree() {
     global $db;
     $categories = array();
     
     $result = $db->query("SELECT category_id, category_name FROM product_categories WHERE root_category = 1");
     
     while ($roots = $result->fetch_object()) {
-        $children = getCategoryChildren($roots->category_id);
-        if ($children) {
-            $categories[$roots->category_id][] = $children; 
-            array_unshift($categories[$roots->category_id], $roots->category_name);
-        } else {
-            $categories[$roots->category_id][] = $roots->category_name;
-        }
-    }
+        
+        getCategoryChildren($roots->category_id);
+    }    
+
 
     return $categories;
     
 }
 
-function createCategoryList() {
+function getCategoryChildren($catid) {
     global $db;
-    $categories = array();
+    $childCategories = array();
     
+    $stmt = $db->prepare("SELECT category_id, category_name FROM product_categories WHERE parent_category_id = $catid");
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $children = $result->fetch_all(MYSQLI_ASSOC);
+    
+    if ($children) {
+        foreach ($children as $child) {
+            getCategoryChildren($child['category_id']);
+        }
+
+    }  else {
+        return $childCategories;
+    }
+
+}
+
+function printCategoryList($selected = null) {
+    global $db;
+   
     $result = $db->query("SELECT category_id, category_name FROM product_categories WHERE root_category = 1");
     
     echo "<ul id=\"root_category_list\">";
     while ($roots = $result->fetch_object()) {
-        echo "<li><input type=\"checkbox\" name=\"product_category\" value=\"" . $roots->category_id . "\"> " . $roots->category_name ."</li>";
-        $children = getCategoryChildren($roots->category_id);
-        if ($children) {
-            echo "<ul id=\"child_category_list\">";
-            foreach ($children as $child) {
-                echo "<li><input type=\"checkbox\" name=\"product_category\" value=\"" . $child['category_id'] . "\"> " . $child['category_name'] ."</li>";
-                $grandChildren = getCategoryChildren($child['category_id']);
-                if ($grandChildren) {
-                    echo "<ul id=\"grandchild_category_list\">";
-                    foreach ($grandChildren as $grandChild) {
-                        echo "<li><input type=\"checkbox\" name=\"product_category\" value=\"" . $grandChild['category_id'] . "\"> " . $grandChild['category_name'] ."</li>";
-                    }
-                    echo "</ul>";
-                }
-            }
-                  
-            echo "</ul>";
-        }
+        if (isset($selected) && in_array($roots->category_id, $selected)) {
+            echo "<li><input checked type=\"checkbox\" name=\"category[]\" value=\"" . $roots->category_id . "\"> " . $roots->category_name ."</li>";    
+        } else {
+            echo "<li><input type=\"checkbox\" name=\"category[]\" value=\"" . $roots->category_id . "\"> " . $roots->category_name ."</li>";
+        }       
+        printCategoryChildren($roots->category_id, $selected);
     }    
     
     echo  "</ul>";
 }
 
-function getCategoryChildren($catid) {
+function printCategoryChildren($catid, $selected) {
     global $db;
     $stmt = $db->prepare("SELECT category_id, category_name FROM product_categories WHERE parent_category_id = $catid");
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $children = $result->fetch_all(MYSQLI_ASSOC);
     
-    if ($stmt->execute()) {
-        $result = $stmt->get_result();
-        return $result->fetch_all(MYSQLI_ASSOC);
-    } else {
-        return false;
+    if ($children) {
+        echo "<ul class=\"child_category_list\">";
+        foreach ($children as $child) {
+            if (isset($selected) && in_array($child['category_id'], $selected)) {
+                echo "<li><input checked type=\"checkbox\" name=\"category[]\" value=\"" . $child['category_id'] . "\"> " . $child['category_name'] ."</li>";    
+            } else {
+                echo "<li><input type=\"checkbox\" name=\"category[]\" value=\"" . $child['category_id'] . "\"> " . $child['category_name'] ."</li>";
+            }
+            printCategoryChildren($child['category_id'], $selected);
+        }
+            
+        echo "</ul>";
+
+    }  else {
+        return;
     }
 
 }
+
 
 
 /*
@@ -643,10 +721,18 @@ function insertRecord($table_name, $key = NULL) {
 
 }
 
-function sanitize($data) {
+function prepareData($data) {
     global $db;
     
     return $db->real_escape_string($data);
+}
+
+function sanitizeData($data) {
+    $data = preg_replace("/^\s*/", '', $data);
+    
+    $data = preg_replace("/\$\&\*\%/m", '', $data);
+    
+    return $data;
 }
 
 /*
@@ -750,7 +836,7 @@ function errorPage($err_msg, $link, $link_text) {
 function user_exists($username) {
     global $db;
     
-    $username = sanitize($username);
+    $username = sanitizeData($username);
         
     $result = $db->query("SELECT COUNT(`user_id`) AS users FROM `users` WHERE `username` = '$username'");
     

@@ -41,15 +41,15 @@ $rootCatStmt = $db->query("SELECT category_id, category_name FROM product_catego
 
 <?php else : ?>
 
-<div>
-	<div style="padding:10px">
+
+	<div style="padding-top:20px">
 		<form name="categoryNew" method="post" enctype="multipart/form-data">
 		<input type="hidden" name="save" value="y">
         
         <table class="inputFormTable">
         <tr><td id="root_category">Root Category:</td>
         <td>
-        <select  name="root_category" onChange="if (this.value==1) $('#parent_category_id').hide();if (this.value==0) $('#parent_category_id').show();">
+        <select name="root_category" onChange="setParentCategory(this.value, this.form);">
         <option value="0">No</option>
         <option value="1">Yes</option>
         </select>
@@ -58,6 +58,7 @@ $rootCatStmt = $db->query("SELECT category_id, category_name FROM product_catego
         <tr id="parent_category_id"><td>Parent Category:</td>
         <td>
         <select name="parent_category_id">
+        <option value="0">NONE</option>
 <?php while ($result = $rootCatStmt->fetch_object()): ?>
         <option value="<?=$result->category_id?>"><?=$result->category_name?></option>               
  
@@ -85,7 +86,7 @@ $rootCatStmt = $db->query("SELECT category_id, category_name FROM product_catego
 		</form>
 	</div>
 
-</div>
+
 
 <?php endif ?>
 

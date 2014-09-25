@@ -12,7 +12,7 @@ if (isset($action) && $action == 'search') {
 
 } else {
 
-	$main_stmt = $db->query("SELECT * FROM product_categories");
+	$main_stmt = $db->query("SELECT * FROM product_brands");
 
 }
 
@@ -32,19 +32,29 @@ if (isset($action) && $action == 'search') {
 
               </form>
               </div>
-              <h1><span class="glyphicon glyphicon-shopping-cart"></span> Product Categories</h1>
+              <h1><span class="glyphicon glyphicon-shopping-cart"></span> Brands</h1>
               </section>
 
             <section id="content">
                 <div id="actionNavContainer">
                     <ul id="actionNav">
-                    <li><a href="/control/categories/create">Add New Category</a></li>
+                    <li><a href="/control/brands/create">Add New Brand</a></li>
                     </ul>
                 </div>
             
 
-    	        <div style="padding-top:40px">
-      	            <?php printCategoryList(); ?>
+    	        <div style="padding-top:20px">
+      	            <table class="detailsList">
+      		        <tr><th>ID</th><th>NAME</th><th>MANUFACTURER</th></tr>
+
+      	            <?php while ($result = $main_stmt->fetch_object()) : ?>
+      		        <tr>
+      		        <td><a href="/control/brands/edit?brand_id=<?= $result->brand_id ?>"><?= $result->brand_id ?></a></td>
+      		        <td><?= $result->brand_name ?></td><td><?= $result->manufacturer ?></td>
+                    </tr>
+      	            <?php endwhile ?>
+
+      	            </table>
     	        </div>
 
             </section>

@@ -4,10 +4,18 @@
 */
 $allStores = array();
 
+if (array_key_exists('SYZYGY_STOREID', $_COOKIE)) {
+    $result = $db->query("SELECT domain FROM stores WHERE store_id = " . $_COOKIE['SYZYGY_STOREID']);
+    $tmpStore = $result->fetch_object();
+    array_push($allStores, $tmpStore->domain);
+}
+
 $result = $db->query("SELECT domain FROM stores ORDER BY domain");
 
 while ($tmpStore = $result->fetch_object()) {
-    array_push($allStores, $tmpStore->domain);
+    if (!in_array($tmpStore->domain, $allStores)) {
+        array_push($allStores, $tmpStore->domain);
+    }
 }
 
 /**
@@ -43,6 +51,9 @@ $user = $result->fetch_object();
     <!-- Bootstrap -->
     <link href="/control/themes/<?= $config['theme'] . DSEP . $config['stylesheet_directory'] ?>styles.css" rel="stylesheet">
     <link href="/control/themes/<?= $config['theme'] . DSEP . $config['stylesheet_directory'] ?>custom.css" rel="stylesheet">
+    
+    <script src="/control/js/functions.js"></script>
+    
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
