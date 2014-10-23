@@ -92,7 +92,7 @@ $lowercase_fields = array('email');
 $sales_tax_regions = array('state' => array('MN'));
 
 define('DSEP', '/');
-define('SITE_PATH', realpath(dirname(__FILE__)) . '/app/');
+define('SITE_PATH', realpath(dirname(__FILE__)) . '/frontend/');
 define('THEME_PATH', realpath(dirname(__FILE__)) . '/themes/'. $config['theme'] . DSEP);
 
 
