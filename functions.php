@@ -1,5 +1,53 @@
 <?php
 
+    
+
+    
+    function getRoute($uri) {
+       
+        $uri = rtrim($uri, '/');
+        $route = explode('/', $uri);
+        $new_route = [];
+        
+        if (false != $id = isPage($route[0])) {
+            $new_route[0] = 'page.php';
+            $new_route[1] = $id;
+        } elseif (false != $sku = isProduct($route[0])) {
+            $new_route[0] = 'product.php';
+            $new_route[1] = $sku;
+        } else {
+            $new_route[0] = $route[0] . '.php';
+            $new_route[1] = $route[1];
+        }
+
+        return $new_route;
+    }
+    
+    function isPage($i) {
+        global $db;
+        
+        $result = $db->query("SELECT page_id FROM cms_pages WHERE page_url = '$i'");
+        $id = $result->fetch_object();
+        
+        if (isset($id)) {
+            return $id->page_id;
+        } else {
+            return false;
+        }                        
+    }
+
+    function isProduct($i) {
+        global $db;
+        
+        $result = $db->query("SELECT sku FROM product_metadata WHERE product_url = '$i'");
+        $sku = $result->fetch_object();
+        
+        if (isset($sku)) {
+            return $sku->sku;
+        } else {
+            return false;
+        }                        
+    }
 
 /*
  * CALCULATE ORDER SALES TAX

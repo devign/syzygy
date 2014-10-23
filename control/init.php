@@ -3,9 +3,7 @@ require_once 'config.php';
 require_once 'functions.php';
 session_start();
 error_reporting(E_ALL);
-$header = 'themes' . DSEP . $config['theme'] . DSEP . 'header.php';
-$footer = 'themes' . DSEP . $config['theme'] . DSEP . 'footer.php';
-$menu = 'themes' . DSEP . $config['theme'] . DSEP . 'menu.php';
+
 $route = array();
 $params = array();
 $errors = array();
@@ -23,7 +21,7 @@ if (isset($_GET['a'])) {
 }
 
 spl_autoload_register(function ($class) {
-    include 'classes/' . $class . '.php';
+    include '../classes/' . $class . '.php';
 });
 
 

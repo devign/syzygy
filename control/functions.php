@@ -1,66 +1,6 @@
 <?php
 
-function getProductStores($sku) {
-    global $db;
-    $tmp = array();
-    
-    $stmt = $db->query("SELECT store_id FROM product_to_store WHERE sku = '$sku'");
 
-    while ($result = $stmt->fetch_object()) {
-        array_push($tmp, $result->store_id);
-    }
-    
-    $stmt->close();
-    
-    return $tmp;    
-}
-
-function getProductFeatures($sku) {
-    global $db;
-    $tmpCats = array();
-    
-    $stmt = $db->query("SELECT category_id FROM product_to_category WHERE sku = '$sku'");
-
-    while ($result = $stmt->fetch_object()) {
-        array_push($tmpCats, $result->category_id);
-    }
-    
-    $stmt->close();
-    
-    return $tmpCats;    
-}
-
-function getProductCategories($sku) {
-    global $db;
-    $tmpCats = array();
-    
-    $stmt = $db->query("SELECT category_id FROM product_to_category WHERE sku = '$sku'");
-
-    while ($result = $stmt->fetch_object()) {
-        array_push($tmpCats, $result->category_id);
-    }
-    
-    $stmt->close();
-    
-    return $tmpCats;
-    
-}
-
-function getProductVendors($sku) {
-    global $db;
-    $tmpVendors = array();
-    
-    $stmt = $db->query("SELECT vendor_id FROM product_to_vendor WHERE sku = '$sku'");
-    
-    while ($result = $stmt->fetch_object()) {
-        array_push($tmpVendors, $result->vendor_id);    
-    }
-    
-    $stmt->close();
-    
-    return $tmpVendors;
-
-}
 
 function createCategoryTree() {
     global $db;
@@ -141,8 +81,6 @@ function printCategoryChildren($catid, $selected) {
     }
 
 }
-
-
 
 /*
  * CALCULATE ORDER SALES TAX
@@ -471,21 +409,6 @@ function createInputForm($table_name, $hide_fields = array()) {
 
 
 
-/*
- * FORMAT STRINGS (phone#, email)
-*/
-function format($type, $data) {
-	switch ($type) {
-		case 'phone':
-			$phone[0] = substr($data, 0, 3);
-			$phone[1] = substr($data, 3, 3);
-			$phone[2] = substr($data, 6, 4);
-			return implode('-', $phone);
-			break;
-		case 'email':
-			break;
-	}
-}
 
 /* FUNCTION TO GET COLUMN NAMES FOR GIVEN DB / TABLE
  * RECEIVES: name of table to query
@@ -640,17 +563,7 @@ function getOrderTotals($onum) {
 
 }
 
-function getSetValues($params) {
-    global $db;
-    $values = array();
 
-    $result = $db->query("SELECT $params[0], $params[1] FROM $params[2]");
-    while ($temp = $result->fetch_object()) {
-        $values[$temp->$params[0]] = $temp->$params[1];    
-    }  
-    
-    return $values;  
-}
 
 function getValue($key) {
 
@@ -721,19 +634,8 @@ function insertRecord($table_name, $key = NULL) {
 
 }
 
-function prepareData($data) {
-    global $db;
-    
-    return $db->real_escape_string($data);
-}
 
-function sanitizeData($data) {
-    $data = preg_replace("/^\s*/", '', $data);
-    
-    $data = preg_replace("/\$\&\*\%/m", '', $data);
-    
-    return $data;
-}
+
 
 /*
  * SAVE RECORD TO DATABASE
@@ -808,47 +710,12 @@ function updateOrderItems($oid) {
 }
 
 
-function isAdmin() {
-	global $db;
-
-	$associate_id = $_COOKIE['HWO_ASSOCID'];
-
-	$result = $db->query("SELECT admin FROM associates WHERE associate_id = " . $associate_id);
-	$data = $result->fetch_object();
-
-	return $data->admin;
-
-
-}
-
-function fixLineEndings($txt) {
-  $txt = preg_replace('/\\\r\\\n/', "\n", $txt);
-  return $txt;
-}
-
-
 function errorPage($err_msg, $link, $link_text) {
 
    print "$err_msg";
 
 }
 
-function user_exists($username) {
-    global $db;
-    
-    $username = sanitizeData($username);
-        
-    $result = $db->query("SELECT COUNT(`user_id`) AS users FROM `users` WHERE `username` = '$username'");
-    
-    $count = $result->fetch_object();
-    
-    return ($count->users >= 1) ? true : false;
-    
-    
-}
 
-function user_logged_in() {
-    return (isset($_SESSION['user_id'])) ? true : false;
-}
 
 ?>

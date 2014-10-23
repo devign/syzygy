@@ -1,34 +1,28 @@
 <?php
 
-class Database {
+class Database extends mysqli {
 
-    public $db_connection;
+    protected $db_connection;
     
     public function __construct() {
         
-	    $this->db_connection = new mysqli('localhost', 'bbddev', '1stank-mofo', 'syzygy');
+        parent::__construct('localhost', 'bbddev', '1stank-mofo', 'syzygy');
 
-	    if (!$this->db_connection->real_connect('localhost', 'bbddev', '1stank-mofo', 'syzygy')) {
-    	    die('Connect Error (' . mysqli_connect_errno() . ') '
-                . mysqli_connect_error());
-	    }
-        
-        var_dump(method_exists($this, 'prepare'));
-        
-        return $this->db_connection;
-	
+        if (mysqli_connect_error()) {
+            throw new Exception('Connect Error (' . mysqli_connect_errno() . ') ' . mysqli_connect_error());
+        }
+
     }
 
     
-    public function dbDisconnect() {
-	
-	    $this->close();
-	
-    }
     
-    public function jackass() {
-        echo "TEST DB CONNECTION";    
+    public function __destruct() {
+    
+        $this->close();
+    
     }
+
+
 
 }
 
