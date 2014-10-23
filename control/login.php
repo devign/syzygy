@@ -2,12 +2,13 @@
 require_once('init.php');
 $username = $_POST['username'];
 $password = $_POST['password'];
+$user = new User();
 
 if (empty($username) || empty($password)) {
     $errors[] = 'Please enter a username and password';
     include('login_form.php');
 
-} elseif (user_exists($username) === false) {
+} elseif ($user->userExists($username) === false) {
     $errors[] = 'The user does not exist';
     include('login_form.php');
     

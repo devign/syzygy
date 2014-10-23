@@ -1,6 +1,6 @@
 <?php
 
-  
+require THEME_PATH . 'header.phtml';  
 ?>
 
 
@@ -22,3 +22,7 @@
           </div><!-- /.col-sm-12 /.col-lg-9 -->
 
 
+<?php
+
+require THEME_PATH . 'footer.phtml';  
+?>

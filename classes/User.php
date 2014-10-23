@@ -40,10 +40,11 @@ class User extends SyzygyControl {
     }
 
     public function userExists($username) {
+        global $db;
         
         $username = Utility::sanitizeData($username);
             
-        $result = Database::query("SELECT COUNT(`user_id`) AS users FROM `users` WHERE `username` = '$username'");
+        $result = $db->query("SELECT COUNT(`user_id`) AS users FROM `users` WHERE `username` = '$username'");
         
         $count = $result->fetch_object();
         
