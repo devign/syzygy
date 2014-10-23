@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.1.60, for redhat-linux-gnu (i386)
+-- MySQL dump 10.13  Distrib 5.5.39, for Linux (i686)
 --
 -- Host: localhost    Database: syzygy
 -- ------------------------------------------------------
--- Server version	5.1.60
+-- Server version	5.5.39-cll-lve
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -28,7 +28,7 @@ CREATE TABLE `cart` (
   `session_id` varchar(80) DEFAULT NULL,
   `cart_saved` int(11) DEFAULT NULL,
   PRIMARY KEY (`cart_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -37,6 +37,7 @@ CREATE TABLE `cart` (
 
 LOCK TABLES `cart` WRITE;
 /*!40000 ALTER TABLE `cart` DISABLE KEYS */;
+INSERT INTO `cart` VALUES (5,'2014-10-17 23:37:19','diecjm9sigtsla0877f313ija0',NULL);
 /*!40000 ALTER TABLE `cart` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -54,9 +55,7 @@ CREATE TABLE `cart_line_items` (
   `quantity` smallint(5) unsigned DEFAULT NULL,
   `personalization` text,
   `customizations` text,
-  `cart_cart_id` int(10) unsigned NOT NULL,
-  `products_sku` varchar(25) NOT NULL,
-  PRIMARY KEY (`cart_id`,`line_no`,`cart_cart_id`)
+  PRIMARY KEY (`cart_id`,`line_no`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -126,7 +125,7 @@ DROP TABLE IF EXISTS `cms_pages`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `cms_pages` (
-  `page_id` int(10) unsigned NOT NULL,
+  `page_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `page_name` varchar(45) DEFAULT NULL,
   `page_title` varchar(70) DEFAULT NULL,
   `page_description` varchar(125) DEFAULT NULL,
@@ -135,8 +134,10 @@ CREATE TABLE `cms_pages` (
   `root_page` tinyint(4) NOT NULL DEFAULT '1',
   `parent_page_id` tinyint(4) NOT NULL DEFAULT '0',
   `menu_id` tinyint(4) DEFAULT NULL,
+  `store_id` int(10) unsigned DEFAULT NULL,
+  `page_url` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`page_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -145,6 +146,7 @@ CREATE TABLE `cms_pages` (
 
 LOCK TABLES `cms_pages` WRITE;
 /*!40000 ALTER TABLE `cms_pages` DISABLE KEYS */;
+INSERT INTO `cms_pages` VALUES (1,'About Us','About Us','About Us Page','','<p>Owner and Floral Artist, Julie Lloyd, has been around the floral industry in several capacities, producing designs professionally for 30 years. </p> \r\n<p>Julie uses her Bachelor of Arts degree in Theatre Arts, from Minnesota State University-Moorhead, as well as her experience growing up in a florist family business and learning floral design from an early age.   Julie approaches each wedding or event as a production that is successful through thoughtful planning, meaningful choices, and collaboration.</p>\r\n',1,0,0,3,'about-us'),(2,'home','Uptown Florist Home Page','Home Page',NULL,'Uptown Florist is Glenwood Minnesota’s newest full service florist shop, creating beautiful fresh floral arrangements for any occasion.   We carry fresh flowers, green and blooming plants, as well as a variety of unique gift items.   We deliver flowers and plants to Glenwood, Starbuck, Villard, Lowry, Alexandria, and the surrounding area.   ',1,0,NULL,3,'home');
 /*!40000 ALTER TABLE `cms_pages` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -560,7 +562,7 @@ CREATE TABLE `product_categories` (
   `category_image` varchar(50) DEFAULT NULL,
   `category_sort_order` smallint(6) NOT NULL DEFAULT '0',
   PRIMARY KEY (`category_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -569,7 +571,7 @@ CREATE TABLE `product_categories` (
 
 LOCK TABLES `product_categories` WRITE;
 /*!40000 ALTER TABLE `product_categories` DISABLE KEYS */;
-INSERT INTO `product_categories` VALUES (1,1,0,'Flowers',NULL,NULL,0),(2,1,0,'Plants',NULL,NULL,0),(3,1,0,'Occasions',NULL,NULL,0),(4,1,0,'Holiday & Seasonal',NULL,NULL,0),(5,1,0,'Gifts',NULL,NULL,0),(6,0,3,'Sympathy',NULL,NULL,0),(7,0,3,'Birthday',NULL,NULL,0),(8,1,0,'Designer\'s Choice',NULL,NULL,0);
+INSERT INTO `product_categories` VALUES (1,1,0,'Flowers',NULL,NULL,0),(2,1,0,'Plants',NULL,NULL,0),(3,1,0,'Occasions',NULL,NULL,0),(5,1,0,'Holiday',NULL,NULL,0),(6,1,0,'Gifts',NULL,NULL,0),(7,0,3,'Sympathy',NULL,NULL,0),(8,0,3,'Birthday',NULL,NULL,0),(9,0,3,'Anniversary',NULL,NULL,0),(10,0,3,'New Baby',NULL,NULL,0),(11,0,3,'Just Because',NULL,NULL,0);
 /*!40000 ALTER TABLE `product_categories` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -600,30 +602,6 @@ LOCK TABLES `product_cross_up_sell` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `product_features`
---
-
-DROP TABLE IF EXISTS `product_features`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `product_features` (
-  `sku` varchar(25) NOT NULL,
-  `feature_id` int(10) unsigned NOT NULL,
-  `feature` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`sku`,`feature_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `product_features`
---
-
-LOCK TABLES `product_features` WRITE;
-/*!40000 ALTER TABLE `product_features` DISABLE KEYS */;
-/*!40000 ALTER TABLE `product_features` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `product_media`
 --
 
@@ -633,12 +611,13 @@ DROP TABLE IF EXISTS `product_media`;
 CREATE TABLE `product_media` (
   `sku` varchar(25) NOT NULL,
   `product_media_num` tinyint(3) unsigned NOT NULL,
-  `product_media_type` tinyint(3) unsigned NOT NULL,
+  `product_media_type` set('IMAGE','VIDEO','PDF') DEFAULT NULL,
   `product_media_name` varchar(45) DEFAULT NULL,
-  `product_media_location` varchar(75) DEFAULT NULL,
+  `product_media_filepath` varchar(125) DEFAULT NULL,
+  `product_media_url` varchar(150) DEFAULT NULL,
   `product_media_alt` varchar(45) DEFAULT NULL,
   `product_media_descp` text,
-  PRIMARY KEY (`sku`,`product_media_num`,`product_media_type`)
+  PRIMARY KEY (`sku`,`product_media_num`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -648,30 +627,8 @@ CREATE TABLE `product_media` (
 
 LOCK TABLES `product_media` WRITE;
 /*!40000 ALTER TABLE `product_media` DISABLE KEYS */;
+INSERT INTO `product_media` VALUES ('UP-0001',1,'IMAGE','purple-bokay.jpg','/home/data/devign-llc/dev/syzygy/media/IMAGE/1','media/IMAGE/1','Purple Bokay',NULL),('UP-0002',1,'IMAGE','purple-bokay.jpg','/home/data/devign-llc/dev/syzygy/media/IMAGE/1','media/IMAGE/1','Purple Bokay',NULL),('UP-0003',1,'IMAGE','purple-bokay.jpg','/home/data/devign-llc/dev/syzygy/media/IMAGE/1','media/IMAGE/1','Purple Bokay',NULL),('UP-0004',1,'IMAGE','purple-bokay.jpg','/home/data/devign-llc/dev/syzygy/media/IMAGE/1','media/IMAGE/1','Purple Bokay',NULL),('UP-033',1,'IMAGE','purple-bokay.jpg','/home/data/devign-llc/dev/syzygy/media/IMAGE/1','media/IMAGE/1','Purple Bokay',NULL);
 /*!40000 ALTER TABLE `product_media` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `product_media_types`
---
-
-DROP TABLE IF EXISTS `product_media_types`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `product_media_types` (
-  `type_id` int(10) unsigned NOT NULL,
-  `type_name` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`type_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `product_media_types`
---
-
-LOCK TABLES `product_media_types` WRITE;
-/*!40000 ALTER TABLE `product_media_types` DISABLE KEYS */;
-/*!40000 ALTER TABLE `product_media_types` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -684,12 +641,12 @@ DROP TABLE IF EXISTS `product_metadata`;
 CREATE TABLE `product_metadata` (
   `product_metadata_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `sku` varchar(25) NOT NULL,
-  `page_url` varchar(50) DEFAULT NULL,
+  `product_url` varchar(50) DEFAULT NULL,
   `page_title` varchar(50) DEFAULT NULL,
   `keywords` text,
   PRIMARY KEY (`product_metadata_id`),
   UNIQUE KEY `product_metadata_id_UNIQUE` (`product_metadata_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=83 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -698,6 +655,7 @@ CREATE TABLE `product_metadata` (
 
 LOCK TABLES `product_metadata` WRITE;
 /*!40000 ALTER TABLE `product_metadata` DISABLE KEYS */;
+INSERT INTO `product_metadata` VALUES (16,'UP-0002','half-dozen-roses','1/2 Dozen Roses','Roses, Rose Bokay, 1/2 Dozen  Roses');
 /*!40000 ALTER TABLE `product_metadata` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -749,6 +707,7 @@ CREATE TABLE `product_to_category` (
 
 LOCK TABLES `product_to_category` WRITE;
 /*!40000 ALTER TABLE `product_to_category` DISABLE KEYS */;
+INSERT INTO `product_to_category` VALUES ('UP-0001',1),('UP-0002',1),('UP-0002',9),('UP-0003',1),('UP-0003',2),('UP-0004',1),('UP-0034',1),('UP-0034',9),('UP-0035',1),('UP-0035',7),('UP-0036',1),('UP-0036',7),('UP-0037',1),('UP-0037',3),('UP-0037',11),('UP-0038',3),('UP-0038',7),('UP-0039',3),('UP-0039',11),('UP-033',1),('UP-033',2);
 /*!40000 ALTER TABLE `product_to_category` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -772,6 +731,7 @@ CREATE TABLE `product_to_store` (
 
 LOCK TABLES `product_to_store` WRITE;
 /*!40000 ALTER TABLE `product_to_store` DISABLE KEYS */;
+INSERT INTO `product_to_store` VALUES ('UP-0002',2),('UP-0002',3),('UP-0034',3),('UP-0035',3),('UP-0036',3),('UP-0037',3),('UP-0038',3),('UP-0039',3),('UP-033',3);
 /*!40000 ALTER TABLE `product_to_store` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -811,8 +771,8 @@ DROP TABLE IF EXISTS `product_to_vendor`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `product_to_vendor` (
   `sku` varchar(25) NOT NULL,
-  `vend_id` smallint(5) unsigned NOT NULL,
-  PRIMARY KEY (`sku`,`vend_id`)
+  `vendor_id` smallint(5) unsigned NOT NULL,
+  PRIMARY KEY (`sku`,`vendor_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -822,6 +782,7 @@ CREATE TABLE `product_to_vendor` (
 
 LOCK TABLES `product_to_vendor` WRITE;
 /*!40000 ALTER TABLE `product_to_vendor` DISABLE KEYS */;
+INSERT INTO `product_to_vendor` VALUES ('UP-0002',1),('UP-0002',3),('UP-033',3);
 /*!40000 ALTER TABLE `product_to_vendor` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -867,6 +828,7 @@ CREATE TABLE `products` (
   `status` tinyint(2) DEFAULT '1',
   `product_type` set('SIMPLE','VARIABLE','VIRTUAL','CUSTOMIZABLE') NOT NULL DEFAULT 'SIMPLE',
   `short_description` text,
+  `features` text,
   PRIMARY KEY (`sku`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -877,7 +839,7 @@ CREATE TABLE `products` (
 
 LOCK TABLES `products` WRITE;
 /*!40000 ALTER TABLE `products` DISABLE KEYS */;
-INSERT INTO `products` VALUES ('UP-0001',NULL,'Rose Trio','Three beautiful hybrid roses, arranged in a clear bud vase, with lush greenery and filler flowers of the day.  Rose color and varieties vary depending on market availability.','17.95','3.00',1,'SIMPLE',NULL),('UP-0002',NULL,'1/2 Dozen Roses','Six hybrid roses, arranged in a vase, with lush greenery and filler flowers of the day.  Rose color and varieties vary depending on market availability.  ','37.50','2.50',1,'SIMPLE',NULL),('UP-0003',NULL,'Basket full of Posies','A mixed assortment of long-lasting flowers in a handled basket.  Perfect for everyday occasions.  Flower assortment and basket style vary according to availability.  ','40.00','2.00',NULL,'SIMPLE',NULL),('UP-0004',NULL,'Wildflower Vase','A natural, free style vase bouquet, reminiscent of the wild prairie.  Flower assortment and vase style vary according to availability.  ','55.00','3.00',NULL,'SIMPLE',NULL);
+INSERT INTO `products` VALUES ('UP-0001',1,'Rose Trio','Three beautiful hybrid roses, arranged in a clear bud vase, with lush greenery and filler flowers of the day.  Rose color and varieties vary depending on market availability.',17.95,3.00,1,'SIMPLE',NULL,NULL),('UP-0002',1,'1/2 Dozen Roses','Six hybrid roses, arranged in a vase, with lush greenery and filler flowers of the day.  Rose color and varieties vary depending on market availability.  ',37.50,2.50,1,'SIMPLE',NULL,NULL),('UP-0003',1,'Basket full of Posies','A mixed assortment of long-lasting flowers in a handled basket.  Perfect for everyday occasions.  Flower assortment and basket style vary according to availability.  ',40.00,2.00,1,'SIMPLE',NULL,NULL),('UP-0004',1,'Wildflower Vase','A natural, free style vase bouquet, reminiscent of the wild prairie.  Flower assortment and vase style vary according to availability.  ',55.00,3.00,1,'SIMPLE',NULL,NULL),('UP-0034',1,'Expressions of Love','A simple way to offer your condolences in a most memorable way. Four roses in your choice of colors with white filler flower and greenery. Standard color choice is red.  Please note if you would like alternate color. ',24.99,3.00,1,'SIMPLE','A simple way to offer your condolences in a most memorable way. Four roses in your choice of colors with white filler flower and greenery',''),('UP-0035',1,'Fresh Fall','Fresh fall colors in a colored ginger vase.',44.99,2.50,1,'SIMPLE','Fresh fall colors in a colored ginger vase.',''),('UP-0036',1,'Timeless Tribute','Memories of a loved one will last forever. This arrangement offers comfort and serenity with the large gerbera daiseys accented with colorful berries and woodsy fillers in a decorative tin; a truley timeless Northern tribute.',34.99,2.50,1,'SIMPLE','Memories of a loved one will last forever. ',''),('UP-0037',1,'A Symmetry','A modern, lush design of all white flowers and select greenery in a low decorative tin. Highly stylish and unique.',39.99,3.00,1,'SIMPLE','A modern, lush design of all white flowers and select greenery in a low decorative tin.',''),('UP-0038',1,'Spring Pastels','Large arrangement of spring colors such as lavender, yellow, white, and pink flowers in a unique container.  This one will surely brighten someone\'s day.',64.99,5.00,1,'SIMPLE','Large arrangement of spring colors such as lavender, yellow, white, and pink flowers in a unique container.  ',''),('UP-0039',1,'Touching Expression','Celebrate a life well lived with this bright and beautiful vase arrangement filled with roses, snapdragons, and other seasonally colored flowers.',49.99,4.00,1,'SIMPLE','',''),('UP-033',1,'Big Old Piece of Shit','This thing is a big piece of shit. We shit all over it and put it in a vase but it still smells like roses.',29.95,3.50,1,'SIMPLE','Stinky piece of shit. Brown as Toby\'s ass.','Feature 1\r\nFeature 6\r\nFeature 9\r\n');
 /*!40000 ALTER TABLE `products` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1059,7 +1021,7 @@ CREATE TABLE `stores` (
 
 LOCK TABLES `stores` WRITE;
 /*!40000 ALTER TABLE `stores` DISABLE KEYS */;
-INSERT INTO `stores` VALUES (1,'Sweet Fantasee','',NULL,'','','',NULL,NULL,NULL,'info@sweetfantasee.com',NULL,'','sweetfantasee.com'),(2,'Aroma Cents','',NULL,'','','',NULL,NULL,NULL,NULL,NULL,'','aromacents.com'),(3,'My Store','',NULL,'','','',NULL,NULL,NULL,NULL,NULL,'','mystorefront.com'),(4,'Saddles n Spurs','',NULL,'','','',NULL,NULL,NULL,NULL,NULL,'','saddlesnspurs.com');
+INSERT INTO `stores` VALUES (1,'Sweet Fantasee','',NULL,'','','',NULL,NULL,NULL,'info@sweetfantasee.com',NULL,'','sweetfantasee.com'),(2,'Aroma Cents','',NULL,'','','',NULL,NULL,NULL,NULL,NULL,'','aromacents.com'),(3,'Uptown Florist','','','','','','','','','',0.0000,'','myuptownflorist.com'),(4,'Saddles n Spurs','',NULL,'','','',NULL,NULL,NULL,NULL,NULL,'','saddlesnspurs.com');
 /*!40000 ALTER TABLE `stores` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1083,7 +1045,7 @@ CREATE TABLE `stores_users` (
 
 LOCK TABLES `stores_users` WRITE;
 /*!40000 ALTER TABLE `stores_users` DISABLE KEYS */;
-INSERT INTO `stores_users` VALUES (0,1),(0,2);
+INSERT INTO `stores_users` VALUES (3,1),(3,2);
 /*!40000 ALTER TABLE `stores_users` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1176,7 +1138,7 @@ CREATE TABLE `vendors` (
   `web_user` varchar(45) DEFAULT NULL,
   `web_password` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`vendor_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1185,7 +1147,7 @@ CREATE TABLE `vendors` (
 
 LOCK TABLES `vendors` WRITE;
 /*!40000 ALTER TABLE `vendors` DISABLE KEYS */;
-INSERT INTO `vendors` VALUES (1,'231346595','FANNY FARMER','1223 FIRST ST',NULL,NULL,'JONESWTOWN','KY','23162','','87754623316',NULL,NULL,'www.fannyfarmer.com','uptown',NULL),(2,'13245648','EARLS WHOLESALE VASES','2465 EASY STREET',NULL,NULL,'JIMTOWN','IN','41562','','8884251656',NULL,'earlsvases@gmail.com','www.wholesalevases.com','upflorist','12345');
+INSERT INTO `vendors` VALUES (1,'231346595','FANNY FARMER','1223 FIRST ST',NULL,NULL,'JONESWTOWN','KY','23162','','87754623316',NULL,NULL,'www.fannyfarmer.com','uptown',NULL),(2,'13245648','EARLS WHOLESALE VASES','2465 EASY STREET',NULL,NULL,'JIMTOWN','IN','41562','','8884251656',NULL,'earlsvases@gmail.com','www.wholesalevases.com','upflorist','12345'),(3,'100','Uptown Florist','39 Uptown Avenue',NULL,NULL,'Glenwood','MN','56123','','8889495645',NULL,'sales@myuptownflorist.com','www.myuptownflorist.com',NULL,NULL);
 /*!40000 ALTER TABLE `vendors` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -1198,4 +1160,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-09-19 12:14:11
+-- Dump completed on 2014-10-23 18:00:10
