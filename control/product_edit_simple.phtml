@@ -1,27 +1,20 @@
 <?php
-require_once 'functions.php';
 $sku = $_GET['sku'];
+$product = new Product($sku);
 
-
-/** GET PRODUCT DATA **/
-$stmt = $db->prepare("SELECT p.sku, brand_id, name, description, short_description, price, weight, features, 
-                        page_title, page_url, keywords
-                        FROM products AS p
-                        LEFT JOIN product_metadata USING(sku)
-                        WHERE p.sku = '$sku'");
-
-$stmt->execute();
-$result = $stmt->get_result();
-$product_data = $result->fetch_all(MYSQLI_ASSOC);
 
 /**  GET CATEGORIES PRODUCT BELONGS TO **/
-$product_categories = getProductCategories($sku);
+$product_categories = $product->getCategories();
 
 /**  GET VENDORS PRODUCT BELONGS TO **/
-$product_vendors = getProductVendors($sku);
+$product_vendors = $product->getVendors();
 
 /**  GET VENDORS PRODUCT BELONGS TO **/
-$product_stores = getProductStores($sku);
+$product_stores = $product->getStores();
+
+/** GET PRODUCT MEDIA FILES DATA **/
+$product_media = $product->getMedia();
+
 
 ?>
 
@@ -44,10 +37,10 @@ $product_stores = getProductStores($sku);
             <section id="content">
                 <div id="actionNavContainer">
                     <ul id="actionNav">
-                    <li><a href="/control/products/create/simple">Simple</a></li>
-                    <li><a href="/control/products/create/variable">Variable</a></li>
-                    <li><a href="/control/products/create/customizable">Customizable</a></li>
-                    <li><a href="/control/products/create/virtual">Virtual</a></li>
+                    <li><a href="/control/product/create/simple">Simple</a></li>
+                    <li><a href="/control/product/create/variable">Variable</a></li>
+                    <li><a href="/control/product/create/customizable">Customizable</a></li>
+                    <li><a href="/control/product/create/virtual">Virtual</a></li>
                     </ul>
                 </div>
 
@@ -71,6 +64,8 @@ $product_stores = getProductStores($sku);
     $keywords = prepareData(sanitizeData($_POST['keywords']));
     $product_type = $_POST['product_type'];
     $status = $_POST['status'];
+    $media_tmpname = isset($_FILES['mediafile']['tmp_name']) ? $_FILES['mediafile']['tmp_name'] : null;
+
     
     $db->query("UPDATE products
             SET sku = '$sku',
@@ -106,23 +101,55 @@ $product_stores = getProductStores($sku);
     $db->query("INSERT INTO product_metadata(sku,page_url,page_title,keywords) 
             VALUES('$sku','$page_url','$page_title','$keywords')");
     
-    
-                                                   
+
+    /* SAVE PRODUCT MEDIA FILE */
+    if (isset($media_tmpname)) {
+
+        $media_customname = sanitizeFilename($_POST['custom_filename']);
+        $media_type = $_POST['media_type'];
+        $media_alt = $_POST['media_alt'];
+        
+        if (false === $new_file = saveMediaFile($media_tmpname, $media_customname, $media_type, $brand_id)) {
+            $error_msg[] = "Can't save $media_type media file.";
+        }  else {
+            $result = $db->query("SELECT max(product_media_num) + 1 FROM product_media WHERE sku = '$sku'");
+            $tmp = $result->fetch_row();
+            if (empty($tmp[0])) {
+                $next_num = 1;
+            } else {
+                $next_num = $tmp[0];
+            }
+            $result->close();
+            $media_url = 'http://' . $config['domain'] . DSEP . $config['media_upload'] . $media_type . DSEP . $brand_id . DSEP . $new_file[1]; 
+            $db->query("INSERT INTO product_media(sku,product_media_num,product_media_type,product_media_name,
+                        product_media_location,product_media_url,product_media_alt)
+                        VALUES('$sku',$next_num,'$media_type','$new_file[1]','$new_file[0]','$media_url','$media_alt')");
+            
+        }
+
+    }                                                  
 ?>
-   
-<div style="padding-top:40px">
-	<h3>PRODUCT SUCCESSFULLY SAVED</h3>
-</div>
 
+    <?php if (count($error_msg) > 0): ?>
+        <div ="error">
+            <?php foreach($error_msg as $err): ?>
+            <div><?= $err ?></div>
+            <?php endforeach; ?>
+        </div>   
+    <?php else : ?>
+        <div class="success">
+	        ITEM SUCCESSFULLY SAVED
+        </div>
+    <?php endif; ?>
 
-<?php else : ?>
+<?php endif ?>
 
 <?php
-    $brands = getSetValues($params = array('brand_id', 'brand_name', 'product_brands'));
+    $brands = Utility::getSetValues($params = array('brand_id', 'brand_name', 'product_brands'));
     
-    $vendors  = getSetValues($params = array('vendor_id', 'name', 'vendors'));
+    $vendors  = Utility::getSetValues($params = array('vendor_id', 'name', 'vendors'));
     
-    $stores  = getSetValues($params = array('store_id', 'store_name', 'stores'));
+    $stores  = Utility::getSetValues($params = array('store_id', 'store_name', 'stores'));
     
 ?>
 <div>
@@ -144,17 +171,17 @@ $product_stores = getProductStores($sku);
         <?php endforeach; ?>
         </select>  </td></tr>
 		
-        <tr><td><label>Name:</label></td><td><input type="text" name="name" value="<?=$product_data[0]['name']?>" onBlur="autoSEOInput(this.value, this.form)"/> </td></tr>
+        <tr><td><label>Name:</label></td><td><input type="text" name="name" value="<?=$product->name?>" onBlur="autoSEOInput(this.value, this.form)"/> </td></tr>
         
-        <tr><td><label>Description:</label></td><td><textarea name="description" rows="10" cols="80"><?=$product_data[0]['description']?></textarea></td></tr>
+        <tr><td><label>Description:</label></td><td><textarea name="description" rows="10" cols="80"><?=$product->description?></textarea></td></tr>
         
-        <tr><td><label>Short Description:</label></td><td><textarea name="short_description" rows="5" cols="80"><?=$product_data[0]['short_description']?></textarea></td></tr>
+        <tr><td><label>Short Description:</label></td><td><textarea name="short_description" rows="5" cols="80"><?=$product->short_description?></textarea></td></tr>
         
-        <tr><td><label>Features:</label></td><td><textarea name="features" rows="5" cols="40"><?=$product_data[0]['features']?></textarea></td></tr>
+        <tr><td><label>Features:</label></td><td><textarea name="features" rows="5" cols="40"><?=$product->features?></textarea></td></tr>
         
-        <tr><td><label>Price:</label></td><td><input type="text" name="price" value="<?=$product_data[0]['price']?>" /></td></tr>
+        <tr><td><label>Price:</label></td><td><input type="text" name="price" value="<?=$product->price?>" /></td></tr>
         
-        <tr><td><label>Weight:</label></td><td><input type="text" name="weight" value="<?=$product_data[0]['weight']?>" /></td></tr>
+        <tr><td><label>Weight:</label></td><td><input type="text" name="weight" value="<?=$product->weight?>" /></td></tr>
 
         <tr><td><label>Vendor:</label></td><td><select name="vendors[]" multiple>
         <?php foreach ($vendors as $id => $name) : ?>
@@ -181,23 +208,38 @@ $product_stores = getProductStores($sku);
           
         <tr><td><h3>SEO MAGIC</h3></td></tr>
         <tr><td><label>Page Title:</label></td>
-        <td><input type="text" name="page_title" value="<?=$product_data[0]['page_title']?>" size="80"/></td></tr>   
+        <td><input type="text" name="page_title" value="<?=$product->page_title?>" size="80"/></td></tr>   
         <tr><td><label>Custom URL:</label></td>
-        <td><input type="text" name="page_url" value="<?=$product_data[0]['page_url']?>" size="80"/></td></tr>     
+        <td><input type="text" name="page_url" value="<?=$product->page_url?>" size="80"/></td></tr>     
         <tr><td><label>Keywords:</label></td>
-        <td><textarea name="keywords" rows="5" cols="30"><?=$product_data[0]['keywords']?></textarea></td></tr>
+        <td><textarea name="keywords" rows="5" cols="30"><?=$product->keywords?></textarea></td></tr>
         </table>
         
         <table id="media-magic">
-        <tr><td><h3>MEDIA MAGIC</h3></td></tr>
-        <tr><td><label>File:</label></td>
-        <td><input type="file" name="file[]" /></td></tr>     
-        <tr><td><label>Media Type:</label></td>
-        <td><input type="text" name="media_type[]" value="" /></td></tr>   
-
-        <tr><td><label>Custom Filename:</label></td>
-        <td><input type="text" name="filename[]" value="" /></td></tr>
-        
+        <tr><td>
+            <table>
+            <tr><td><h3>MEDIA MAGIC</h3></td></tr>
+            <tr><td><label>File:</label></td>
+            <td><input type="file" name="mediafile" /></td></tr>     
+            <tr><td><label>Media Type:</label></td>
+            <td><select name="media_type">
+            <option value="IMAGE">Image</option>
+            <option value="VIDEO">Video</option>
+            <option value="PDF">PDF</option>
+            </td></tr>   
+            <tr><td><label>Custom Filename:</label></td>
+            <td><input type="text" name="custom_filename" value="" /></td></tr>
+            <tr><td><label>Alt Tag:</label></td>
+            <td><input type="text" name="media_alt" value="" /></td></tr>
+            </table>
+        </td>
+        <td>
+            <?php foreach ($product_media as $media) : ?>
+                <div style="float:left">
+                <img src="<?=$media['product_media_url']?>" width="100">
+                </div>
+            <?php endforeach; ?>
+        </td>
         </table>
         <input type="submit" value="Save">
         </form>
@@ -205,7 +247,7 @@ $product_stores = getProductStores($sku);
 
 </div>
 
-<?php endif ?>
+
 
             </section>
 

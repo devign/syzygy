@@ -1,41 +1,10 @@
 <?php
 
-
-if (isset($action) && $action == 'search') {
-
-	$search_on = $_POST['search_value'];
-
-	$main_query = "SELECT sku, name, description, price FROM products";
-
-	$main_stmt = $db->query($main_query);
-
-
-} else {
-
-	$main_stmt = $db->query("SELECT * FROM products");
-
-}
-
-
-if (isset($product_id)) {
-
-	$customer_stmt = $db->query("SELECT company_name, first_name, last_name FROM customers WHERE customer_id = $customer_id");
-
-	$customer_stmt->execute;
-
-	$customer_result = $customer_stmt->fetch_object();
-
-	$customer_stmt->close();
-
-	$orders_stmt = $db_connection->query("SELECT order_number, order_status, order_date_event
-				FROM orders
-				WHERE customer_id = $customer_id");
-
-	$orders_stmt->execute;
-
-}
-
-
+$main_stmt = $db->prepare("SELECT sku, name, description, price
+                        FROM products
+                        LIMIT $start, $end");
+$main_stmt->execute();
+$result = $main_stmt->get_result();
 
 ?>
            <div class="col-xs-12 col-md-9">
@@ -57,7 +26,7 @@ if (isset($product_id)) {
             <section id="content">
                 <div id="actionNavContainer">
                     <ul id="actionNav">
-                    <li><a href="/control/products/create">Add New Product</a></li>
+                    <li><a href="/control/product/create">Add New Product</a></li>
                     </ul>
                 </div>
 
@@ -68,10 +37,10 @@ if (isset($product_id)) {
       	<table class="detailsList">
       		<tr><th>SKU</th><th>NAME</th><th>DESCRIPTION</th><th>PRICE</th></tr>
 
-      	<?php while ($result = $main_stmt->fetch_object()) : ?>
-      		<tr onClick="document.productsForm.pid.value='<?= $result->sku ?>';document.customersForm.submit()">
-      		<td><a href="/control/products/edit/simple?sku=<?= $result->sku ?>"><?= $result->sku ?></a></td>
-      		<td><?= $result->name ?></td><td><?= $result->description ?></td><td><?= $result->price ?></td>
+      	<?php while ($row = $result->fetch_object()) : ?>
+      		<tr onClick="document.productsForm.pid.value='<?= $row->sku ?>';document.customersForm.submit()">
+      		<td><a href="/control/product/edit/simple?sku=<?= $row->sku ?>"><?= $row->sku ?></a></td>
+      		<td><?= $row->name ?></td><td><?= $row->description ?></td><td><?= $row->price ?></td>
       	<?php endwhile ?>
 
       	</table>

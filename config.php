@@ -1,21 +1,22 @@
 <?php
 
-define('DSEP', '/');
-
 $debug = true;
 
 $config = array(
-	'db'				    	=> 'ecomm_sample',
+	'db'				    	=> 'syzygy',
 	'dbuser'				    => 'hotworkorders',
 	'dbpwd'				        => '1stank-mofo',
 	'dbhost'				    => 'localhost',
 	'stylesheet_directory' 		=> 'css/',
 	'javascript_directory' 		=> 'js/',
 	'image_directory'			=> 'images/',
-	'site_domain'			    => 'localhost:8080',
+	'site_domain'			    => 'syzygy.dev',
 	'login_instructions'		=> 'Select your store location and enter you username and password to log in.',
 	'time_zone'			    	=> 'America/Chicago',
     'order_number_seed'         => '10010',
+    'theme'                     => 'default',
+    'store_id'                  => '3',
+    'full_url'                  => 'http://syzygy.dev/'
 );
 
 $states = array(
@@ -88,8 +89,11 @@ $states = array(
 
 $lowercase_fields = array('email');
 
-$sales_tax_regions = array('state' => array('UT'));
+$sales_tax_regions = array('state' => array('MN'));
 
-$theme = 'default';
+define('DSEP', '/');
+define('SITE_PATH', realpath(dirname(__FILE__)) . '/app/');
+define('THEME_PATH', realpath(dirname(__FILE__)) . '/themes/'. $config['theme'] . DSEP);
 
 
+?>

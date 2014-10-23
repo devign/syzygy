@@ -1,28 +1,43 @@
 <?php
-require_once 'config.php';
-require_once 'functions.php';
+/* SET ERROR REPORTING LEVEL **/
+error_reporting(E_ALL);
+
+require 'config.php';
+require 'functions.php';
 
 spl_autoload_register(function ($class) {
     include 'classes/' . $class . '.php';
+
 });
 
-$date_time = new DateTime(null, new DateTimeZone($config['time_zone']));
-$action = '';
+/* INTIALIZE DATABASE **/
 $db = new Database();
 
-//error_reporting(E_ALL);
 
+session_start();
+
+$route = array();
+$params = array();
+$errors = array();
+$template_data = array();
+
+/***
+* GET URL FOR ROUTE
+*/
 if (isset($_GET['a'])) {
+    
+    $route = getRoute($_GET['a']);
 
-	$action = $_GET['a'];
-
-} elseif (isset($_POST['a'])) {
-
-	$action = $_POST['a'];
+} else {
+    
+    $id = isPage('home');
+    $route[] = 'page.php';
+    $route[] = $id;
 
 }
 
 
 
+//var_dump(get_class_methods('Database'));
 
 ?>

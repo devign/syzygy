@@ -1,15 +1,8 @@
 <?php
 require_once 'init.php';
 
-$actionFile =  'classes/' . $action . '.php';
+require SITE_PATH . $route[0];
 
+//print_r($route);
 
-
-$controller = new $action;
-
-//echo "THEME TWO: " . $theme;
-
-
-
-  
 ?>

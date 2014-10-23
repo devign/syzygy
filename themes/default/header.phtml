@@ -1,0 +1,29 @@
+<?php
+  
+?>
+<!DOCTYPE html>
+<html>
+<head>
+<title><?=$template_data['page_title']?></title>
+<meta name="description" content="<?php echo $template_data['page_description'] ? $template_data['page_description'] : ''?>">
+<meta name="keywords" content="<?php echo $template_data['page_keywords'] ? $template_data['page_keywords'] : ''?>">
+<link rel="stylesheet" href="<?= $config['full_url'] . 'themes' . DSEP . $config['theme'] . DSEP . $config['stylesheet_directory'] . 'style.css'?>" />
+
+</head>
+
+<body>
+<div id="pageContainer">
+
+    <div id="pageHeaderContainer">
+        <div id="headerTop">
+        </div>
+        <div id="headerLeft">
+            <img src="<?= $config['full_url'] . 'themes' . DSEP . $config['theme'] . DSEP ?>images/logo.png" />
+        </div>
+        <div id="headerRight">
+        </div>
+        <div id="topNavMenu" class="clearfix">
+            <?php include 'menu.phtml' ?>
+        </div>
+       
+    </div><!-- close pageHeaderContainer -->

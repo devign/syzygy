@@ -1,0 +1,145 @@
+<?php
+require_once 'functions.php';
+
+$stmt = $db->prepare("SELECT sku FROM products");
+$stmt->execute();
+$result = $stmt->get_result();
+$skus = $result->fetch_all(MYSQLI_NUM);
+$result->close();
+
+
+?>
+
+          <div class="col-xs-12 col-md-9">
+             
+            <section id="page-header">
+
+              <div id="searchCriteria" style="float:right;">
+              <form name="searchForm" action="customers.php" method="post">
+              <input type="hidden" name="action" value="search">
+              <span class="inputLabel">SEARCH: <input type="text" name="search_value" value="" size="20">
+
+              <button class="button" onClick="searchForm.submit();">GO!</button>
+
+              </form>
+              </div>
+              <h1><span class="glyphicon glyphicon-shopping-cart"></span> Orders :: New Order</h1>
+              </section>
+
+            <section id="content">
+                <div id="actionNavContainer">
+
+                </div>
+
+            
+<?php if (isset($_POST['form_action']) && $_POST['form_action'] == 'save') : ?>
+
+<?php 
+    $sku = prepareData(sanitizeData($_POST['sku']));
+    $brand_id = $_POST['brand_id'];
+    $name = prepareData(sanitizeData($_POST['name']));
+    $description = prepareData(sanitizeData($_POST['description']));
+    $short_description = prepareData(sanitizeData($_POST['short_description']));
+    $features = prepareData(sanitizeData($_POST['features']));
+    $price = $_POST['price'];
+    $weight = $_POST['weight'];
+    $vendor_id = $_POST['vendor_id'];
+    $categories = $_POST['category'];
+    $store_id = $_COOKIE['SYZYGY_STOREID'];
+    $page_url = prepareData(sanitizeData($_POST['page_url']));
+    $page_title = prepareData(sanitizeData($_POST['page_title']));
+    $keywords = prepareData(sanitizeData($_POST['keywords']));
+    $product_type = $_POST['product_type'];
+    $media_tmpname = $_FILES['mediafile']['tmp_name'];
+    $media_customname = sanitizeFilename($_POST['custom_filename']);
+    $media_type = $_POST['media_type'];
+    
+
+    
+    $db->query("INSERT INTO products(sku,brand_id,name,description,price,weight,status,product_type,short_description,features)
+            VALUES('$sku',$brand_id,'$name','$description','$price','$weight',1,'$product_type','$short_description','$features')");
+
+    $db->query("INSERT INTO product_to_vendor(sku,vend_id) VALUES('$sku',$vendor_id)");
+    
+    $db->query("INSERT INTO product_to_store(sku,store_id) VALUES('$sku',$store_id)");  
+    
+    foreach ($categories as $k => $v) {
+        $db->query("INSERT INTO product_to_category(sku,category_id) VALUES('$sku',$v)");    
+    }      
+ 
+    
+    $db->query("INSERT INTO product_metadata(sku,page_url,page_title,keywords) 
+            VALUES('$sku','$page_url','$page_title','$keywords')");
+    
+
+    /* SAVE PRODCUT MEDIA FILE */
+    if (false === $new_file = saveMediaFile($media_tmpname, $media_customname, $media_type, $brand_id)) {
+        $error_msg = "Can't save $media_type media file.";
+    }  else {
+        $next_num = $db->query("SELECT max(product_media_num) + 1 FROM product_media WHERE sku = '$sku'");
+        $db->query("INSERT INTO product_media(sku,product_media_num,product_media_type,product_media_name, product_media_location,
+                    product_media_alt)
+                    VALUES('$sku',$next_num,'$media_type','$media_name','$new_file','$media_alt',)");
+        
+    }
+                                                       
+?>
+    </div>
+<div style="padding-top:100px">
+	<h3>PRODUCT SUCCESSFULLY ADDED</h3>
+</div>
+
+
+<?php else : ?>
+
+<?php
+    $brands = getSetValues($params = array('brand_id', 'brand_name', 'product_brands'));
+    
+    $vendors  = getSetValues($params = array('vendor_id', 'name', 'vendors'));
+    
+
+    
+?>
+<div>
+	<div style="padding-top:40px">
+		<form name="productNew" method="post" enctype="multipart/form-data">
+		<input type="hidden" name="form_action" value="">
+        <input type="hidden" name="product_type" value="SIMPLE">
+
+        <table id="order-create">
+        <tr><th>QTY</th><th>SKU</th><th>NAME</th><th>PRICE</th><th>EXT. PRICE</th></tr>
+        
+        <?php for($i=1;$i<11;$i++) :?>
+            <?php if(isset($_POST["sku_$i"]) && $_POST["sku_$i"] != 'SELECT') {
+                $result = $db->query("SELECT name, price FROM products WHERE sku = '" . $_POST["sku_$i"] . "'");
+                list($name,$price) = $result->fetch_row();
+                $ext_price = $_POST["qty_$i"] * $price;
+                $result->close();
+            }
+            ?>
+        <tr>
+        <td><input type="text" name="qty_<?=$i?>" value="<?= isset($_POST["qty_$i"]) ? $_POST["qty_$i"] : 0?>" size="4" onBlur="this.form.submit()"/></td>
+        <td><select name="sku_<?=$i?>" onChange="this.form.submit()">
+            <option value="SELECT">SELECT...</option>
+            <?php foreach($skus as $sku) :?>
+            <option value="<?=$sku[0]?>"<?php if($_POST["sku_$i"] === $sku[0]) echo selected;?>><?=$sku[0]?></option>
+            <?php endforeach; ?> 
+        </select></td>
+        <td><input type="text" name="name_<?=$i?>" value="<?= isset($name) ? $name : ''?>" size="40"/></td>
+        <td><input type="text" name="price_<?=$i?>" value="<?= isset($price) ? $price : ''?>" size="10"/></td>
+        <td><input type="text" name="extprice_<?=$i?>" value="<?= isset($ext_price) ? $ext_price : ''?>" size="10"/></td>
+        </tr>
+        <?php unset($name);unset($price);unset($ext_price); ?>
+        <?php endfor; ?>
+        </table>
+        <input type="submit" value="Save">
+        </form>
+	</div>
+
+</div>
+
+<?php endif ?>
+
+            </section>
+
+          </div><!-- /.col-sm-12 /.col-lg-9 -->

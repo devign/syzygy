@@ -1,8 +1,6 @@
 <?php
-require_once 'functions.php';
-
+    
 ?>
-
           <div class="col-xs-12 col-md-9">
              
             <section id="page-header">
@@ -23,9 +21,9 @@ require_once 'functions.php';
                 <div id="actionNavContainer">
                     <ul id="actionNav">
                     <li><strong>Simple</strong></li>
-                    <li><a href="/control/products/create/variable">Variable</a></li>
-                    <li><a href="/control/products/create/customizable">Customizable</a></li>
-                    <li><a href="/control/products/create/virtual">Virtual</a></li>
+                    <li><a href="/control/product/create/variable">Variable</a></li>
+                    <li><a href="/control/product/create/customizable">Customizable</a></li>
+                    <li><a href="/control/product/create/virtual">Virtual</a></li>
                     </ul>
                 </div>
 
@@ -33,21 +31,26 @@ require_once 'functions.php';
 <?php if (isset($_POST['formAction']) && $_POST['formAction'] == 'save') : ?>
 
 <?php 
-    $sku = prepareData(sanitizeData($_POST['sku']));
+    $sku = Utility::prepareData(Utility::sanitizeData($_POST['sku']));
     $brand_id = $_POST['brand_id'];
-    $name = prepareData(sanitizeData($_POST['name']));
-    $description = prepareData(sanitizeData($_POST['description']));
-    $short_description = prepareData(sanitizeData($_POST['short_description']));
-    $features = prepareData(sanitizeData($_POST['features']));
+    $name = Utility::prepareData(Utility::sanitizeData($_POST['name']));
+    $description = Utility::prepareData(Utility::sanitizeData($_POST['description']));
+    $short_description = Utility::prepareData(Utility::sanitizeData($_POST['short_description']));
+    $features = Utility::prepareData(Utility::sanitizeData($_POST['features']));
     $price = $_POST['price'];
     $weight = $_POST['weight'];
     $vendor_id = $_POST['vendor_id'];
     $categories = $_POST['category'];
     $store_id = $_COOKIE['SYZYGY_STOREID'];
-    $page_url = prepareData(sanitizeData($_POST['page_url']));
-    $page_title = prepareData(sanitizeData($_POST['page_title']));
-    $keywords = prepareData(sanitizeData($_POST['keywords']));
+    $page_url = Utility::prepareData(Utility::sanitizeData($_POST['page_url']));
+    $page_title = Utility::prepareData(Utility::sanitizeData($_POST['page_title']));
+    $keywords = Utility::prepareData(Utility::sanitizeData($_POST['keywords']));
     $product_type = $_POST['product_type'];
+    $media_tmpname = $_FILES['mediafile']['tmp_name'];
+    $media_customname = Utility::sanitizeFilename($_POST['custom_filename']);
+    $media_type = $_POST['media_type'];
+    
+
     
     $db->query("INSERT INTO products(sku,brand_id,name,description,price,weight,status,product_type,short_description,features)
             VALUES('$sku',$brand_id,'$name','$description','$price','$weight',1,'$product_type','$short_description','$features')");
@@ -64,20 +67,23 @@ require_once 'functions.php';
     $db->query("INSERT INTO product_metadata(sku,page_url,page_title,keywords) 
             VALUES('$sku','$page_url','$page_title','$keywords')");
     
-    
-    echo "<div style=\"padding-top:30px\">";
-    echo "SKU: " . $sku;
-    echo "<br>BRAND ID: " . $brand_id;
-    echo "<br>NAME: " . $name;
-    echo "<br>DESCP: " . $description;
-    echo "<br>SHORT DESCP: " . $short_description ."<br/>";
-    print_r($features);
-    echo "<br>PRICE: " . $price;
-    echo "<br>WEIGHT: " . $weight;
-    echo "<br>VENDOR ID: " . $vendor_id."<br/>";
-    print_r($categories);                                                             
+
+    /* SAVE PRODCUT MEDIA FILE */
+    if (false === $new_file = Utility::saveMediaFile($media_tmpname, $media_customname, $media_type, $brand_id)) {
+        $error_msg = "Can't save $media_type media file.";
+    }  else {
+/*
+        $result = $db->query("SELECT max(product_media_num) + 1 AS num FROM product_media WHERE sku = '$sku'");
+        $next_num = $result->fetch_object();
+        $db->query("INSERT INTO product_media(sku,product_media_num,product_media_type,product_media_name, product_media_location,
+                    product_media_alt)
+                    VALUES('$sku',$next_num->num,'$media_type','$media_customname','$new_file','$media_alt',)");
+        
+*/
+    }
+                                                       
 ?>
-    </div>
+
 <div style="padding-top:100px">
 	<h3>PRODUCT SUCCESSFULLY ADDED</h3>
 </div>
@@ -86,16 +92,16 @@ require_once 'functions.php';
 <?php else : ?>
 
 <?php
-    $brands = getSetValues($params = array('brand_id', 'brand_name', 'product_brands'));
+    $brands = Utility::getSetValues($params = array('brand_id', 'brand_name', 'product_brands'));
     
-    $vendors  = getSetValues($params = array('vendor_id', 'name', 'vendors'));
+    $vendors  = Utility::getSetValues($params = array('vendor_id', 'name', 'vendors'));
     
-    
+
     
 ?>
 <div>
 	<div style="padding-top:40px">
-		<form name="productNew" method="post" enctype="multipart/form-data">
+		<form name="productNew" action="/control/product/create/simple" method="post" enctype="multipart/form-data">
 		<input type="hidden" name="formAction" value="save">
         <input type="hidden" name="product_type" value="SIMPLE">
 
@@ -145,13 +151,18 @@ require_once 'functions.php';
         <table id="media-magic">
         <tr><td><h3>MEDIA MAGIC</h3></td></tr>
         <tr><td><label>File:</label></td>
-        <td><input type="file" name="file[]" /></td></tr>     
+        <td><input type="file" name="mediafile" /></td></tr>     
         <tr><td><label>Media Type:</label></td>
-        <td><input type="text" name="media_type[]" value="" /></td></tr>   
+        <td><select name="media_type">
+        <option value="IMAGE">Image</option>
+        <option value="VIDEO">Video</option>
+        <option value="PDF">PDF</option>
+        </td></tr>   
 
         <tr><td><label>Custom Filename:</label></td>
-        <td><input type="text" name="filename[]" value="" /></td></tr>
-        
+        <td><input type="text" name="custom_filename" value="" /></td></tr>
+        <tr><td><label>Alt Tag:</label></td>
+        <td><input type="text" name="media_alt" value="" /></td></tr>
         </table>
         <input type="submit" value="Save">
         </form>

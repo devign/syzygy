@@ -4,6 +4,18 @@ class Category {
 
     public function __construct() {
         echo "CATEGORY ACTION, BABY";
-    }    
+    } 
+    
+    public function listView() {
+        
+    }   
+    
+    
+    public function gridView() {
+        
+    }
+    
+    
 }
 ?>
+
