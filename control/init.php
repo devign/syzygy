@@ -21,7 +21,7 @@ if (isset($_GET['a'])) {
 }
 
 spl_autoload_register(function ($class) {
-    include 'classes/' . $class . '.php';
+    include '../classes/' . $class . '.php';
 });
 
 

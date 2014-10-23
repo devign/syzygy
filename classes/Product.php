@@ -1,30 +1,34 @@
 <?php
-  
+
 class Product {
-    private $data = array();
+
+    private $_data;
     
     public function __construct($sku) {
         global $db;
         
-        $result = $db->query("SELECT sku, brand_name, name, description, price, short_description
-                    FROM products AS p
-                    LEFT JOIN product_brands USING(brand_id)
-                    WHERE sku = '". $sku ."'");
-                    
-        $temp_data = $result->fetch_all(MYSQLI_ASSOC);
+        $result = $db->query("SELECT p.sku, brand_id, name, description, short_description, price, weight, features, 
+                                page_title, product_url, keywords
+                                FROM products AS p
+                                LEFT JOIN product_metadata USING(sku)
+                                WHERE p.sku = '$sku'");
+
+
+        $product_data = $result->fetch_all(MYSQLI_ASSOC);
         
-        foreach ($temp_data as $temp) {
-            foreach ($temp as $k => $v) {
-                $this->data[$k] = $v;
+        foreach ($product_data as $row) {
+            foreach ($row as $k => $v) {
+                $this->_data[$k] = $v;
             }
         }
+        $result->close();    
+            
+    }
 
-    } 
-    
     public function __get($name) {
 
-        if (array_key_exists($name, $this->data)) {
-            return $this->data[$name];
+        if (array_key_exists($name, $this->_data)) {
+            return $this->_data[$name];
         }
 
         $trace = debug_backtrace();
@@ -37,21 +41,118 @@ class Product {
     }   
     
     public function __set($name, $value) {
-        $this->data[$name] = $value;
+        $this->_data[$name] = $value;
+    }
+        
+    public function add() {
+        
+    }         
+    
+    public function remove() {
+        
     }
     
-    public function getMedia() {
-        global $db;
+    public function save() {
         
-        $sku = $this->data['sku'];
-        
-        $result = $db->query("SELECT * FROM product_media
-                                WHERE sku = '" . $sku . "'");
-                                
-        $temp_data = $result->fetch_all(MYSQLI_ASSOC);
-        
-        return $temp_data;
     }
-}
-?>
+    
+    public function view() {
+        
+    }
+    
+    public function getCategories($sku = null) {
+        global $db;
+        if (isset($sku)) {
+            $this->_data['sku'] = $sku;
+        }
+        
+        $tmpCats = array();
+        
+        $result = $db->query("SELECT category_id FROM product_to_category WHERE sku = '" . $this->_data['sku'] . "'");
 
+        while ($row = $result->fetch_object()) {
+            array_push($tmpCats, $row->category_id);
+        }
+        
+        $result->close();
+        
+        return $tmpCats;
+        
+    }  
+
+function getMedia($sku = null) {
+    global $db;
+    
+    $stmt = $db->prepare("SELECT product_media_url, product_media_name, product_media_alt
+                        FROM product_media
+                        WHERE sku = '" . $this->_data['sku'] ."'");
+                  
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $tmp = $result->fetch_all(MYSQLI_ASSOC);
+    $result->close();
+    
+    return $tmp;   
+    
+}
+    
+    public function getVendors($sku = null) {
+        global $db;
+        if (isset($sku)) {
+            $this->_data['sku'] = $sku;
+        }
+        $tmpVendors = array();
+        
+        $result = $db->query("SELECT vendor_id FROM product_to_vendor WHERE sku = '" . $this->_data['sku'] . "'");
+        
+        while ($row = $result->fetch_object()) {
+            array_push($tmpVendors, $row->vendor_id);    
+        }
+        
+        $result->close();
+        
+        return $tmpVendors;
+
+    }
+
+    public function getStores($sku = null) {
+        global $db;
+        if (isset($sku)) {
+            $this->_data['sku'] = $sku;
+        }
+        
+        $tmp = array();
+        
+        $result = $db->query("SELECT store_id FROM product_to_store WHERE sku = '" . $this->_data['sku'] . "'");
+
+        while ($row = $result->fetch_object()) {
+            array_push($tmp, $row->store_id);
+        }
+        
+        $result->close();
+        
+        return $tmp;    
+    }
+
+    public function getFeatures($sku = null) {
+        global $db;
+        if (isset($sku)) {
+            $this->_data['sku'] = $sku;
+        }
+        
+        $tmpCats = array();
+        
+        $result = $db->query("SELECT category_id FROM product_to_category WHERE sku = '" . $this->_data['sku'] . "'");
+
+        while ($row = $result->fetch_object()) {
+            array_push($tmpCats, $row->category_id);
+        }
+        
+        $result->close();
+        
+        return $tmpCats;    
+    }
+      
+}  
+
+?>
