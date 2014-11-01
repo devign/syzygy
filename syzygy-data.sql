@@ -65,6 +65,7 @@ CREATE TABLE `cart_line_items` (
 
 LOCK TABLES `cart_line_items` WRITE;
 /*!40000 ALTER TABLE `cart_line_items` DISABLE KEYS */;
+INSERT INTO `cart_line_items` VALUES (5,1,'UP-0002',1,NULL,NULL);
 /*!40000 ALTER TABLE `cart_line_items` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -561,6 +562,9 @@ CREATE TABLE `product_categories` (
   `category_descp` text,
   `category_image` varchar(50) DEFAULT NULL,
   `category_sort_order` smallint(6) NOT NULL DEFAULT '0',
+  `category_heading` varchar(70) DEFAULT NULL,
+  `category_subheading` varchar(70) DEFAULT NULL,
+  `category_alt_descp` text,
   PRIMARY KEY (`category_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -571,7 +575,7 @@ CREATE TABLE `product_categories` (
 
 LOCK TABLES `product_categories` WRITE;
 /*!40000 ALTER TABLE `product_categories` DISABLE KEYS */;
-INSERT INTO `product_categories` VALUES (1,1,0,'Flowers',NULL,NULL,0),(2,1,0,'Plants',NULL,NULL,0),(3,1,0,'Occasions',NULL,NULL,0),(5,1,0,'Holiday',NULL,NULL,0),(6,1,0,'Gifts',NULL,NULL,0),(7,0,3,'Sympathy',NULL,NULL,0),(8,0,3,'Birthday',NULL,NULL,0),(9,0,3,'Anniversary',NULL,NULL,0),(10,0,3,'New Baby',NULL,NULL,0),(11,0,3,'Just Because',NULL,NULL,0);
+INSERT INTO `product_categories` VALUES (1,1,0,'Flowers','Flowers have traditionally conveyed a special meaning. They have been and continue to be used in many cultures to let the person know that you care about him. In addition, flowers can symbolize many things. For example, red roses symbolize love, passion and respect while white roses represent innocence, reverence and truth. Violets represent faithfulness, lilies symbolize majesty, and mimosa stands for sensitivity. You can add an additional meaning to the flowers if you write something on the card sent with them.','',1,'Flowers Heading','Flowers Subheading','Dark clouds pile high over the hill, whipped cream on dirty snow. The sky smells like damp moss and rotting leaves. I squat in a swarm of rain-ready mosquitoes, and aim the camera toward the one surviving peony not browning at the edges. Though strong, she will falter under the weight of the next crack of thunder, pregnant with hard rain. Aching knees. I swat away a bead of sweat, listen to the pretend shutter click.'),(2,1,0,'Plants','Most plants have several names--minimally an English common name and a scientific name, but possibly several common names in each of several languages. Thus, the same plant is called: dandelion (English common name), Taraxacum officinale (scientific name)  dent-de-lion, (French common name), achicoria silvestre (Spanish common name) and maskros (Swedish common name). Of course it also has a Dutch, Flemish, German, Italian--you get the picture--',NULL,2,'','See My Plants','Many plants do not have common names. When talking about them, people often use the scientific name, and soon the scientific name is turned into a common name. Why is it a common name and no longer a scientific name?  Because Latin doesn\'t make plurals by adding s. So if I say \"see those asters,\" its not the scientific name Aster any more. When we\'ve turned the scientific name into an English word, English name rules apply:  no capital, add s as needed. '),(3,1,0,'Occasions',NULL,NULL,0,NULL,NULL,NULL),(5,1,0,'Holiday',NULL,NULL,0,NULL,NULL,NULL),(6,1,0,'Gifts',NULL,NULL,0,NULL,NULL,NULL),(7,0,3,'Sympathy',NULL,NULL,0,NULL,NULL,NULL),(8,0,3,'Birthday',NULL,NULL,0,NULL,NULL,NULL),(9,0,3,'Anniversary',NULL,NULL,0,NULL,NULL,NULL),(10,0,3,'New Baby',NULL,NULL,0,NULL,NULL,NULL),(11,0,3,'Just Because',NULL,NULL,0,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `product_categories` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -627,36 +631,8 @@ CREATE TABLE `product_media` (
 
 LOCK TABLES `product_media` WRITE;
 /*!40000 ALTER TABLE `product_media` DISABLE KEYS */;
-INSERT INTO `product_media` VALUES ('UP-0001',1,'IMAGE','purple-bokay.jpg','/home/data/devign-llc/dev/syzygy/media/IMAGE/1','media/IMAGE/1','Purple Bokay',NULL),('UP-0002',1,'IMAGE','purple-bokay.jpg','/home/data/devign-llc/dev/syzygy/media/IMAGE/1','media/IMAGE/1','Purple Bokay',NULL),('UP-0003',1,'IMAGE','purple-bokay.jpg','/home/data/devign-llc/dev/syzygy/media/IMAGE/1','media/IMAGE/1','Purple Bokay',NULL),('UP-0004',1,'IMAGE','purple-bokay.jpg','/home/data/devign-llc/dev/syzygy/media/IMAGE/1','media/IMAGE/1','Purple Bokay',NULL),('UP-033',1,'IMAGE','purple-bokay.jpg','/home/data/devign-llc/dev/syzygy/media/IMAGE/1','media/IMAGE/1','Purple Bokay',NULL);
+INSERT INTO `product_media` VALUES ('UP-0001',1,'IMAGE','purple-bokay.jpg','/home/data/devign-llc/dev/syzygy/media/IMAGE/1','media/IMAGE/1','Purple Bokay',NULL),('UP-0002',1,'IMAGE','purple-bokay.jpg','/home/data/devign-llc/dev/syzygy/media/IMAGE/1','media/IMAGE/1','Purple Bokay',NULL),('UP-0002',2,'IMAGE','purple-bokay.jpg','/home/data/devign-llc/dev/syzygy/media/IMAGE/1','media/IMAGE/1','Purple Bokay',NULL),('UP-0002',3,'IMAGE','purple-bokay.jpg','/home/data/devign-llc/dev/syzygy/media/IMAGE/1','media/IMAGE/1','Purple Bokay',NULL),('UP-0003',1,'IMAGE','purple-bokay.jpg','/home/data/devign-llc/dev/syzygy/media/IMAGE/1','media/IMAGE/1','Purple Bokay',NULL),('UP-0004',1,'IMAGE','purple-bokay.jpg','/home/data/devign-llc/dev/syzygy/media/IMAGE/1','media/IMAGE/1','Purple Bokay',NULL),('UP-033',1,'IMAGE','purple-bokay.jpg','/home/data/devign-llc/dev/syzygy/media/IMAGE/1','media/IMAGE/1','Purple Bokay',NULL);
 /*!40000 ALTER TABLE `product_media` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `product_metadata`
---
-
-DROP TABLE IF EXISTS `product_metadata`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `product_metadata` (
-  `product_metadata_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `sku` varchar(25) NOT NULL,
-  `product_url` varchar(50) DEFAULT NULL,
-  `page_title` varchar(50) DEFAULT NULL,
-  `keywords` text,
-  PRIMARY KEY (`product_metadata_id`),
-  UNIQUE KEY `product_metadata_id_UNIQUE` (`product_metadata_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=83 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `product_metadata`
---
-
-LOCK TABLES `product_metadata` WRITE;
-/*!40000 ALTER TABLE `product_metadata` DISABLE KEYS */;
-INSERT INTO `product_metadata` VALUES (16,'UP-0002','half-dozen-roses','1/2 Dozen Roses','Roses, Rose Bokay, 1/2 Dozen  Roses');
-/*!40000 ALTER TABLE `product_metadata` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -707,7 +683,7 @@ CREATE TABLE `product_to_category` (
 
 LOCK TABLES `product_to_category` WRITE;
 /*!40000 ALTER TABLE `product_to_category` DISABLE KEYS */;
-INSERT INTO `product_to_category` VALUES ('UP-0001',1),('UP-0002',1),('UP-0002',9),('UP-0003',1),('UP-0003',2),('UP-0004',1),('UP-0034',1),('UP-0034',9),('UP-0035',1),('UP-0035',7),('UP-0036',1),('UP-0036',7),('UP-0037',1),('UP-0037',3),('UP-0037',11),('UP-0038',3),('UP-0038',7),('UP-0039',3),('UP-0039',11),('UP-033',1),('UP-033',2);
+INSERT INTO `product_to_category` VALUES ('UP-0001',1),('UP-0002',1),('UP-0002',9),('UP-0003',1),('UP-0003',2),('UP-0004',1),('UP-0034',1),('UP-0034',9),('UP-0035',1),('UP-0035',7),('UP-0036',1),('UP-0036',3),('UP-0036',7),('UP-0037',1),('UP-0037',3),('UP-0037',11),('UP-0038',3),('UP-0038',7),('UP-0039',3),('UP-0039',11),('UP-0040',3),('UP-0040',7),('UP-0041',1),('UP-0041',3),('UP-0041',7),('UP-0042',3),('UP-0042',7),('UP-0043',3),('UP-0043',7),('UP-0044',1),('UP-0044',3),('UP-0044',7),('UP-0044',11),('UP-0045',1),('UP-0045',3),('UP-0045',7),('UP-033',1),('UP-033',2);
 /*!40000 ALTER TABLE `product_to_category` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -731,7 +707,7 @@ CREATE TABLE `product_to_store` (
 
 LOCK TABLES `product_to_store` WRITE;
 /*!40000 ALTER TABLE `product_to_store` DISABLE KEYS */;
-INSERT INTO `product_to_store` VALUES ('UP-0002',2),('UP-0002',3),('UP-0034',3),('UP-0035',3),('UP-0036',3),('UP-0037',3),('UP-0038',3),('UP-0039',3),('UP-033',3);
+INSERT INTO `product_to_store` VALUES ('UP-0001',3),('UP-0002',2),('UP-0002',3),('UP-0004',3),('UP-0034',3),('UP-0035',3),('UP-0036',3),('UP-0037',3),('UP-0038',3),('UP-0039',3),('UP-0040',3),('UP-0041',3),('UP-0042',3),('UP-0043',3),('UP-0044',3),('UP-0045',3),('UP-033',3);
 /*!40000 ALTER TABLE `product_to_store` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -782,7 +758,7 @@ CREATE TABLE `product_to_vendor` (
 
 LOCK TABLES `product_to_vendor` WRITE;
 /*!40000 ALTER TABLE `product_to_vendor` DISABLE KEYS */;
-INSERT INTO `product_to_vendor` VALUES ('UP-0002',1),('UP-0002',3),('UP-033',3);
+INSERT INTO `product_to_vendor` VALUES ('UP-0001',3),('UP-0002',1),('UP-0002',3),('UP-0004',3),('UP-0036',3),('UP-033',3);
 /*!40000 ALTER TABLE `product_to_vendor` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -829,6 +805,12 @@ CREATE TABLE `products` (
   `product_type` set('SIMPLE','VARIABLE','VIRTUAL','CUSTOMIZABLE') NOT NULL DEFAULT 'SIMPLE',
   `short_description` text,
   `features` text,
+  `product_url` varchar(50) DEFAULT NULL,
+  `page_title` varchar(50) DEFAULT NULL,
+  `keywords` text,
+  `featured` tinyint(4) DEFAULT '0',
+  `onsale` tinyint(4) DEFAULT '0',
+  `sale_price` decimal(5,2) DEFAULT NULL,
   PRIMARY KEY (`sku`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -839,7 +821,7 @@ CREATE TABLE `products` (
 
 LOCK TABLES `products` WRITE;
 /*!40000 ALTER TABLE `products` DISABLE KEYS */;
-INSERT INTO `products` VALUES ('UP-0001',1,'Rose Trio','Three beautiful hybrid roses, arranged in a clear bud vase, with lush greenery and filler flowers of the day.  Rose color and varieties vary depending on market availability.',17.95,3.00,1,'SIMPLE',NULL,NULL),('UP-0002',1,'1/2 Dozen Roses','Six hybrid roses, arranged in a vase, with lush greenery and filler flowers of the day.  Rose color and varieties vary depending on market availability.  ',37.50,2.50,1,'SIMPLE',NULL,NULL),('UP-0003',1,'Basket full of Posies','A mixed assortment of long-lasting flowers in a handled basket.  Perfect for everyday occasions.  Flower assortment and basket style vary according to availability.  ',40.00,2.00,1,'SIMPLE',NULL,NULL),('UP-0004',1,'Wildflower Vase','A natural, free style vase bouquet, reminiscent of the wild prairie.  Flower assortment and vase style vary according to availability.  ',55.00,3.00,1,'SIMPLE',NULL,NULL),('UP-0034',1,'Expressions of Love','A simple way to offer your condolences in a most memorable way. Four roses in your choice of colors with white filler flower and greenery. Standard color choice is red.  Please note if you would like alternate color. ',24.99,3.00,1,'SIMPLE','A simple way to offer your condolences in a most memorable way. Four roses in your choice of colors with white filler flower and greenery',''),('UP-0035',1,'Fresh Fall','Fresh fall colors in a colored ginger vase.',44.99,2.50,1,'SIMPLE','Fresh fall colors in a colored ginger vase.',''),('UP-0036',1,'Timeless Tribute','Memories of a loved one will last forever. This arrangement offers comfort and serenity with the large gerbera daiseys accented with colorful berries and woodsy fillers in a decorative tin; a truley timeless Northern tribute.',34.99,2.50,1,'SIMPLE','Memories of a loved one will last forever. ',''),('UP-0037',1,'A Symmetry','A modern, lush design of all white flowers and select greenery in a low decorative tin. Highly stylish and unique.',39.99,3.00,1,'SIMPLE','A modern, lush design of all white flowers and select greenery in a low decorative tin.',''),('UP-0038',1,'Spring Pastels','Large arrangement of spring colors such as lavender, yellow, white, and pink flowers in a unique container.  This one will surely brighten someone\'s day.',64.99,5.00,1,'SIMPLE','Large arrangement of spring colors such as lavender, yellow, white, and pink flowers in a unique container.  ',''),('UP-0039',1,'Touching Expression','Celebrate a life well lived with this bright and beautiful vase arrangement filled with roses, snapdragons, and other seasonally colored flowers.',49.99,4.00,1,'SIMPLE','',''),('UP-033',1,'Big Old Piece of Shit','This thing is a big piece of shit. We shit all over it and put it in a vase but it still smells like roses.',29.95,3.50,1,'SIMPLE','Stinky piece of shit. Brown as Toby\'s ass.','Feature 1\r\nFeature 6\r\nFeature 9\r\n');
+INSERT INTO `products` VALUES ('UP-0001',1,'Rose Trio','Three beautiful hybrid roses, arranged in a clear bud vase, with lush greenery and filler flowers of the day.  Rose color and varieties vary depending on market availability.',17.95,3.00,1,'SIMPLE','','','rose-trio',NULL,NULL,0,0,NULL),('UP-0002',1,'1/2 Dozen Roses','Six hybrid roses, arranged in a vase, with lush greenery and filler flowers of the day.  Rose color and varieties vary depending on market availability.  ',37.50,2.50,1,'SIMPLE',NULL,NULL,'half-dozen-roses',NULL,NULL,0,0,NULL),('UP-0003',1,'Basket full of Posies','A mixed assortment of long-lasting flowers in a handled basket.  Perfect for everyday occasions.  Flower assortment and basket style vary according to availability.  ',40.00,2.00,1,'SIMPLE',NULL,NULL,NULL,NULL,NULL,0,0,NULL),('UP-0004',1,'Wildflower Vase','A natural, free style vase bouquet, reminiscent of the wild prairie.  Flower assortment and vase style vary according to availability.  ',49.99,3.00,1,'SIMPLE','','',NULL,NULL,NULL,1,1,0.00),('UP-0034',1,'Expressions of Love','A simple way to offer your condolences in a most memorable way. Four roses in your choice of colors with white filler flower and greenery. Standard color choice is red.  Please note if you would like alternate color. ',24.99,3.00,1,'SIMPLE','A simple way to offer your condolences in a most memorable way. Four roses in your choice of colors with white filler flower and greenery','',NULL,NULL,NULL,0,0,NULL),('UP-0035',1,'Fresh Fall','Fresh fall colors in a colored ginger vase.',44.99,2.50,1,'SIMPLE','Fresh fall colors in a colored ginger vase.','',NULL,NULL,NULL,0,0,NULL),('UP-0036',1,'Timeless Tribute','Memories of a loved one will last forever. This arrangement offers comfort and serenity with the large gerbera daiseys accented with colorful berries and woodsy fillers in a decorative tin; a truley timeless Northern tribute.',34.99,2.50,1,'SIMPLE','Memories of a loved one will last forever. ','',NULL,NULL,NULL,0,0,NULL),('UP-0037',1,'A Symmetry','A modern, lush design of all white flowers and select greenery in a low decorative tin. Highly stylish and unique.',39.99,3.00,1,'SIMPLE','A modern, lush design of all white flowers and select greenery in a low decorative tin.','',NULL,NULL,NULL,0,0,NULL),('UP-0038',1,'Spring Pastels','Large arrangement of spring colors such as lavender, yellow, white, and pink flowers in a unique container.  This one will surely brighten someone\'s day.',64.99,5.00,1,'SIMPLE','Large arrangement of spring colors such as lavender, yellow, white, and pink flowers in a unique container.  ','',NULL,NULL,NULL,0,0,NULL),('UP-0039',1,'Touching Expression','Celebrate a life well lived with this bright and beautiful vase arrangement filled with roses, snapdragons, and other seasonally colored flowers.',49.99,4.00,1,'SIMPLE','','',NULL,NULL,NULL,0,0,NULL),('UP-0040',1,'Rustic Blossoms','A collection of fall colored flowers, cattails, leaves and grasses arranged in a keepsake container. ',59.99,3.00,1,'SIMPLE','A collection of fall colored flowers, cattails, leaves and grasses arranged in a keepsake container. ','',NULL,NULL,NULL,0,0,NULL),('UP-0041',1,'Great Thoughts','One blooming 6\'\' plant and a \"Great Thoughts\" stone placed in a double peanut basket. ',39.99,2.56,1,'SIMPLE','','',NULL,NULL,NULL,0,0,NULL),('UP-0042',1,'Always Remembered','Honor a beautiful person with a beautiful white bouquet. This abundant arrangement of  all white flowers gives the message of peace.',69.99,5.00,1,'SIMPLE','Honor a beautiful person with a beautiful white bouquet.','',NULL,NULL,NULL,0,0,NULL),('UP-0043',1,'Plentiful Blooms','Send your condolences with the fragrant beauty of a fresh arrangment along with the lasting beauty of a houseplant.  ',49.99,3.50,1,'SIMPLE','','',NULL,NULL,NULL,0,0,NULL),('UP-0044',1,'Golden Memories ','Basket bouquet of all bright yellow, long lasting flowers.  ',49.99,3.60,1,'SIMPLE','','',NULL,NULL,NULL,0,0,NULL),('UP-0045',1,'Happy Memories','This tasteful, inspiring mix of sympathy flowers for the family is bursting with color. The arrangement features an array of seasonally colored flowers that will touch everyone\'s hearts, artistically arranged in designers choice container',74.99,3.20,1,'SIMPLE','This tasteful, inspiring mix of sympathy flowers for the family is bursting with color. ','Tasteful\r\nInspiring\r\nBursting with color. ',NULL,NULL,NULL,0,0,NULL),('UP-033',1,'Big Old Piece of Shit','This thing is a big piece of shit. We shit all over it and put it in a vase but it still smells like roses.',29.95,3.50,1,'SIMPLE','Stinky piece of shit. Brown as Toby\'s ass.','Feature 1\r\nFeature 6\r\nFeature 9\r\n',NULL,NULL,NULL,0,0,NULL);
 /*!40000 ALTER TABLE `products` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1160,4 +1142,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-10-23 18:00:10
+-- Dump completed on 2014-10-31 19:07:42
