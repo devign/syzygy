@@ -17,6 +17,8 @@ $config = array(
     'theme'                         => 'default',
     'media_upload'                  => 'media/',
     'root_dir'                      => '/home/data/devign-llc/dev/syzygy/',
+    'items_per_page'                => '10',
+    'full_url'                      => 'http://syzygy.dev/',
 );
 
 $supported_media = array(

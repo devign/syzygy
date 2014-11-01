@@ -12,7 +12,7 @@ table.detailsList {
 	margin-top: 20px;
 	margin-left: 20px;
 	font-size: 12pt;
-	width: 700px;
+	width: 780px;
 	background-color: #FFF;
 	border-collapse: collapse;	
 	
@@ -335,4 +335,10 @@ div#actionNavContainer ul li a {
 
 table#order-create td {
     padding: 0 10px 10px 0;
+}
+
+/** PAGINATION **/
+div.paginate ul li {
+    display: inline;
+    padding: 0 20px;
 }

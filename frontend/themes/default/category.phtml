@@ -1,0 +1,112 @@
+<?php
+  
+?>
+
+   <div class="container">
+ 
+      <div id="category-header" class="row">
+        <div class="col-lg-9 col-lg-offset-1">
+          <ol class="breadcrumb">
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Shop</a></li>
+            <li class="active">Category</li>
+          </ol>
+  
+          <h1><?= $catname?></h1>
+  
+          <p><?=$data['category_descp'] ? $data['category_descp'] : ''?></p>
+        </div>
+      </div><!-- /.row /#category-header -->
+      <div class="row category-sort-wrapper">
+        <div id="sort-by" class="col-lg-10">
+    
+          <label>Sort by</label> 
+  
+          <select class="form-control">
+            <option>Relevance</option>
+            <option>New Arrival</option>
+            <option>Customer Rating</option>
+            <option>Price: High to Low</option>
+            <option>Price: Low to High</option>
+          </select>
+    
+        </div>
+        
+        <div class="col-lg-2 narrow-choices">
+        
+          <h3>Narrow your choices</h3>
+        
+        </div>
+      </div><!-- /.row -->
+      <div class="row">
+        <div class="col-xs-12 col-sm-10 pull-left">
+
+          <div class="row">
+            <div class="col-lg-12">
+              
+              <div id="shop-grid">
+                <div class="grid-sizer"></div>
+              
+              <?php while ($product = $result->fetch_object()) : ?>  
+                    <?php
+                        if ($product->onsale == 1 || $product->featured == 1) {
+                            $item_class_wrapper = "shop-item-wrapper w2"; 
+                        } else {
+                            $item_class_wrapper = "shop-item-wrapper";
+                        }
+                    ?>
+                <!-- SHOP ITEM -->
+                <div class="<?= $item_class_wrapper?>">
+                  <div class="shop-item">
+                    
+                    <?php if ($product->onsale == 1) : ?>
+                    <div class="shop-grid-burst sale">
+                      <span>Sale</span>
+                    </div>
+                    <?php endif; ?>
+                    
+                    <?php 
+                        $sku = $product->sku;
+                        $stmt->execute();
+                        $res = $stmt->get_result();
+                        $media = $res->fetch_object();
+                    ?>
+                    <a title="Product Name" href="#">
+                      <img title="Product Name" src="<?=$config['full_url']?>media/IMAGE/<?=$product->brand_id?>/<?=$media->product_media_name?>" alt="Product Name" />
+                    </a>
+
+                    <a title="Brand" class="shop-item-brand" href=""><?=$product->brand_name?></a>
+
+                    <a href="#"><h3><?=$product->name?></h3></a>
+
+                    <span>$<?=$product->price?></span>
+                  </div>
+                </div>
+                <!-- END SHOP ITEM -->
+                <?php endwhile; ?>
+                
+                
+              </div><!-- /#shop-grid -->
+              
+            </div>
+          </div>
+          
+        </div><!-- /.col-sm-12 .col-lg-9 -->
+        
+        <?php if ($config['filters'] == 1) include THEME_PATH . 'filters.phtml'; ?>
+        
+      </div><!-- /.row -->
+      <?php $paginate = new Paginate($num->total_items, $current_page); ?>
+      <?php include SITE_PATH . 'paginate.phtml'?>
+      <!-- /.row END Pagination -->
+  
+      <div class="row category-content">
+        <div class="col-lg-9 col-lg-offset-1">
+          <h2><?=$data['category_subheading'] ? $data['category_subheading'] : ''?></h2>
+    
+          <p><?=$data['category_alt_descp'] ? $data['category_alt_descp'] : ''?></p>
+    
+        </div>
+      </div>
+  
+    </div><!-- /.container -->

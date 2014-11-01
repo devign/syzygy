@@ -11,12 +11,14 @@ $config = array(
 	'javascript_directory' 		=> 'js/',
 	'image_directory'			=> 'images/',
 	'site_domain'			    => 'syzygy.dev',
-	'login_instructions'		=> 'Select your store location and enter you username and password to log in.',
+	'login_instructions'		=> 'Please login...',
 	'time_zone'			    	=> 'America/Chicago',
     'order_number_seed'         => '10010',
     'theme'                     => 'default',
     'store_id'                  => '3',
-    'full_url'                  => 'http://syzygy.dev/'
+    'full_url'                  => 'http://syzygy.dev/',
+    'items_per_page'            => '10',
+    'filters'                   => '0'
 );
 
 $states = array(
@@ -93,7 +95,7 @@ $sales_tax_regions = array('state' => array('MN'));
 
 define('DSEP', '/');
 define('SITE_PATH', realpath(dirname(__FILE__)) . '/frontend/');
-define('THEME_PATH', realpath(dirname(__FILE__)) . '/themes/'. $config['theme'] . DSEP);
+define('THEME_PATH', realpath(dirname(__FILE__)) . '/frontend/themes/'. $config['theme'] . DSEP);
 
 
 ?>

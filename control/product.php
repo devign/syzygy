@@ -25,16 +25,22 @@ if (isset($route[1]) && $route[1] === 'create') {
         $include_file = 'product_edit.phtml';
     }        
 } else {
-    if (isset($_GET['list_start'])) {
-        $start = $_GET['list_start'];
+    if (isset($_GET['p']) && $_GET['p'] > 1) {
+        $current_page = $_GET['p'];
+        $_GET['p']--;
+        $start = $_GET['p'] * $config['items_per_page'];
+    
     } else {
+        $current_page = 1;
         $start = 0;
     }
-    if (isset($_GET['list_end'])) {
-        $end = $_GET['list_end'];
+
+    if (isset($_POST['items_per_page'])) {
+        $end = $_POST['items_per_page'];
     } else {
-        $end = 10;
+        $end = $config['items_per_page'];
     }
+        
     $include_file = 'product_list.phtml';
 } 
 
@@ -44,34 +50,10 @@ require THEME_PATH . 'header.phtml';
 <?php if (isset($include_file)) : ?>
     <?php require $include_file; ?>
 <?php else : ?>
+    <div>
+        Whoops, I got nuthin' to display.
+    </div>
 
-          <div class="col-xs-12 col-md-9">
-             
-            <section id="page-header">
-
-              <h1><span class="glyphicon glyphicon-home"></span>Products</h1>
-
-            </section>
-
-            <section id="content">
-	<div id="mainContainerLeft">
-		<div style="padding-top:30px;padding-left:30px">
-		<a class="button" href="javascript:void overlayWindow('product_new.php?caller=products.php', '480', '500')">Add Product</a>
-		</div>
-		<div style="padding-top:30px;padding-left:30px">
-		<a class="button" href="/control/product_list">List Products</a>
-		</div>
-		
-	</div>
-	
-	<div id="mainContainerRight">
-	
-	</div>
-
-            </section>
-
-          </div><!-- /.col-sm-12 /.col-lg-9 -->
-          
 <?php endif; ?>
 
 <?php

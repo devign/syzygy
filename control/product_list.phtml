@@ -1,6 +1,6 @@
 <?php
 
-$main_stmt = $db->prepare("SELECT sku, name, description, price
+$main_stmt = $db->prepare("SELECT SQL_CALC_FOUND_ROWS sku, name, description, price
                         FROM products
                         LIMIT $start, $end");
 $main_stmt->execute();
@@ -47,7 +47,20 @@ $result = $main_stmt->get_result();
                 </form>
     	</div>
 
+<?php
+/**
+* GET TOTAL ROWS RETURNED AND CREATE PAGINATION
+* 
+* @var mysqli
+*/
+$result->close();
+$result = $db->query("SELECT FOUND_ROWS() AS total");
+$total_items = $result->fetch_object();    
 
+$paginate = new Paginate($total_items->total, $current_page, $route[1]);
+
+include 'paginate.phtml';   
+?>
 
 
             </section>

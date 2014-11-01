@@ -3,16 +3,15 @@
 error_reporting(E_ALL);
 
 require 'config.php';
-require 'functions.php';
+require 'frontend/functions.php';
 
 spl_autoload_register(function ($class) {
-    include 'classes/' . $class . '.php';
+    include 'frontend/classes/' . $class . '.php';
 
 });
 
 /* INTIALIZE DATABASE **/
 $db = new Database();
-
 
 session_start();
 
@@ -30,10 +29,13 @@ if (isset($_GET['a'])) {
 
 } else {
     
-    $id = isPage('home');
-    $route[] = 'page.php';
-    $route[] = $id;
-
+    if (file_exists(THEME_PATH . 'home.phtml')) {
+        $route[] = 'themes/' . $config['theme'] . DSEP . 'home.phtml';
+    } else {
+        $id = isPage('home');
+        $route[] = 'page.php';
+        $route[] = $id;
+    }
 }
 
 

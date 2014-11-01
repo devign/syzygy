@@ -1,0 +1,17 @@
+<?php
+  
+?>
+
+<div class="paginate">
+    <ul>
+    <?php for($i=1;$i<$paginate->total_pages;$i++) : ?>
+        <?php if ($i == $paginate->current_page) : ?>
+            <li><span id="current-page"><?=$i?></span></li> 
+        <?php else : ?>
+            <li><a href="<?=$paginate->page_name?>?p=<?=$i?>"><?=$i?></a></li> 
+        <?php endif; ?>           
+    <?php endfor; ?>
+
+    </ul>
+
+</div>

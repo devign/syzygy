@@ -1,0 +1,26 @@
+<?php
+$result = $db->query("SELECT category_name FROM product_categories
+                        WHERE root_category = 1");
+
+$categories = $result->fetch_all(MYSQLI_NUM);
+  
+?>
+
+     <div class="col-sm-12 col-lg-8 main-menu">
+
+      <ul class="nav nav-pills">
+       <li><a href="shop.phtml">Menu Item</a></li>
+       <li class="dropdown">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+         Dropdown <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu" role="menu">
+        <?php foreach ($categories as $category) :?>
+         <li><a href="/category/<?=$category[0]?>"><?=$category[0]?></a></li>
+        <?php endforeach; ?>
+        </ul>
+       </li>
+       <li><a href="#">Menu Item</a></li>
+      </ul>
+
+     </div><!-- /.main-menu -->

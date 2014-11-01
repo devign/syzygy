@@ -1,6 +1,7 @@
 <?php
 $sku = $_GET['sku'];
 $product = new Product($sku);
+$mediaCollection = new MediaCollection($sku);
 
 
 /**  GET CATEGORIES PRODUCT BELONGS TO **/
@@ -48,40 +49,46 @@ $product_media = $product->getMedia();
 <?php if (isset($_POST['formAction']) && $_POST['formAction'] == 'save') : ?>
 
 <?php 
-    if (empty($sku)) $sku = prepareData(sanitizeData($_POST['sku']));
-    $brand_id = $_POST['brand_id'];
-    $name = prepareData(sanitizeData($_POST['name']));
-    $description = prepareData(sanitizeData($_POST['description']));
-    $short_description = prepareData(sanitizeData($_POST['short_description']));
-    $features = prepareData(sanitizeData($_POST['features']));
-    $price = $_POST['price'];
-    $weight = $_POST['weight'];
-    $vendors = $_POST['vendors'];
-    $categories = $_POST['category'];
-    $stores = $_POST['stores'];
-    $page_url = prepareData(sanitizeData($_POST['page_url']));
-    $page_title = prepareData(sanitizeData($_POST['page_title']));
-    $keywords = prepareData(sanitizeData($_POST['keywords']));
-    $product_type = $_POST['product_type'];
-    $status = $_POST['status'];
-    $media_tmpname = isset($_FILES['mediafile']['tmp_name']) ? $_FILES['mediafile']['tmp_name'] : null;
+    if (empty($sku)) $sku = Utility::prepareData(Utility::sanitizeData($_POST['sku']));
+    $brand_id           = $_POST['brand_id'];
+    $name               = Utility::prepareData(Utility::sanitizeData($_POST['name']));
+    $description        = Utility::prepareData(Utility::sanitizeData($_POST['description']));
+    $short_description  = Utility::prepareData(Utility::sanitizeData($_POST['short_description']));
+    $features           = Utility::prepareData(Utility::sanitizeData($_POST['features']));
+    $price              = $_POST['price'];
+    $weight             = $_POST['weight'];
+    $vendors            = $_POST['vendors'];
+    $categories         = $_POST['category'];
+    $stores             = $_POST['stores'];
+    $product_url        = Utility::prepareData(Utility::sanitizeData($_POST['product_url']));
+    $page_title         = Utility::prepareData(Utility::sanitizeData($_POST['page_title']));
+    $keywords           = Utility::prepareData(Utility::sanitizeData($_POST['keywords']));
+    $product_type       = $_POST['product_type'];
+    $status             = $_POST['status'];
+    $featured           = isset($_POST['featured']) ? $_POST['featured'] : 0;
+    $onsale             = isset($_POST['onsale']) ? $_POST['onsale'] : 0;
+    $sale_price         = $onsale ? $_POST['sale_price'] : 0;
+    $media_tmpname      = isset($_FILES['mediafile']['tmp_name']) ? $_FILES['mediafile']['tmp_name'] : null;
 
-    
+   
     $db->query("UPDATE products
-            SET sku = '$sku',
-            brand_id = $brand_id,
-            name = '$name',
-            description = '$description',
-            price = '$price',
-            weight = '$weight',
-            status = $status,
-            product_type = '$product_type',
-            short_description = '$short_description',
-            features = '$features'
+            SET sku             = '$sku',
+            brand_id            = $brand_id,
+            name                = '$name',
+            description         = '$description',
+            price               = '$price',
+            weight              = '$weight',
+            status              = $status,
+            product_type        = '$product_type',
+            short_description   = '$short_description',
+            features            = '$features',
+            featured            = '$featured',
+            onsale              = '$onsale',
+            sale_price          = '$sale_price'
             WHERE sku = '$sku'
             ");
 
-            
+         
     $db->query("DELETE FROM product_to_vendor WHERE sku = '$sku'");        
     foreach ($vendors as $k => $v) {
         $db->query("INSERT INTO product_to_vendor(sku,vendor_id) VALUES('$sku',$v)");    
@@ -95,21 +102,16 @@ $product_media = $product->getMedia();
     $db->query("DELETE FROM product_to_category WHERE sku = '$sku'");
     foreach ($categories as $k => $v) {
         $db->query("INSERT INTO product_to_category(sku,category_id) VALUES('$sku',$v)");    
-    }      
-    
-    $db->query("DELETE FROM product_metadata WHERE sku = '$sku'");
-    $db->query("INSERT INTO product_metadata(sku,page_url,page_title,keywords) 
-            VALUES('$sku','$page_url','$page_title','$keywords')");
-    
-
+    }
+  
     /* SAVE PRODUCT MEDIA FILE */
     if (isset($media_tmpname)) {
 
-        $media_customname = sanitizeFilename($_POST['custom_filename']);
+        $media_customname = Utility::sanitizeFilename($_POST['custom_filename']);
         $media_type = $_POST['media_type'];
         $media_alt = $_POST['media_alt'];
         
-        if (false === $new_file = saveMediaFile($media_tmpname, $media_customname, $media_type, $brand_id)) {
+        if (false === $new_file = Utility::saveMediaFile($media_tmpname, $media_customname, $media_type, $brand_id)) {
             $error_msg[] = "Can't save $media_type media file.";
         }  else {
             $result = $db->query("SELECT max(product_media_num) + 1 FROM product_media WHERE sku = '$sku'");
@@ -141,8 +143,9 @@ $product_media = $product->getMedia();
 	        ITEM SUCCESSFULLY SAVED
         </div>
     <?php endif; ?>
+    
+<?php endif; ?>  
 
-<?php endif ?>
 
 <?php
     $brands = Utility::getSetValues($params = array('brand_id', 'brand_name', 'product_brands'));
@@ -179,10 +182,12 @@ $product_media = $product->getMedia();
         
         <tr><td><label>Features:</label></td><td><textarea name="features" rows="5" cols="40"><?=$product->features?></textarea></td></tr>
         
-        <tr><td><label>Price:</label></td><td><input type="text" name="price" value="<?=$product->price?>" /></td></tr>
-        
+        <tr><td><label>Price:</label></td><td><input type="text" name="price" value="<?= $product->price?>" /></td></tr>
+        <tr><td><label>On Sale:</label></td><td><input type="checkbox" name="onsale" value="1" <?= $product->onsale ? 'checked' : ''?>></td></tr>
+        <tr><td><label>Sale Price:</td><td><input type="text" name="sale_price" value="<?= $product->sale_price?>" /></td></tr>        
         <tr><td><label>Weight:</label></td><td><input type="text" name="weight" value="<?=$product->weight?>" /></td></tr>
-
+        <tr><td><label>Featured:</label></td><td><input type="checkbox" name="featured" value="1" <?= $product->featured ? 'checked' : ''?>></td></tr>
+        
         <tr><td><label>Vendor:</label></td><td><select name="vendors[]" multiple>
         <?php foreach ($vendors as $id => $name) : ?>
             <?php if (in_array($id, $product_vendors)) :?>
@@ -210,7 +215,7 @@ $product_media = $product->getMedia();
         <tr><td><label>Page Title:</label></td>
         <td><input type="text" name="page_title" value="<?=$product->page_title?>" size="80"/></td></tr>   
         <tr><td><label>Custom URL:</label></td>
-        <td><input type="text" name="page_url" value="<?=$product->page_url?>" size="80"/></td></tr>     
+        <td><input type="text" name="product_url" value="<?=$product->product_url?>" size="80"/></td></tr>     
         <tr><td><label>Keywords:</label></td>
         <td><textarea name="keywords" rows="5" cols="30"><?=$product->keywords?></textarea></td></tr>
         </table>
@@ -234,11 +239,11 @@ $product_media = $product->getMedia();
             </table>
         </td>
         <td>
-            <?php foreach ($product_media as $media) : ?>
-                <div style="float:left">
-                <img src="<?=$media['product_media_url']?>" width="100">
+            <?php while ($media = $mediaCollection->iterate()) : ?>
+                <div style="float:left;padding-right:5px">
+                <img src="<?=$config['full_url'] . $media->product_media_url . DSEP . $media->product_media_name?>" width="100">
                 </div>
-            <?php endforeach; ?>
+            <?php endwhile; ?>
         </td>
         </table>
         <input type="submit" value="Save">

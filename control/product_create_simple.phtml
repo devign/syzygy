@@ -31,29 +31,34 @@
 <?php if (isset($_POST['formAction']) && $_POST['formAction'] == 'save') : ?>
 
 <?php 
-    $sku = Utility::prepareData(Utility::sanitizeData($_POST['sku']));
-    $brand_id = $_POST['brand_id'];
-    $name = Utility::prepareData(Utility::sanitizeData($_POST['name']));
-    $description = Utility::prepareData(Utility::sanitizeData($_POST['description']));
-    $short_description = Utility::prepareData(Utility::sanitizeData($_POST['short_description']));
-    $features = Utility::prepareData(Utility::sanitizeData($_POST['features']));
-    $price = $_POST['price'];
-    $weight = $_POST['weight'];
-    $vendor_id = $_POST['vendor_id'];
-    $categories = $_POST['category'];
-    $store_id = $_COOKIE['SYZYGY_STOREID'];
-    $page_url = Utility::prepareData(Utility::sanitizeData($_POST['page_url']));
-    $page_title = Utility::prepareData(Utility::sanitizeData($_POST['page_title']));
-    $keywords = Utility::prepareData(Utility::sanitizeData($_POST['keywords']));
-    $product_type = $_POST['product_type'];
-    $media_tmpname = $_FILES['mediafile']['tmp_name'];
-    $media_customname = Utility::sanitizeFilename($_POST['custom_filename']);
-    $media_type = $_POST['media_type'];
+    $sku                = Utility::prepareData(Utility::sanitizeData($_POST['sku']));
+    $brand_id           = $_POST['brand_id'];
+    $name               = Utility::prepareData(Utility::sanitizeData($_POST['name']));
+    $description        = Utility::prepareData(Utility::sanitizeData($_POST['description']));
+    $short_description  = Utility::prepareData(Utility::sanitizeData($_POST['short_description']));
+    $features           = Utility::prepareData(Utility::sanitizeData($_POST['features']));
+    $price              = $_POST['price'];
+    $weight             = $_POST['weight'];
+    $vendor_id          = $_POST['vendor_id'];
+    $categories         = $_POST['category'];
+    $store_id           = $_COOKIE['SYZYGY_STOREID'];
+    $product_url        = Utility::prepareData(Utility::sanitizeData($_POST['product_url']));
+    $page_title         = Utility::prepareData(Utility::sanitizeData($_POST['page_title']));
+    $keywords           = Utility::prepareData(Utility::sanitizeData($_POST['keywords']));
+    $product_type       = $_POST['product_type'];
+    $featured           = isset($_POST['featured']) ? $_POST['featured'] : 0;
+    $onsale             = isset($_POST['onsale']) ? $_POST['onsale'] : 0;
+    $sale_price         = $onsale ? $_POST['sale_price'] : 0;
+    $media_tmpname      = $_FILES['mediafile']['tmp_name'];
+    $media_customname   = Utility::sanitizeFilename($_POST['custom_filename']);
+    $media_type         = $_POST['media_type'];
     
 
     
-    $db->query("INSERT INTO products(sku,brand_id,name,description,price,weight,status,product_type,short_description,features)
-            VALUES('$sku',$brand_id,'$name','$description','$price','$weight',1,'$product_type','$short_description','$features')");
+    $db->query("INSERT INTO products(sku,brand_id,name,description,price,weight,status,product_type,
+            short_description,features,product_url,page_title,featured,onsale,sale_price)
+            VALUES('$sku',$brand_id,'$name','$description','$price','$weight',1,'$product_type',
+            '$short_description','$features','$product_url','$page_title','$featured','$onsale','$sale_price')");
 
     $db->query("INSERT INTO product_to_vendor(sku,vend_id) VALUES('$sku',$vendor_id)");
     
@@ -61,11 +66,6 @@
     
     foreach ($categories as $k => $v) {
         $db->query("INSERT INTO product_to_category(sku,category_id) VALUES('$sku',$v)");    
-    }      
- 
-    
-    $db->query("INSERT INTO product_metadata(sku,page_url,page_title,keywords) 
-            VALUES('$sku','$page_url','$page_title','$keywords')");
     
 
     /* SAVE PRODCUT MEDIA FILE */
@@ -127,9 +127,10 @@
         <tr><td><label>Features:</label></td><td><textarea name="features" rows="5" cols="40"></textarea></td></tr>
         
         <tr><td><label>Price:</label></td><td><input type="text" name="price" value="" /></td></tr>
-        
+        <tr><td><label>On Sale:</label></td><td><input type="checkbox" name="onsale" value="1"></td></tr>
+        <tr><td><label>Sale Price:</label></td><td><input type="text" name="sale_price" value="" /></td></tr>
         <tr><td><label>Weight:</label></td><td><input type="text" name="weight" value="" /></td></tr>
-
+        <tr><td><label>Featured:</label></td><td><input type="checkbox" name="featured" value="1"></td></tr>
         <tr><td><label>Vendor:</label></td><td><select name="vendor_id">
         <?php foreach ($vendors as $id => $name) : ?>
         <option value="<?= $id ?>"><?= $name ?></option>

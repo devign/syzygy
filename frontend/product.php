@@ -1,7 +1,7 @@
 <?php
 $product = new Product($route[1]);
-$media = $product->getMedia();
-
+$media = new Media($product->sku, 1);
+$mediaCollection = new MediaCollection($product->sku);
 
 $template_data = [  'page_title'        => $product->name,
                     'page_description'  => $product->description,
@@ -15,7 +15,14 @@ require THEME_PATH . 'header.phtml';
         <div id="content">
             <div id="productDetails">
                 <div id="productMedia">
-                <img width="400px" src="<?=$config['full_url'] . $product_images[0]['product_media_url'] . DSEP . $product_images[0]['product_media_name']?>"/>
+                <img width="400px" src="<?=$config['full_url'] . $media->product_media_url . DSEP . $media->product_media_name?>"/>
+                <div id="product-image-thumbs">
+                <?php while ($newMedia = $mediaCollection->iterate()) :?>
+                    <div style="float:left;padding-right:10px">
+                    <a href=""><img src="<?=$config['full_url'] . $newMedia->product_media_url . DSEP . $newMedia->product_media_name?>" width="80px" /></a>
+                    </div>
+                <?php endwhile; ?>
+                </div>
                 </div>
                 <div id="productMeta">
                 SKU: <?= $product->sku?>   <br /><br />
