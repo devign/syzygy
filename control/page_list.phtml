@@ -1,6 +1,6 @@
 <?php
 
-$pages_query = "SELECT * FROM cms_pages WHERE store_id = " . $_COOKIE['SYZYGY_STOREID'];
+$pages_query = "SELECT * FROM cms_pages WHERE store_id = " . $config['store_id'];
 
 $pages_stmt = $db->query($pages_query);
 
@@ -19,13 +19,13 @@ $pages_stmt = $db->query($pages_query);
 
               </form>
               </div>
-              <h1><span class="glyphicon glyphicon-file"></span> Pages :: View</h1>
+              <h1><span class="glyphicon glyphicon-file"></span> Pages :: List</h1>
               </section>
 
             <section id="content">
                 <div id="actionNavContainer">
                     <ul id="actionNav">
-                    <li><a href="/control/pages/create">Add Page</a></li>
+                    <li><a href="/control/page/create">Add Page</a></li>
 
                     </ul>
                 </div>
@@ -37,7 +37,7 @@ $pages_stmt = $db->query($pages_query);
 	<?php while ($result = $pages_stmt->fetch_object()) : ?>
 		<tr>
 		<td valign="center"><a onMouseOver="$(this).parents('tr').css('background-color', '#F2B7B2')"
-		          onMouseOut="$(this).parents('tr').css('background-color', '#FFF')" class="miniButton" href="/control/users/edit/<?= $result->user_id?>">Edit</a></td>
+		          onMouseOut="$(this).parents('tr').css('background-color', '#FFF')" class="miniButton" href="/control/page/edit/<?= $result->page_id?>">Edit</a></td>
 		<td><?= $result->page_id ?></td>
 		<td><?= $result->page_name ?></td>
 

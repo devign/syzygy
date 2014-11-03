@@ -3,24 +3,22 @@ $result = $db->query("SELECT category_name FROM product_categories
                         WHERE root_category = 1");
 
 $categories = $result->fetch_all(MYSQLI_NUM);
+
+$result = $db->query("SELECT page_name, page_url FROM cms_pages WHERE menu_id = 1");
+
+$pages = $result->fetch_all(MYSQLI_NUM);
   
 ?>
 
      <div class="col-sm-12 col-lg-8 main-menu">
 
       <ul class="nav nav-pills">
-       <li><a href="shop.phtml">Menu Item</a></li>
-       <li class="dropdown">
-        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-         Dropdown <span class="caret"></span>
-        </a>
-        <ul class="dropdown-menu" role="menu">
-        <?php foreach ($categories as $category) :?>
-         <li><a href="/category/<?=$category[0]?>"><?=$category[0]?></a></li>
-        <?php endforeach; ?>
-        </ul>
-       </li>
-       <li><a href="#">Menu Item</a></li>
+      <?php foreach ($categories as $category) :?>
+       <li><a href="/category/<?=$category[0]?>"><?=$category[0]?></a></li>
+      <?php endforeach; ?>
+      <?php foreach ($pages as $page) :?>  
+       <li><a href="/<?=$page[1]?>"><?=$page[0]?></a></li>
+      <?php endforeach; ?> 
       </ul>
 
      </div><!-- /.main-menu -->

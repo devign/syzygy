@@ -8,8 +8,14 @@ $template_data = [  'page_title'        => $product->name,
 ];
 
 require THEME_PATH . 'header.phtml';
+
+require THEME_PATH . 'product.phtml';
+
+require THEME_PATH . 'footer.phtml';
+
 ?>
 
+<? /*
 <div id="pageContentContainer">
     <div id="contentContainer" class="clearfix">
         <div id="content">
@@ -39,6 +45,5 @@ require THEME_PATH . 'header.phtml';
     </div>
 </div>
 
-<?php
-require THEME_PATH . 'footer.phtml';
+*/
 ?>

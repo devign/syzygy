@@ -10,7 +10,7 @@ class Paginate {
         $this->_data['items_per_page']  = $config['items_per_page']; 
         $this->_data['total_pages']     = $this->_data['total_items'] / $this->_data['items_per_page'];
         
-        if ($this->_data['total_items'] % $this->_data['items_per_page'] !== 0) {    
+        if ($this->_data['total_items'] % $this->_data['items_per_page'] != 0) {    
             $this->_data['total_pages']++;
         }   
     }

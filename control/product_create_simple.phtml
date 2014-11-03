@@ -66,20 +66,34 @@
     
     foreach ($categories as $k => $v) {
         $db->query("INSERT INTO product_to_category(sku,category_id) VALUES('$sku',$v)");    
-    
+    }
 
     /* SAVE PRODCUT MEDIA FILE */
-    if (false === $new_file = Utility::saveMediaFile($media_tmpname, $media_customname, $media_type, $brand_id)) {
-        $error_msg = "Can't save $media_type media file.";
-    }  else {
-/*
-        $result = $db->query("SELECT max(product_media_num) + 1 AS num FROM product_media WHERE sku = '$sku'");
-        $next_num = $result->fetch_object();
-        $db->query("INSERT INTO product_media(sku,product_media_num,product_media_type,product_media_name, product_media_location,
-                    product_media_alt)
-                    VALUES('$sku',$next_num->num,'$media_type','$media_customname','$new_file','$media_alt',)");
+    if (isset($media_tmpname) && $media_tmpname != null) {
+
+        $media_customname = Utility::sanitizeFilename($_POST['custom_filename']);
+        $media_type = $_POST['media_type'];
+        $media_alt = isset($_POST['media_alt']) ? $_POST['media_alt'] : '';
+        $media_url = 'media/' . $media_type . DSEP . $brand_id;
         
-*/
+        if (false === $new_file = Utility::saveMediaFile($media_tmpname, $media_customname, $media_type, $brand_id)) {
+            $error_msg[] = "Can't save $media_tmpname $media_type media file.";
+        }  else {
+            $result = $db->query("SELECT max(product_media_num) + 1 FROM product_media WHERE sku = '$sku'");
+            $tmp = $result->fetch_row();
+            if (empty($tmp[0])) {
+                $next_num = 1;
+            } else {
+                $next_num = $tmp[0];
+            }
+            $result->close();
+            $db->query("INSERT INTO product_media(sku,product_media_num,product_media_type,product_media_name,
+                        product_media_filepath,product_media_url,product_media_alt)
+                        VALUES('$sku','$next_num','$media_type','$new_file[1]','$new_file[0]','$media_url',
+                        '$media_alt')");
+            
+        }
+
     }
                                                        
 ?>
@@ -144,7 +158,7 @@
         <tr><td><label>Page Title:</label></td>
         <td><input type="text" name="page_title" value="" size="80"/></td></tr>   
         <tr><td><label>Custom URL:</label></td>
-        <td><input type="text" name="page_url" value="" size="80"/></td></tr>     
+        <td><input type="text" name="product_url" value="" size="80"/></td></tr>     
         <tr><td><label>Keywords:</label></td>
         <td><textarea name="keywords" rows="5" cols="30"></textarea></td></tr>
         </table>

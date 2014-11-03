@@ -18,6 +18,7 @@ $config = array(
     'media_upload'                  => 'media/',
     'root_dir'                      => '/home/data/devign-llc/dev/syzygy/',
     'items_per_page'                => '10',
+    'store_id'                      => '3',
     'full_url'                      => 'http://syzygy.dev/',
 );
 

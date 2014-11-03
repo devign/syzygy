@@ -7,9 +7,8 @@ class Product {
     public function __construct($sku) {
         global $db;
         
-        $result = $db->query("SELECT sku, brand_id, name, description, short_description, price, weight, 
-                                features, page_title, product_url, keywords, product_url, page_title, featured,
-                                onsale, sale_price
+        $result = $db->query("SELECT sku, brand_id, name, description, short_description, price, 
+                                weight, features, keywords, product_url, page_title, featured, onsale, sale_price
                                 FROM products 
                                 WHERE sku = '$sku'");
 

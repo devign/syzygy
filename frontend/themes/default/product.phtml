@@ -1,0 +1,183 @@
+    <div class="container" itemscope itemtype="http:schema.org/Product">
+ 
+      <div id="product-header" class="row">
+        <div class="col-lg-9 col-lg-offset-1">
+          <ol class="breadcrumb">
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Shop</a></li>
+            <li><a href="#">Category</a></li>
+            <li class="active"><?=$product->name?></li>
+          </ol>
+  
+          <h1 itemprop="name"><?=$product->name?></h1>
+  
+          <ul>
+            <li itemprop="brand" itemscope itemtype="http://schema.org/Organization">By <a href=""><span itemprop="name"><?=$product->brand_name?><span></a></li>
+              <li>|</li>
+              <li>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star-half-o"></i>
+                <i class="fa fa-star-o"></i>
+              </li>
+              <li><a href="">(15) Reviews</a></li>
+            </ul>
+          
+          </div>
+        </div><!-- /.row /#product-header -->
+      
+        <div class="row mt30 product-wrapper">
+        
+          <div class="col-lg-4 media-wrapper">
+          
+            <div id="carousel" class="carousel slide" data-ride="carousel" data-interval="false">
+              <div class="carousel-inner">
+                <?php $count=0; while ($newMedia = $mediaCollection->iterate()) :?>
+                    <?php $item_class = $count==0 ? 'item active' : 'item'; $count=1; ?> 
+                    <div class="<?=$item_class?>" data-thumb="0">
+                    <a href=""><img src="<?=$config['full_url'] . $newMedia->product_media_url . DSEP . $newMedia->product_media_name?>" width="80px" /></a>
+                    </div>
+                <?php endwhile; ?>
+              </div>
+
+            </div><!-- /#carousel --> 
+            <div class="clearfix">
+              <div id="thumbcarousel" class="carousel slide" data-interval="false">
+                <div class="carousel-inner">
+                  <div class="item active">
+                  <?php $count=0; ?> 
+                  <?php while ($newMedia = $mediaCollection->iterate()) :?>
+                    <div data-target="#carousel" data-slide-to="<?=$count?>" class="thumb">
+                    <a href=""><img src="<?=$config['full_url'] . $newMedia->product_media_url . DSEP . $newMedia->product_media_name?>" width="80px" /></a>
+                    </div>
+                    <?php $count++ ?>
+                  <?php endwhile; ?>
+                  </div>                  
+                </div><!-- /carousel-inner -->
+                <a class="left carousel-control" href="#thumbcarousel" role="button" data-slide="prev">
+                  <span class="glyphicon glyphicon-chevron-left"></span>
+                </a>
+                <a class="right carousel-control" href="#thumbcarousel" role="button" data-slide="next">
+                  <span class="glyphicon glyphicon-chevron-right"></span>
+                </a>
+              </div> <!-- /thumbcarousel -->
+            </div><!-- /clearfix -->
+          
+          </div><!-- /.col-lg-4 -->
+        
+          <div class="col-lg-6 product-details-wrapper">
+          
+            <ul id="product-price" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+              <li class="full-price" itemprop="price">
+                $<?=$product->price?>
+                <meta itemprop="price" content="<?=$product->price?>">
+                <meta itemprop="propCurrency" content="USD" />
+              </li>
+              <li class="availability"><link itemprop="availability" href="http://www.schema.org/InStock" /><span class="in-stock">In stock</span></li>
+            </ul>
+            
+            <ul id="ordering-controls">
+              <li id="size">
+                <select class="form-control">
+                  <option>Small</option>
+                  <option>Medium</option>
+                  <option>Large</option>
+                  <option>X-Large</option>
+                  <option>Fuckin Fat</option>
+                </select>
+              </li>
+              <li>in</li>
+              <li id="color">
+                <select class="form-control">
+                  <option>Red</option>
+                  <option>Black</option>
+                  <option>Yellow</option>
+                  <option>Pink</option>
+                  <option>Shit Brown</option>
+                </select>
+              </li>
+              <li><a href=""><i class="fa fa-info-circle"></i></a></li>
+            </ul>
+            
+            <div id="short-description" itemprop="description">
+              <p><?= $product->short_description ? $product->short_description : ''?></p>
+            </div>
+            
+            <div class="row" id="add-to-cart-wrapper">
+              <div class="col-xs-2">
+                <select class="form-control">
+                  <option>QTY.</option>
+                  <option>1</option>
+                  <option>2</option>
+                  <option>3</option>
+                  <option>4</option>
+                  <option>5</option>
+                  <option>6</option>
+                  <option>7</option>
+                  <option>8</option>
+                  <option>9</option>
+                  <option>10</option>
+                </select>
+              </div><!-- END Quantity -->
+              <div class="col-xs-5">
+                <button type="button" class="btn btn-primary btn-lg btn-block"><i class="fa fa-shopping-cart"></i> Add to Cart</button>
+              </div>
+              <div class="col-xs-5">
+                <button type="button" class="btn btn-default btn-lg btn-block"><i class="fa fa-heart"></i> Add to Wishlist</button>
+              </div>
+            </div><!-- /.row /#add-to-cart-wrapper -->
+            
+            <ul id="product-meta-data">
+              <li>SKU: <span><?=$product->sku?></span></li>
+              <li>Category: <a href="">Monkey</a></li>
+              <li>Tags: <a href="">Poo Flinger</a>, <a href="">Magic Caster</a></li>
+            </ul>
+          
+          </div><!-- END Product Controls /.col-xs-4 -->
+        
+          <div class="col-lg-2">
+           
+          </div><!-- END Last Viewed & Related /.col-xs-4 -->
+        
+        </div><!-- /.row /.product-wrapper -->
+        
+        <div class="row">
+          
+          <div class="col-lg-4">
+            
+            <div class="row">
+            
+              <div class="col-lg-12">
+              
+                <div class="video-container">
+                  <iframe src="http://www.youtube.com/embed/dFVxGRekRSg" frameborder="0" width="560" height="315"></iframe>
+                </div>
+              
+              </div><!-- /.row /.video-container -->
+            
+            </div>
+            
+          </div><!-- /.col-lg-4 -->
+          
+          <div class="col-lg-8">
+            
+            <div class="row">
+              
+              <div class="col-lg-12 product-long-description">
+              
+              <h2>Description</h2>
+              
+                <p><?=$product->description?></p>
+              
+              
+              </div>
+              
+            </div><!-- /.row END Description -->
+            
+          </div><!-- /.col-lg-8 -->
+          
+        </div><!-- /.row -->
+
+      </div><!-- /.container -->
+   

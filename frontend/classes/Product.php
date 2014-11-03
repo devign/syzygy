@@ -7,11 +7,11 @@ class Product {
     public function __construct($sku) {
         global $db;
         
-        $result = $db->query("SELECT p.sku, brand_id, name, description, short_description, price, weight, features, 
-                                page_title, product_url, keywords
+        $result = $db->query("SELECT sku, p.brand_id, brand_name, name, description, short_description, price, 
+                                weight, features, page_title, product_url, keywords
                                 FROM products AS p
-                                LEFT JOIN product_metadata USING(sku)
-                                WHERE p.sku = '$sku'");
+                                LEFT JOIN product_brands USING(brand_id)
+                                WHERE sku = '$sku'");
 
 
         $product_data = $result->fetch_all(MYSQLI_ASSOC);

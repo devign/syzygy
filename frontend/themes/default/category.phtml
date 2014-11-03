@@ -7,9 +7,7 @@
       <div id="category-header" class="row">
         <div class="col-lg-9 col-lg-offset-1">
           <ol class="breadcrumb">
-            <li><a href="#">Home</a></li>
-            <li><a href="#">Shop</a></li>
-            <li class="active">Category</li>
+            <li><a href="/">Home</a></li>
           </ol>
   
           <h1><?= $catname?></h1>
@@ -71,7 +69,7 @@
                         $res = $stmt->get_result();
                         $media = $res->fetch_object();
                     ?>
-                    <a title="Product Name" href="#">
+                    <a title="<?=$product->name?>" href="<?=$config['full_url'] . $product->product_url?>">
                       <img title="Product Name" src="<?=$config['full_url']?>media/IMAGE/<?=$product->brand_id?>/<?=$media->product_media_name?>" alt="Product Name" />
                     </a>
 
@@ -96,7 +94,8 @@
         <?php if ($config['filters'] == 1) include THEME_PATH . 'filters.phtml'; ?>
         
       </div><!-- /.row -->
-      <?php $paginate = new Paginate($num->total_items, $current_page); ?>
+      
+      <?php $paginate = new Paginate($num->total_items, $current_page, "$catname"); ?>
       <?php include SITE_PATH . 'paginate.phtml'?>
       <!-- /.row END Pagination -->
   

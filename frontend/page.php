@@ -13,12 +13,10 @@ require THEME_PATH . 'header.phtml';
 ?>
 
 
-<div id="pageContentContainer">
-    <div id="contentContainer">
-        <div id="content">
-            <?=$template_data['page_content']?>
-        </div>
-    </div>
+<div class="container">
+ 
+    <?=$template_data['page_content']?>
+ 
 </div>
 
 <?php
