@@ -68,10 +68,13 @@ class Product {
         
         $tmpCats = array();
         
-        $result = $db->query("SELECT category_id FROM product_to_category WHERE sku = '" . $this->_data['sku'] . "'");
+        $result = $db->query("SELECT category_name 
+                            FROM product_categories
+                            LEFT JOIN product_to_category USING(category_id)
+                            WHERE sku = '" . $this->_data['sku'] . "'");
 
         while ($row = $result->fetch_object()) {
-            array_push($tmpCats, $row->category_id);
+            array_push($tmpCats, $row->category_name);
         }
         
         $result->close();
@@ -80,6 +83,26 @@ class Product {
         
     }  
 
+    public function getCategory($sku = null) {
+        global $db;
+        if (isset($sku)) {
+            $this->_data['sku'] = $sku;
+        }
+        
+     
+        $result = $db->query("SELECT category_name 
+                            FROM product_categories
+                            LEFT JOIN product_to_category USING(category_id)
+                            WHERE sku = '" . $this->_data['sku'] . "'");
+
+        $row = $result->fetch_object();
+        
+        $result->close();
+        
+        return $row->category_name;
+        
+    }  
+    
     public function getMedia($sku = null) {
         global $db;
         
