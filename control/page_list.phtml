@@ -31,13 +31,13 @@ $pages_stmt = $db->query($pages_query);
                 </div>
 
 
-	<div style="padding-top:20px">
-	<table border="0" id="pagesTable" cellpadding="0" cellspacing="0">
+	<div style="padding-top:40px">
+	<table border="0" class="table-list" cellpadding="0" cellspacing="0">
 	<tr><th></th><th>ID</th><th>Name</th></tr>
 	<?php while ($result = $pages_stmt->fetch_object()) : ?>
 		<tr>
 		<td valign="center"><a onMouseOver="$(this).parents('tr').css('background-color', '#F2B7B2')"
-		          onMouseOut="$(this).parents('tr').css('background-color', '#FFF')" class="miniButton" href="/control/page/edit/<?= $result->page_id?>">Edit</a></td>
+		          onMouseOut="$(this).parents('tr').css('background-color', '#FFF')" class="miniButton" href="/control/page/edit?page_id=<?= $result->page_id?>">Edit</a></td>
 		<td><?= $result->page_id ?></td>
 		<td><?= $result->page_name ?></td>
 

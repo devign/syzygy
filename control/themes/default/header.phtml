@@ -54,6 +54,16 @@ $user = $result->fetch_object();
     
     <script src="/control/js/functions.js"></script>
     
+    <!-- Place inside the <head> of your HTML -->
+    <script type="text/javascript" src="/control/js/tinymce/tinymce.min.js"></script>
+    <script type="text/javascript">
+        tinymce.init({
+        selector: "textarea.mce",
+        plugins: "image"
+    });
+    </script>
+    
+    
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>

@@ -92,19 +92,10 @@ $result->close();
 
 <?php else : ?>
 
-<?php
-    $brands = getSetValues($params = array('brand_id', 'brand_name', 'product_brands'));
-    
-    $vendors  = getSetValues($params = array('vendor_id', 'name', 'vendors'));
-    
-
-    
-?>
 <div>
 	<div style="padding-top:40px">
 		<form name="productNew" method="post" enctype="multipart/form-data">
-		<input type="hidden" name="form_action" value="">
-        <input type="hidden" name="product_type" value="SIMPLE">
+		<input type="hidden" name="form_action" value="save">
 
         <table id="order-create">
         <tr><th>QTY</th><th>SKU</th><th>NAME</th><th>PRICE</th><th>EXT. PRICE</th></tr>

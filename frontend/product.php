@@ -2,7 +2,7 @@
 $product = new Product($route[1]);
 $media = new Media($product->sku, 1);
 $mediaCollection = new MediaCollection($product->sku);
-$categories = $product->getCategories();
+$category= $product->getCategory();
 
 $template_data = [  'page_title'        => $product->name,
                     'page_description'  => $product->description,

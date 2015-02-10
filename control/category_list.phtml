@@ -1,25 +1,14 @@
 <?php
 
+$main_stmt = $db->query("SELECT * FROM product_categories");
 
-if (isset($action) && $action == 'search') {
-
-	$search_on = $_POST['search_value'];
-
-	$main_query = "SELECT sku, name, description, price FROM products";
-
-	$main_stmt = $db->query($main_query);
-
-
-} else {
-
-	$main_stmt = $db->query("SELECT * FROM product_categories");
-
-}
-
+$categories = createCategoryTree();
 
 
 ?>
-          <div class="col-xs-12 col-md-9">
+<pre>
+<?php // print_r($categories);?>
+</pre> <div class="col-xs-12 col-md-9">
              
             <section id="page-header">
 
@@ -38,7 +27,7 @@ if (isset($action) && $action == 'search') {
             <section id="content">
                 <div id="actionNavContainer">
                     <ul id="actionNav">
-                    <li><a href="/control/categories/create">Add New Category</a></li>
+                    <li><a href="/control/category/create">Add New Category</a></li>
                     </ul>
                 </div>
             

@@ -1,42 +1,57 @@
 <?php
 
-
-
 function createCategoryTree() {
     global $db;
     $categories = array();
     
-    $result = $db->query("SELECT category_id, category_name FROM product_categories WHERE root_category = 1");
+    $result = $db->query("SELECT category_id, category_name 
+                        FROM product_categories
+                        WHERE root_category = 1
+                        ORDER BY category_id ASC
+                        ");
     
     while ($roots = $result->fetch_object()) {
-        
-        getCategoryChildren($roots->category_id);
+        $categories[$roots->category_id] = array($roots->category_name);
+        $tempCats = getRootChildren($roots->category_id, 1);
+
+        if (count($tempCats) > 0) {
+        //    array_push($categories[$roots->category_id], $tempCats);    
+            array_push($categories[$roots->category_id], $tempCats);
+        } 
     }    
-
-
+    
     return $categories;
     
 }
 
-function getCategoryChildren($catid) {
+
+function getRootChildren($catid, $currentLevel) {
     global $db;
     $childCategories = array();
+
     
-    $stmt = $db->prepare("SELECT category_id, category_name FROM product_categories WHERE parent_category_id = $catid");
+    $stmt = $db->prepare("SELECT category_id, category_name 
+                            FROM product_categories 
+                            WHERE parent_category_id = $catid");
     $stmt->execute();
     $result = $stmt->get_result();
     $children = $result->fetch_all(MYSQLI_ASSOC);
-    
-    if ($children) {
+
+    if (count($children) > 0) {
         foreach ($children as $child) {
-            getCategoryChildren($child['category_id']);
-        }
+            array_push($child, ['childLevel' => $currentLevel]);
+            array_merge($childCategories, $child);
+            $currentLevel++;
+            getRootChildren($child['category_id'], $currentLevel);
+
+        }            
 
     }  else {
         return $childCategories;
     }
 
 }
+
 
 function printCategoryList($selected = null) {
     global $db;
@@ -303,7 +318,7 @@ function createInputForm($table_name, $hide_fields = array()) {
 					$label = ucwords(preg_replace('/_/', ' ', $col1));
 					$output .= "<td class=\"frmLabel\">";
 					$output .= $label . ':</td>';
-					$output .= "<td><textarea autocomplete=\"off\" name=\"$col1\" rows=\"10\" cols=\"50\"></textarea></td>";
+					$output .= "<td><textarea class=\"mce\" autocomplete=\"off\" name=\"$col1\" rows=\"10\" cols=\"50\"></textarea></td>";
 
 				} elseif ((preg_match('/tinyint/', $col2)) && $col9 === 'YES/NO' ) {
 					$label = ucwords(preg_replace('/_/', ' ', $col1));
