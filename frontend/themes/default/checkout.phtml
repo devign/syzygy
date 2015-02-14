@@ -1,0 +1,38 @@
+
+   <div class="container" itemscope itemtype="http:schema.org/Product">
+ 
+      <div id="product-header" class="row">
+        <div class="col-lg-9 col-lg-offset-1">
+          <ol class="breadcrumb">
+            <li><a href="/">Home</a></li>
+            <li><a href="#"><?= $category[0] ?></a></li>
+            <li class="active"><?=$product->name?></li>
+          </ol>
+
+        </div>
+      </div><!-- /.row /#product-header -->
+
+      <div>
+        <div style="width: 400px; float:left">
+            <div>Login</div>
+            <form name="formLogin" action="/user/login">
+            <label>Email:</label>
+            <input type="text" name="userEmail" value="" size="25" />
+            <label>Password:</label>
+            <input type="password" name="userPassword" value="" size="25" />
+            <input type="submit" value="Login"/>
+            </form>
+        </div>
+        
+        <div style="width: 400px; float:left">
+            <div><a href="/checkout/info">Guest Checkout</a></div>
+
+        </div>
+      
+      </div>
+
+   </div><!-- /.container -->
+   
+
+  
+<?php include 'footer.phtml'; ?>  

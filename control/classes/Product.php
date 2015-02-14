@@ -95,6 +95,23 @@ class Product {
         
     }
     
+    public function getVariations($sku = null) {
+        global $db;
+        
+        $stmt = $db->prepare("SELECT variation_sku, price, pv.variation_id, variation_name, variation_value, 
+                                sale_price, weight
+                                FROM product_variations AS pv
+                                JOIN product_to_variation AS ptv USING(variation_id)
+                                WHERE ptv.sku = '" . $sku . "'");
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $tmp = $result->fetch_all(MYSQLI_ASSOC);
+        $result->close();
+        
+        return $tmp;                           
+                                    
+    }
+    
     public function getVendors($sku = null) {
         global $db;
         if (isset($sku)) {

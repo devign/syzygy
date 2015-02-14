@@ -1,0 +1,320 @@
+<?php $sku = $_GET['sku']; ?>
+<?php if (isset($_POST['formAction']) && $_POST['formAction'] == 'save') {
+    
+    if (empty($sku)) $sku = Utility::prepareData(Utility::sanitizeData($_POST['sku']));
+    $brand_id           = $_POST['brand_id'];
+    $name               = Utility::prepareData(Utility::sanitizeData($_POST['name']));
+    $description        = Utility::prepareData(Utility::sanitizeData($_POST['description']));
+    $short_description  = Utility::prepareData(Utility::sanitizeData($_POST['short_description']));
+    $features           = Utility::prepareData(Utility::sanitizeData($_POST['features']));
+    $price              = $_POST['price'];
+    $weight             = $_POST['weight'];
+    $vendors            = $_POST['vendors'];
+    $categories         = $_POST['category'];
+    $stores             = $_POST['stores'];
+    $product_url        = Utility::prepareData(Utility::sanitizeData($_POST['product_url']));
+    $page_title         = Utility::prepareData(Utility::sanitizeData($_POST['page_title']));
+    $keywords           = Utility::prepareData(Utility::sanitizeData($_POST['keywords']));
+    $product_type       = $_POST['product_type'];
+    $status             = $_POST['status'];
+    $featured           = isset($_POST['featured']) ? $_POST['featured'] : 0;
+    $onsale             = isset($_POST['onsale']) ? $_POST['onsale'] : 0;
+    $sale_price         = $onsale ? $_POST['sale_price'] : 0;
+    $media_tmpname      = isset($_FILES['mediafile']['tmp_name']) ? $_FILES['mediafile']['tmp_name'] : null;
+
+    $db->query("UPDATE products
+            SET 
+            brand_id            = '$brand_id',
+            name                = '$name',
+            description         = '$description',
+            price               = '$price',
+            weight              = '$weight',
+            status              = '$status',
+            product_type        = '$product_type',
+            short_description   = '$short_description',
+            features            = '$features',
+            featured            = '$featured',
+            onsale              = '$onsale',
+            sale_price          = '$sale_price',
+            product_url         = '$product_url',
+            page_title          = '$page_title'
+            WHERE sku = '$sku'
+            ");
+            
+    echo $db->error;
+         
+    $db->query("DELETE FROM product_to_vendor WHERE sku = '$sku'");        
+    foreach ($vendors as $k => $v) {
+        $db->query("INSERT INTO product_to_vendor(sku,vendor_id) VALUES('$sku',$v)");    
+    }  
+    
+    $db->query("DELETE FROM product_to_store WHERE sku = '$sku'");
+    foreach ($stores as $k => $v) {
+        $db->query("INSERT INTO product_to_store(sku,store_id) VALUES('$sku',$v)");    
+    }       
+    
+    $db->query("DELETE FROM product_to_category WHERE sku = '$sku'");
+    foreach ($categories as $k => $v) {
+        $db->query("INSERT INTO product_to_category(sku,category_id) VALUES('$sku',$v)");    
+    }
+  
+    /* SAVE PRODUCT MEDIA FILE */
+    if (isset($media_tmpname) && $media_tmpname != null) {
+
+        $media_customname = Utility::sanitizeFilename($_POST['custom_filename']);
+        $media_type = $_POST['media_type'];
+        $media_alt = isset($_POST['media_alt']) ? $_POST['media_alt'] : '';
+        $media_url = 'media/' . $media_type . DSEP . $brand_id;
+        
+        if (false === $new_file = Utility::saveMediaFile($media_tmpname, $media_customname, $media_type, $brand_id)) {
+            $error_msg[] = "Can't save $media_tmpname $media_type media file.";
+        }  else {
+            $result = $db->query("SELECT max(product_media_num) + 1 FROM product_media WHERE sku = '$sku'");
+            $tmp = $result->fetch_row();
+            if (empty($tmp[0])) {
+                $next_num = 1;
+            } else {
+                $next_num = $tmp[0];
+            }
+
+            $result->close();
+            $db->query("INSERT INTO product_media(sku,product_media_num,product_media_type,product_media_name,
+                        product_media_filepath,product_media_url,product_media_alt)
+                        VALUES('$sku','$next_num','$media_type','$new_file[1]','$new_file[0]','$media_url',
+                        '$media_alt')");
+            
+        }
+
+    }
+    
+    foreach (sort($_POST) as $k => $v) {
+        if (preg_match("/varisku/", $k) == 1 && $v != "") {
+            $key_splits = explode("_", $k);
+            $parent_sku = $key_splits[0];
+            $vari_sku = $v;
+            $vari_id = $_POST[$parent_sku . '_variid_' . $key_splits[2]];
+            $vari_vendsku = $_POST[$parent_sku . '_varivendsku_' . $key_splits[2]];
+            $vari_price = $_POST[$parent_sku . '_variprice_' . $key_splits[2]];
+            $vari_saleprice = $_POST[$parent_sku . '_varisaleprice_' . $key_splits[2]];  
+            $vari_weight = $_POST[$parent_sku . '_variweight_' . $key_splits[2]];      
+            $vari_name = $_POST[$parent_sku . '_variname_' . $key_splits[2]];
+            $vari_value = $_POST[$parent_sku . '_varivalue_' . $key_splits[2]];  
+            
+            $isUpdated = $db->query("UPDATE product_to_variation
+                        SET = '$vari_id' , 
+                        variation_sku = '$vari_sku', 
+                        vendor_sku = '$vari_vendsku', 
+                        price = '$vari_price', 
+                        sale_price = '$vari_saleprice', 
+                        weight = '$vari_weight')
+                        WHERE sku = '$parent_sku'
+                        AND variation_id = '$vari_id'");   
+                        
+            if (!$isUpdated) {
+                $db->query("INSERT INTO product_to_variation(sku, variation_id, variation_sku, vendor_sku,
+                             price, sale_price, weight)
+                            VALUES('$parent_sku','$vari_id','$vari_sku','$vari_vendsku','$vari_price',
+                            '$vari_saleprice','$vari_weight'");
+            }         
+            
+        }
+    }
+?>    
+<?php if (count($error_msg) > 0): ?>
+    <div ="error">
+        <?php foreach($error_msg as $err): ?>
+        <div><?= $err ?></div>
+        <?php endforeach; ?>
+    </div>   
+<?php else : ?>
+    <div class="success">
+        ITEM SUCCESSFULLY SAVED
+    </div>
+<?php endif; ?>
+
+<?php 
+}  // END MAIN IF TO SAVE INFO                                                
+?>
+
+
+<?php
+
+$product = new Product($sku);
+$mediaCollection = new MediaCollection($sku);
+
+
+/**  GET CATEGORIES PRODUCT BELONGS TO **/
+$product_categories = $product->getCategories();
+
+/**  GET VENDORS PRODUCT BELONGS TO **/
+$product_vendors = $product->getVendors();
+
+/**  GET VENDORS PRODUCT BELONGS TO **/
+$product_stores = $product->getStores();
+
+/** GET PRODUCT MEDIA FILES DATA **/
+$product_media = $product->getMedia();
+
+/*** GET PRODUCT VARIATIONS **/
+$product_variations = $product->getVariations($sku);
+
+?>
+
+          <div class="col-xs-12 col-md-9">
+             
+            <section id="page-header">
+
+              <div id="searchCriteria" style="float:right;">
+              <form name="searchForm" action="customers.php" method="post">
+              <input type="hidden" name="action" value="search">
+              <span class="inputLabel">SEARCH: <input type="text" name="search_value" value="" size="20">
+
+              <button class="button" onClick="searchForm.submit();">GO!</button>
+
+              </form>
+              </div>
+              <h1><span class="glyphicon glyphicon-shopping-cart"></span> Products :: Edit</h1>
+              </section>
+
+            <section id="content">
+                <div id="actionNavContainer">
+                    <ul id="actionNav">
+                    <li><a href="/control/product/create/simple">Simple</a></li>
+                    <li><a href="/control/product/create/variable">Variable</a></li>
+                    <li><a href="/control/product/create/customizable">Customizable</a></li>
+                    <li><a href="/control/product/create/virtual">Virtual</a></li>
+                    </ul>
+                </div>
+
+            
+
+
+
+<?php
+    $brands = Utility::getSetValues($params = array('brand_id', 'brand_name', 'product_brands'));
+    
+    $vendors  = Utility::getSetValues($params = array('vendor_id', 'name', 'vendors'));
+    
+    $stores  = Utility::getSetValues($params = array('store_id', 'store_name', 'stores'));
+    
+?>
+<div>
+	<div style="padding-top:40px">
+		<form name="productNew" method="post" enctype="multipart/form-data">
+		<input type="hidden" name="formAction" value="save">
+        <input type="hidden" name="product_type" value="SIMPLE">
+
+        <table>
+        <tr><td><label>SKU:</label></td><td><strong><?=$sku?></strong></td></tr>
+        <tr><td><label>Status:</label></td>
+        <td><select name="status">
+        <option value="1">Active</option>
+        <option value="0">Inactive</option>
+        </select></td></tr>
+        <tr><td><label>Brand:</label></td><td><select name="brand_id">
+        <?php foreach ($brands as $id => $name) : ?>
+            <option value="<?= $id ?>"><?= $name ?></option>
+        <?php endforeach; ?>
+        </select>  </td></tr>
+		
+        <tr><td><label>Name:</label></td><td><input type="text" name="name" value="<?=$product->name?>" onBlur="autoSEOInput(this.value, this.form)"/> </td></tr>
+        
+        <tr><td><label>Description:</label></td><td><textarea name="description" rows="10" cols="80"><?=$product->description?></textarea></td></tr>
+        
+        <tr><td><label>Short Description:</label></td><td><textarea name="short_description" rows="5" cols="80"><?=$product->short_description?></textarea></td></tr>
+        
+        <tr><td><label>Features:</label></td><td><textarea name="features" rows="5" cols="40"><?=$product->features?></textarea></td></tr>
+        
+        <tr>
+        <td colspan="2">
+            Product Variations
+            <table>
+            <tr><th>SKU</th><th>NAME</th><th>VARIATION</th><th>PRICE</th><th>SALE PRICE</th><th>WEIGHT</th></tr>
+        <?php foreach ($product_variations as $pv) : ?>                
+            <tr>
+            <input type="hidden" name="<?=$sku?>_<?=$pv{'variation_sku'}?>_variid_<?=$count?>" value="<?=$pv{'variation_id'}?>" \>
+            <td><input type="text" name="<?=$sku?>_<?=$pv{'variation_sku'}?>_varisku_<?=$count?>" value="<?=$pv{'variation_sku'}?>" /></td>
+            <td><input type="text" name="<?=$sku?>_<?=$pv{'variation_sku'}?>_variname_<?=$count?>" value="<?=$pv{'variation_name'}?>" disabled/></td>
+            <td><input typ="text" name="<?=$sku?>_<?=$pv{'variation_sku'}?>_varivalue_<?=$count?>" value="<?=$pv{'variation_value'}?>" /></td>
+            <td><input type="text" name="<?=$sku?>_<?=$pv{'variation_sku'}?>_variprice_<?=$count?>" value="<?=$pv{'price'}?>" size="10"/></td>
+            <td><input type="text" name="<?=$sku?>_<?=$pv{'variation_sku'}?>_varisaleprice_<?=$count?>" value="<?=$pv{'sale_price'}?>" size="10"/></td>
+            <td><input type="text" name="<?=$sku?>_<?=$pv{'variation_sku'}?>_variweight_<?=$count?>" value="<?=$pv{'weight'}?>" size="10"/></td>
+            </tr>
+            
+        <?php endforeach; ?>
+            </table>
+            <a href=""
+        </td>
+        </tr>
+
+        <tr><td><label>Featured:</label></td><td><input type="checkbox" name="featured" value="1" <?= $product->featured ? 'checked' : ''?>></td></tr>
+        
+        <tr><td><label>Vendor:</label></td><td><select name="vendors[]" multiple>
+        <?php foreach ($vendors as $id => $name) : ?>
+            <?php if (in_array($id, $product_vendors)) :?>
+                <option value="<?= $id ?>" selected><?= $name ?></option>
+            <?php else : ?>
+                <option value="<?= $id ?>"><?= $name ?></option>
+            <?php endif; ?>
+        <?php endforeach; ?>
+        </select>  </td></tr>
+
+        <tr><td><label>Store:</label></td><td><select name="stores[]" multiple>
+        <?php foreach ($stores as $id => $name) : ?>
+            <?php if (in_array($id, $product_stores)) :?>
+                <option value="<?= $id ?>" selected><?= $name ?></option>
+            <?php else : ?>
+                <option value="<?= $id ?>"><?= $name ?></option>
+            <?php endif; ?>
+        <?php endforeach; ?>
+        </select>  </td></tr>
+                
+        <tr><td><label>Category:</label></td>
+        <td><?php printCategoryList($product_categories); ?></td></tr>  
+          
+        <tr><td><h3>SEO MAGIC</h3></td></tr>
+        <tr><td><label>Page Title:</label></td>
+        <td><input type="text" name="page_title" value="<?=$product->page_title?>" size="80"/></td></tr>   
+        <tr><td><label>Custom URL:</label></td>
+        <td><input type="text" name="product_url" value="<?=$product->product_url?>" size="80"/></td></tr>     
+        <tr><td><label>Keywords:</label></td>
+        <td><textarea name="keywords" rows="5" cols="30"><?=$product->keywords?></textarea></td></tr>
+        </table>
+        
+        <table id="media-magic">
+        <tr><td>
+            <table>
+            <tr><td><h3>MEDIA MAGIC</h3></td></tr>
+            <tr><td><label>File:</label></td>
+            <td><input type="file" name="mediafile" /></td></tr>     
+            <tr><td><label>Media Type:</label></td>
+            <td><select name="media_type">
+            <option value="IMAGE">Image</option>
+            <option value="VIDEO">Video</option>
+            <option value="PDF">PDF</option>
+            </td></tr>   
+            <tr><td><label>Custom Filename:</label></td>
+            <td><input type="text" name="custom_filename" value="" /></td></tr>
+            <tr><td><label>Alt Tag:</label></td>
+            <td><input type="text" name="media_alt" value="" /></td></tr>
+            </table>
+        </td>
+        <td>
+            <?php while ($media = $mediaCollection->iterate()) : ?>
+                <div style="float:left;padding-right:5px">
+                <img src="<?=$config['full_url'] . $media->product_media_url . DSEP . $media->product_media_name?>" width="100">
+                </div>
+            <?php endwhile; ?>
+        </td>
+        </table>
+        <input type="submit" value="Save">
+        </form>
+	</div>
+
+</div>
+
+
+
+            </section>
+
+          </div><!-- /.col-sm-12 /.col-lg-9 -->

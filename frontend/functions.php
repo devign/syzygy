@@ -14,7 +14,7 @@
             $new_route[1] = $sku;
         } else {
             $new_route[0] = $route[0] . '.php';
-            $new_route[1] = $route[1];
+            $new_route[1] = $route[1] ? $route[1] : '';
         }
 
         return $new_route;

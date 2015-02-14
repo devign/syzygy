@@ -21,6 +21,8 @@ class Database extends mysqli {
         $this->close();
     
     }
+    
+    
 
 
 

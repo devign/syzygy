@@ -43,22 +43,6 @@ class Product {
     public function __set($name, $value) {
         $this->_data[$name] = $value;
     }
-        
-    public function add() {
-        
-    }         
-    
-    public function remove() {
-        
-    }
-    
-    public function save() {
-        
-    }
-    
-    public function view() {
-        
-    }
     
     public function getCategories($sku = null) {
         global $db;

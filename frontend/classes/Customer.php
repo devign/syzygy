@@ -1,9 +1,8 @@
 <?php
 
 class Customer {
-    public $fname;
-    public $lname;
-    public $customer_id;
+    public $_data = array();
+    
     
     public function __construct() {
             

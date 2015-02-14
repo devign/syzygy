@@ -1,13 +1,13 @@
 <?php
- $cart = new Cart();
- $cart_total = 0;
- $cart_empty = 0;
+$cart = new Cart();
+$cart_total = 0;
+$cart_empty = 0;
  
- if (isset($route[1]) && $route[1] === 'add') {
-    $cart->add();  
- } elseif (isset($route[1]) && $route[1] === 'edit') {
-    $cart->edit(); 
- }
+if (isset($route[1]) && $route[1] === 'add') {
+   $cart->add();  
+} elseif (isset($route[1]) && $route[1] === 'edit') {
+   $cart->edit(); 
+}
 
 /** Display cart aka cart view **/
 $template_data['page_title'] = 'Your Cart'; 
@@ -25,6 +25,10 @@ if (!$cart->cartEmpty()) {
 }          
 
 ?>
+<div class="container">
+ 
+      <div class="row">
+        <div class="col-lg-9 col-lg-offset-1">
 
 <div>
     <h2>Your Cart</h2>
@@ -55,6 +59,9 @@ if (!$cart->cartEmpty()) {
     </form>
     
     <?PHP endif; ?>
+</div>
+</div>
+</div>
 </div>
 
 <?php 

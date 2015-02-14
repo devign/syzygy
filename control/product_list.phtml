@@ -1,6 +1,6 @@
 <?php
 
-$main_stmt = $db->prepare("SELECT SQL_CALC_FOUND_ROWS sku, name, description, price
+$main_stmt = $db->prepare("SELECT SQL_CALC_FOUND_ROWS sku, name, description, price, product_type 
                         FROM products
                         LIMIT $start, $end");
 $main_stmt->execute();
@@ -39,7 +39,7 @@ $result = $main_stmt->get_result();
 
       	<?php while ($row = $result->fetch_object()) : ?>
       		<tr onClick="document.productsForm.pid.value='<?= $row->sku ?>';document.customersForm.submit()">
-      		<td><a href="/control/product/edit/simple?sku=<?= $row->sku ?>"><?= $row->sku ?></a></td>
+      		<td><a href="/control/product/edit/<?=strtolower($row->product_type)?>?sku=<?= $row->sku ?>"><?= $row->sku ?></a></td>
       		<td><?= $row->name ?></td><td><?= $row->description ?></td><td><?= $row->price ?></td>
       	<?php endwhile ?>
 

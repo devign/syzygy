@@ -1,0 +1,98 @@
+
+   <div class="container" itemscope itemtype="http:schema.org/Product">
+ 
+      <div id="product-header" class="row">
+        <div class="col-lg-9 col-lg-offset-1">
+          <ol class="breadcrumb">
+            <li><a href="/">Home</a></li>
+            <li><a href="#"><?= $category[0] ?></a></li>
+            <li class="active"><?=$product->name?></li>
+          </ol>
+
+        </div>
+      </div><!-- /.row /#product-header -->
+
+      <div>
+        <div style="width: 400px; float:left">
+            <form name="formCheckoutInfo" action="/checkout/review">
+            <div>Ship To:</div>
+            <label>First Name:</label>
+            <input type"text" name="shipto_fname" value="" size="25" />
+            <label>Last Name:</label>
+            <input type"text" name="shipto_lname" value="" size="25" />
+            <label>Address1:</label>
+            <input type"text" name="shipto_addr1" value="" size="25" />
+            <label>Address2:</label>
+            <input type"text" name="shipto_addr2" value="" size="25" />
+            <label>City:</label>
+            <input type"text" name="shipto_city" value="" size="25" />
+            <label>State:</label>
+            <input type"text" name="shipto_state" value="" size="25" />
+            <label>Postal Code:</label>
+            <input type"text" name="shipto_postalcode" value="" size="25" />
+                       
+            </form>
+        </div>
+        
+        <div style="width: 400px; float:left">
+            <form name="formCheckoutInfo" action="/checkout/review">
+            <div>Payment Info:</div>
+            <label>Card Number:</label>
+            <input type"text" name="payment_cardno" value="" size="25" />
+            <label>Expiration Month:</label>
+            <select name="payment_expmon">
+            <option value="01">01</option>
+            <option value="02">02</option>
+            <option value="03">03</option>
+            <option value="04">04</option>
+            <option value="05">05</option>
+            <option value="06">06</option>
+            <option value="07">07</option>
+            <option value="08">08</option>
+            <option value="09">09</option>
+            <option value="10">10</option>
+            <option value="11">11</option>
+            <option value="12">12</option>
+            </select>
+            <label>Expiration Year:</label>
+            <select name="payment_expyr">
+            <option value="15">2015</option>
+            <option value="16">2016</option>
+            <option value="17">2017</option>
+            <option value="18">2018</option>
+            <option value="19">2019</option>
+            <option value="20">2020</option>
+            <option value="21">2021</option>
+            <option value="22">2022</option>
+            <option value="23">2023</option>
+            <option value="24">2024</option>
+            <option value="25">2025</option>
+            <option value="26">2026</option>
+            </select>
+            <label>First Name:</label>
+            <input type"text" name="payment_fname" value="" size="25" />
+            <label>Last Name:</label>
+            <input type"text" name="payment_lname" value="" size="25" />
+            <label>Address1:</label>
+            <input type"text" name="payment_addr1" value="" size="25" />
+            <label>Address2:"</label>
+            <input type"text" name="payment_addr2" value="" size="25" />
+            <label>City:"</label>
+            <input type"text" name="payment_city" value="" size="25" />
+            <label>State:"</label>
+            <input type"text" name="payment_state" value="" size="25" />
+            <label>Postal Code:"</label>
+            <input type"text" name="payment_postalcode" value="" size="25" />
+                       
+            </form>
+        </div>
+        
+
+      
+      </div>
+
+   </div><!-- /.container -->
+   
+
+  
+<?php include 'footer.phtml'; ?>  

@@ -3,12 +3,12 @@
 class ProductCollection extends Collection {
     private $_data = array();
     
-    public function __construct() {
+    public function __construct($start = 0 , $end = 10) {
         global $db;
         
-        $result = $db->query("SELECT sku, name, description, price 
+        $result = $db->query("SELECT sku, name, description, price, product_type 
                                 FROM products
-                                LIMIT 0, 10");
+                                LIMIT $start, $end");
                                 
         $temp = $result->fetchall();
         

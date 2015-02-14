@@ -24,18 +24,19 @@ class Cart {
         
         foreach ($_POST as $k => $v) {
             /* Check if key matches _qty and extract sku from key */
-            if (preg_match('/_qty$/', $k) === 1 && isset($_POST[$k]) && $_POST[$k] != 0) {
+            if (preg_match('/_qty$/', $k) == 1 && isset($_POST[$k]) && $_POST[$k] != 0) {
                 list($sku, $gar) = explode('_', $k);
                 $qty = $_POST[$k]; 
                 $result = $db->query("SELECT quantity FROM cart_line_items WHERE sku = '" . $sku ."'");
+
                 /* If item already exists in cart, update quantity */
                 if ($obj = $result->fetch_object()) {
                     $qty += $obj->quantity;
                     $result = $db->query("UPDATE cart_line_items SET quantity = $qty WHERE sku = '$sku'");
                 /* Insert item into cart */
                 } else {    
-                    $result = $db->query("INSERT INTO cart_line_items(cart_id, line_no, sku, quantity)
-                            VALUES($this->cartId, $this->lineNo, '$sku', $qty)");
+                      $result = $db->query("INSERT INTO cart_line_items(cart_id, line_no, sku, quantity)
+                            VALUES('$this->cartId', '$this->lineNo', '$sku', '$qty')");
                             
                     $this->lineNo++;
                 }
@@ -60,7 +61,7 @@ class Cart {
 
         $result = $db->query("SELECT count(*) AS num 
                             FROM cart_line_items
-                            WHERE cart_id = " . $this->cartId); 
+                            WHERE cart_id = '" . $this->cartId . "'"); 
         
         $obj = $result->fetch_object();
 
@@ -123,9 +124,17 @@ class Cart {
             return $this->createCartSession();
         }    
     } 
-    
 
+    public function numItems() {
+        global $db;
+        
+        $result = $db->query("SELECT count(*) AS num
+                        FROM cart_line_items AS c
+                        WHERE c.cart_id = '" . $this->cartId . "'");
     
+        $cart_result = $result->fetch_object();
+        return $cart_result->num;
+    }
 }
 ?>
 
