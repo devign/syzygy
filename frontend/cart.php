@@ -23,49 +23,12 @@ if (!$cart->cartEmpty()) {
 } else {
     $cart_empty = 1;
 }          
-
-?>
-<div class="container">
- 
-      <div class="row">
-        <div class="col-lg-9 col-lg-offset-1">
-
-<div>
-    <h2>Your Cart</h2>
-    
-    <?php if ($cart_empty == 1) : ?>    
-        <div>Your cart is empty</div>
-    <?php else : ?>
-    <form name="cart" method="post" action="/cart/edit">
-    <table id="cart">
-    <tr>
-    <th>Quantity</th><th>SKU</th><th>Name</th><th>Price</th> <th>Ext. Price</th>
-    </tr>
-    <?php while ($row = $result->fetch_object()) :?>
-    <?php 
-        $ext_price = sprintf('%.2f', $row->quantity * $row->price);
-        $cart_total += $ext_price;    
-    ?>
-    <tr>
-    <td><input type="text" name="<?=$row->sku?>_qty" value="<?=$row->quantity?>" size="2"></td>
-    <td><?=$row->sku?></td><td><?=$row->name?></td>
-    <td style="text-align:right"><?=$row->price?></td><td style="text-align:right"><?=$ext_price?></td>
-    </tr>
-    <?php endwhile; ?>
-    <tr><td><input type="submit" value="Update" /></td>
-    <?php $cart_total = sprintf('%.2f', $cart_total) ?>
-    <td style="text-align:right" colspan="3">Total:</td><td style="text-align:right"><?=$cart_total?></td></tr>
-    </table>
-    </form>
-    
-    <?PHP endif; ?>
-</div>
-</div>
-</div>
-</div>
-
-<?php 
 $result->close();
+
+require THEME_PATH . 'cart.phtml';
+
+
+
 require THEME_PATH . 'footer.phtml';
 
 ?>

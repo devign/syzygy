@@ -1,6 +1,8 @@
 <?php
-class Paginate {
+class Pagination {
     private $_data = array();
+    
+    public function __construct() {}
     
     public function __construct($total_items, $current_page, $page_name) {
         global $config;
@@ -10,11 +12,12 @@ class Paginate {
         $this->_data['items_per_page']  = $config['items_per_page']; 
         $this->_data['total_pages']     = $this->_data['total_items'] / $this->_data['items_per_page'];
         
-        if ($this->_data['total_items'] % $this->_data['items_per_page'] != 0) {    
+        if ($this->_data['total_items'] % $this->_data['items_per_page'] !== 0) {    
             $this->_data['total_pages']++;
         }   
     }
-    
+ 
+/** OUR GET AND SET METHODS **/    
     public function __get($name) {
 
         if (array_key_exists($name, $this->_data)) {
@@ -33,6 +36,8 @@ class Paginate {
     public function __set($name, $value) {
         $this->_data[$name] = $value;
     }
+/** END GET AND SET METHOD DEFINITIONS ***/
+
         
 }
 

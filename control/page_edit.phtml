@@ -1,98 +1,14 @@
-<?php $page_id = $_GET['page_id']; ?>
-<?php if (isset($_POST['formAction']) && $_POST['formAction'] == 'save') {
-    
-    $page_title = $_POST['page_title'];
-    $page_url = $_POST['page_url'];
-    $page_description = $_POST['page_description'];
-    $page_keywords = $_POST['page_keywords'];
-    
-    $db->query("UPDATE products
-            SET 
-            brand_id            = '$brand_id',
-            name                = '$name',
-            description         = '$description',
-            price               = '$price',
-            weight              = '$weight',
-            status              = '$status',
-            product_type        = '$product_type',
-            short_description   = '$short_description',
-            features            = '$features',
-            featured            = '$featured',
-            onsale              = '$onsale',
-            sale_price          = '$sale_price',
-            product_url         = '$product_url',
-            page_title          = '$page_title'
-            WHERE sku = '$sku'
-            ");
-            
-    echo $db->error;
-         
-    $db->query("DELETE FROM product_to_vendor WHERE sku = '$sku'");        
-    foreach ($vendors as $k => $v) {
-        $db->query("INSERT INTO product_to_vendor(sku,vendor_id) VALUES('$sku',$v)");    
-    }  
-    
-    $db->query("DELETE FROM product_to_store WHERE sku = '$sku'");
-    foreach ($stores as $k => $v) {
-        $db->query("INSERT INTO product_to_store(sku,store_id) VALUES('$sku',$v)");    
-    }       
-    
-    $db->query("DELETE FROM product_to_category WHERE sku = '$sku'");
-    foreach ($categories as $k => $v) {
-        $db->query("INSERT INTO product_to_category(sku,category_id) VALUES('$sku',$v)");    
-    }
-  
-    /* SAVE PRODUCT MEDIA FILE */
-    if (isset($media_tmpname) && $media_tmpname != null) {
-
-        $media_customname = Utility::sanitizeFilename($_POST['custom_filename']);
-        $media_type = $_POST['media_type'];
-        $media_alt = isset($_POST['media_alt']) ? $_POST['media_alt'] : '';
-        $media_url = 'media/' . $media_type . DSEP . $brand_id;
-        
-        if (false === $new_file = Utility::saveMediaFile($media_tmpname, $media_customname, $media_type, $brand_id)) {
-            $error_msg[] = "Can't save $media_tmpname $media_type media file.";
-        }  else {
-            $result = $db->query("SELECT max(product_media_num) + 1 FROM product_media WHERE sku = '$sku'");
-            $tmp = $result->fetch_row();
-            if (empty($tmp[0])) {
-                $next_num = 1;
-            } else {
-                $next_num = $tmp[0];
-            }
-
-            $result->close();
-            $db->query("INSERT INTO product_media(sku,product_media_num,product_media_type,product_media_name,
-                        product_media_filepath,product_media_url,product_media_alt)
-                        VALUES('$sku','$next_num','$media_type','$new_file[1]','$new_file[0]','$media_url',
-                        '$media_alt')");
-            
-        }
-
-    }
-?>    
 <?php if (count($error_msg) > 0): ?>
-    <div ="error">
+    <div class="error">
         <?php foreach($error_msg as $err): ?>
         <div><?= $err ?></div>
         <?php endforeach; ?>
     </div>   
-<?php else : ?>
+<?php elseif ($success_message): ?>
     <div class="success">
-        ITEM SUCCESSFULLY SAVED
+        <?= $success_message?>
     </div>
 <?php endif; ?>
-
-<?php 
-}  // END MAIN IF TO SAVE INFO                                                
-?>
-
-
-<?php
-
-$page = new Page($page_id);
-
-?>
 
           <div class="col-xs-12 col-md-9">
              
@@ -119,13 +35,11 @@ $page = new Page($page_id);
 
 
 
-<?php
-    
-?>
+
 <div>
 	<div style="padding-top:40px">
 		<form name="productNew" method="post" enctype="multipart/form-data">
-
+        <input type="hidden" name="form_action" value="update" />
         <table>
          <tr><td><label>Name:</label></td><td><input type="text" name="page_name" value="<?=$page->page_name?>" onBlur="autoSEOInput(this.value, this.form)"/> </td></tr>
          

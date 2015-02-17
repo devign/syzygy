@@ -3,54 +3,33 @@ require_once('functions.php');
 
 ?>
 
-          <div class="col-xs-12 col-md-9">
-             
-            <section id="page-header">
+<div class="col-xs-12 col-md-9">
+ 
+    <section id="page-header">
 
-              <h1><span class="glyphicon glyphicon-file"></span> Pages :: Create New</h1>
+      <h1><span class="glyphicon glyphicon-file"></span> Pages :: Create New</h1>
 
-            </section>
+    </section>
 
-            <section id="content">
-            
-<?php if (isset($_POST['form_action']) && $_POST['form_action'] == 'save') : ?>
+    <section id="content">
+                
 
-<?php
-	$user_id = insertRecord('cms_pages', 'page_id');
+        <div>
+	        <div style="padding:20px">
 
-	$_POST['page_id'] = $page_id;
-
-                                   
-?>
+		        <form name="userNew" method="post" action="/control/page/list">
+		        <input type="hidden" name="form_action" value="save">
 
 
+	        <?php
+		        createInputForm('cms_pages', array('page_id'));
+	        ?>
 
-<div style="padding-top:100px">
-	<h3>PAGE SUCCESSFULLY CREATED</h3>
-</div>
+		        </form>
+	        </div>
 
+        </div>
 
-<?php else : ?>
+    </section>
 
-<div>
-	<div style="padding:20px">
-
-		<form name="userNew" method="post">
-		<input type="hidden" name="form_action" value="save">
-
-
-	<?php
-		createInputForm('cms_pages', array('page_id'));
-	?>
-
-		</form>
-	</div>
-
-</div>
-
-<?php endif ?>
-
-
-            </section>
-
-          </div><!-- /.col-sm-12 /.col-lg-9 -->
+</div><!-- /.col-sm-12 /.col-lg-9 -->
